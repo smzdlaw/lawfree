@@ -127,23 +127,37 @@
 }
 
 .doc-preview__date-line {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 20px 0 0;
   width: 100%;
+  margin: 30px 0 8px;
 }
 
 .doc-preview__date-row {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  gap: 16px;
-  flex-wrap: nowrap;
-  white-space: nowrap;
-  max-width: 100%;
+  width: 100%;
+  margin: 0 auto;
 }
 
+.doc-preview__date-prefix{
+  min-width:110px;
+}
+
+.doc-preview__date-part{
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+
+.doc-preview__date-num{
+  display:inline-block;
+  width:48px;
+  text-align:center;
+}
+
+.doc-preview__date-unit{
+  margin-right:16px;
+}
 .doc-preview__date-prefix {
   flex-shrink: 0;
 }
@@ -151,22 +165,14 @@
 .doc-preview__date-part {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 0;
-  flex-shrink: 0;
+  gap: 4px;
 }
 
 .doc-preview__date-num {
   display: inline-block;
-  min-width: 1.75em;
+  width: 42px;
   text-align: center;
-}
 
-.doc-preview__date-num--empty {
-  min-width: 2em;
-  border-bottom: 1px solid currentColor;
-  height: 1em;
-  vertical-align: baseline;
 }
 
 .doc-preview__date-unit {
