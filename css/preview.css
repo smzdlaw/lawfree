@@ -39,7 +39,7 @@
   font-size: 20px;
   line-height: 1.8;
   color: #000;
-  text-align: justify;
+  text-align: left;
   -webkit-overflow-scrolling: touch;
 }
 
@@ -99,11 +99,22 @@
 }
 
 .doc-preview__reason {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  padding-left: 2em;
+
+  font-family: inherit;
+  font-size: inherit;
+  line-height: 1.8;
+
   white-space: pre-wrap;
   overflow-wrap: anywhere;
-  word-wrap: break-word;
   word-break: break-word;
-  line-height: 1.8;
+
+  text-align: justify;
+  text-align-last: left;
 }
 
 .doc-preview__footer {
@@ -132,11 +143,11 @@
 }
 
 .doc-preview__date-row {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: auto 50px auto 50px auto 50px auto;
+  justify-content: center;
+  column-gap: 18px;
   align-items: center;
-  width: 100%;
-  margin: 0 auto;
 }
 
 .doc-preview__date-prefix{
