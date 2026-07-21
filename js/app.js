@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   Router.init();
   Wizard.init(1);
+  Download.init();
   await Forms.init('payment-order');
 });
 

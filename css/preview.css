@@ -194,3 +194,13 @@
   padding-top: 10px;
   border-top: 1px solid #ddd;
 }
+
+/* ===== PDF 匯出分頁（html2pdf pagebreak css mode）===== */
+.doc-preview__line,
+.doc-preview__title,
+.doc-preview__date-line,
+.doc-preview__signer-row,
+.doc-preview__footer {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
