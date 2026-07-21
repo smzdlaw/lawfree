@@ -1,0 +1,89 @@
+/* ===== Print Styles ===== */
+@media print {
+  .preview-wrapper {
+    position: static;
+    padding: 0;
+    overflow: visible;
+  }
+
+  .preview-paper {
+    width: 210mm;
+    height: auto;
+    min-height: 297mm;
+    max-width: none;
+    box-shadow: none;
+    border-radius: 0;
+    overflow: visible;
+    page-break-inside: avoid;
+  }
+
+  .preview-paper__inner {
+    padding: 25mm;
+    overflow: visible;
+    font-family: "DFKai-SB", "標楷體", KaiTi, serif;
+    font-size: 20px;
+    line-height: 1.8;
+    text-align: justify;
+  }
+
+  .doc-preview {
+    font-family: "DFKai-SB", "標楷體", KaiTi, serif;
+    font-size: 20px;
+    line-height: 1.8;
+  }
+
+  .doc-preview__title {
+    font-size: 34px;
+    font-weight: 700;
+    text-align: center;
+  }
+
+  .doc-preview__line {
+    text-align: justify;
+    line-height: 1.8;
+  }
+
+  .doc-preview__date-line {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .doc-preview__date-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+  }
+
+  .doc-preview__date-part {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .doc-preview__date-num {
+    min-width: 1.75em;
+    text-align: center;
+  }
+
+  .doc-preview__date-num--empty {
+    min-width: 2em;
+    border-bottom: 1px solid #000;
+  }
+
+  .doc-preview__signer-row {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: 30mm;
+  }
+
+  .doc-preview__signer {
+    margin: 0;
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+}

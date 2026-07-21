@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>免費法律文件生成器（簡易版）</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/form.css">
+  <link rel="stylesheet" href="css/wizard.css">
+  <link rel="stylesheet" href="css/preview.css">
+  <link rel="stylesheet" href="css/print.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <div class="app">
+    <!-- 側邊欄 -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar__brand">
+        <h2 class="sidebar__title">
+          <span class="sidebar__title-line">免費法律文件</span>
+          <span class="sidebar__title-line">簡易版生成器</span>
+        </h2>
+        <p class="sidebar__desc">提供支付命令、本票裁定、離婚協議書等常用法律文件。</p>
+      </div>
+      <nav class="sidebar__nav" id="sidebarNav">
+        <button class="sidebar__item active" data-doc="payment-order">
+          <span class="sidebar__icon">📄</span>
+          <span class="sidebar__label">支付命令聲請狀</span>
+        </button>
+        <button class="sidebar__item" data-doc="promissory-note">
+          <span class="sidebar__icon">📄</span>
+          <span class="sidebar__label">本票裁定聲請狀</span>
+        </button>
+        <button class="sidebar__item" data-doc="divorce">
+          <span class="sidebar__icon">📄</span>
+          <span class="sidebar__label">離婚協議書</span>
+        </button>
+      </nav>
+      <div class="sidebar__notice">
+        <p class="sidebar__notice-title">⚠️ 注意事項</p>
+        <p class="sidebar__notice-text">本系統僅提供法律文件簡易版生成。如案件內容較複雜、涉及訴訟策略、高額爭議、時效或特殊法律問題，建議仍委任專業律師提供法律協助。</p>
+      </div>
+    </aside>
+
+    <!-- 手機版遮罩 -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- 主區域 -->
+    <main class="main">
+      <!-- Header -->
+      <header class="header">
+        <button class="header__menu-btn" id="menuToggle" aria-label="開啟選單">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <div class="header__brand">
+          <h1 class="header__title">免費法律文件生成器（簡易版）</h1>
+          <p class="header__subtitle">支付命令、本票裁定、離婚協議等法律文件快速產生，支援 Word、PDF 下載與列印。</p>
+        </div>
+        <div class="header__actions">
+          <button class="btn btn--outline" type="button">
+            <span class="btn__icon">🖨</span>
+            列印
+          </button>
+          <button class="btn btn--primary" type="button">
+            <span class="btn__icon">📥</span>
+            下載 PDF
+          </button>
+          <button class="btn btn--outline btn--disabled" type="button" disabled title="Coming Soon">
+            <span class="btn__icon">📄</span>
+            下載 Word
+            <span class="btn__tag">Coming Soon</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Wizard 步驟 -->
+      <div class="wizard" id="wizard">
+        <div class="wizard__track">
+          <div class="wizard__step active" data-step="1">
+            <div class="wizard__circle">1</div>
+            <span class="wizard__label">基本資料</span>
+          </div>
+          <div class="wizard__connector"></div>
+          <div class="wizard__step" data-step="2">
+            <div class="wizard__circle">2</div>
+            <span class="wizard__label">文件內容</span>
+          </div>
+          <div class="wizard__connector"></div>
+          <div class="wizard__step" data-step="3">
+            <div class="wizard__circle">3</div>
+            <span class="wizard__label">預覽確認</span>
+          </div>
+          <div class="wizard__connector"></div>
+          <div class="wizard__step" data-step="4">
+            <div class="wizard__circle">4</div>
+            <span class="wizard__label">完成</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 主內容雙欄 -->
+      <div class="content">
+        <section class="content__form" id="formArea"></section>
+
+        <section class="content__preview" id="previewArea">
+          <div class="preview-wrapper">
+            <div class="preview-paper" id="previewPaper">
+              <div class="preview-paper__inner">
+                <p class="preview-paper__placeholder">文件預覽將在此顯示</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script src="templates/payment-order.js"></script>
+  <script src="js/template.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/validator.js"></script>
+  <script src="js/preview.js"></script>
+  <script src="js/forms.js"></script>
+  <script src="js/wizard.js"></script>
+  <script src="js/router.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
