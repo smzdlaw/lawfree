@@ -139,18 +139,18 @@ const PaymentOrderTemplate = {
     const hasDate = Boolean(claim.interestStartDate);
 
     if (hasRate && hasDate) {
-      return `一、相對人應給付聲請人新臺幣${amount}元，及自${this.formatRocDate(claim.interestStartDate)}起至清償日止，按年利率百分之${this.val(String(claim.interestRate), '　　')}計算之利息。`;
+      return `相對人應給付聲請人新臺幣${amount}元，及自${this.formatRocDate(claim.interestStartDate)}起至清償日止，按年利率百分之${this.val(String(claim.interestRate), '　　')}計算之利息。`;
     }
 
     if (hasDate) {
-      return `一、相對人應給付聲請人新臺幣${amount}元，及自${this.formatRocDate(claim.interestStartDate)}起至清償日止之利息。`;
+      return `相對人應給付聲請人新臺幣${amount}元，及自${this.formatRocDate(claim.interestStartDate)}起至清償日止之利息。`;
     }
 
     if (hasRate) {
-      return `一、相對人應給付聲請人新臺幣${amount}元，及按年利率百分之${this.val(String(claim.interestRate), '　　')}計算之利息。`;
+      return `相對人應給付聲請人新臺幣${amount}元，及按年利率百分之${this.val(String(claim.interestRate), '　　')}計算之利息。`;
     }
 
-    return `一、相對人應給付聲請人新臺幣${amount}元。`;
+    return `相對人應給付聲請人新臺幣${amount}元。`;
   },
 
   formatCourt(court) {

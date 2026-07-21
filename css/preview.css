@@ -95,7 +95,7 @@
 
 .doc-preview__line--indent {
   padding-left: 2em;
-  text-indent: 0;
+  text-indent: 2em;
 }
 
 .doc-preview__reason {
