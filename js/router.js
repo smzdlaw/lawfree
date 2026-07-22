@@ -29,22 +29,18 @@ const Router = {
       this.switchDoc(docType);
     });
   },
-
   switchDoc(docType) {
     this.currentDoc = docType;
-
+  
     document.querySelectorAll('.sidebar__item').forEach((el) => {
       el.classList.toggle('active', el.dataset.doc === docType);
     });
-
+  
     if (
       docType === 'payment-order' ||
       docType === 'promissory-note'
     ) {
       Forms.init(docType)
-        .then(() => {
-          Wizard.goTo(Forms.currentStep);
-        })
         .catch((err) => {
           console.error('文件切換失敗：', err);
         });
@@ -52,25 +48,15 @@ const Router = {
       Forms.currentDoc = docType;
       Forms.formConfig = null;
       Forms.currentStep = 1;
-
-      Wizard.goTo(1);
-
+  
       const formArea = document.getElementById('formArea');
-
+  
       if (formArea) {
         formArea.innerHTML = Forms.renderPlaceholder();
       }
-
+  
       Preview.update(docType, {});
     }
-
+  
     this.closeSidebar();
   },
-
-  closeSidebar() {
-    document.getElementById('sidebar')?.classList.remove('open');
-    document.getElementById('sidebarOverlay')?.classList.remove('visible');
-  }
-};
-
-window.Router = Router;
