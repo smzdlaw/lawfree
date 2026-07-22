@@ -75,7 +75,7 @@ const PromissoryNoteTemplate = {
           ${this.renderPartySection('相對人（發票人）', debtor)}
   
           <div class="doc-preview__block">
-  <p class="doc-preview__heading">聲請事項：</p>
+  <p class="doc-preview__heading"> <strong>聲請事項：</strong></p>
 
   <p class="doc-preview__line doc-preview__claim-item">
     一、相對人於民國${issueDate}簽發本票乙紙，票面金額新臺幣${amount}元整。自${interestStartDate}起至清償日止，按週年利率百分之${interestRate}計算之利息，准予強制執行。
@@ -87,7 +87,7 @@ const PromissoryNoteTemplate = {
 </div>
   
           <div class="doc-preview__block">
-            <p class="doc-preview__heading">聲請理由：</p>
+            <p class="doc-preview__heading"> <strong>聲請理由：</strong></p>
   
             <p class="doc-preview__line doc-preview__paragraph">
               相對人簽發上開本票交付聲請人，詎屆期提示未獲付款，爰依票據法第123條規定，聲請鈞院裁定准予強制執行。
