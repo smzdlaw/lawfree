@@ -155,27 +155,30 @@
 }
 
 .doc-preview__date-row {
-  display: flex;
-  align-items: center;
+  display: grid;
   width: 100%;
+  grid-template-columns:
+    auto auto auto auto
+    repeat(5, 1fr)
+    auto;
+  align-items: center;
 }
 
-.doc-preview__date-prefix {
-  margin-right: auto;
+.doc-preview__date-char {
+  text-align: left;
 }
 
 .doc-preview__date-num {
+  justify-self: center;
   width: 48px;
-  text-align: center;
-  display: inline-block;
 }
 
 .doc-preview__date-unit {
-  margin: 0 18px 0 4px;
+  justify-self: center;
 }
 
 .doc-preview__date-unit:last-child {
-  margin-right: 0;
+  justify-self: end;
 }
 .doc-preview__date-prefix {
   flex-shrink: 0;

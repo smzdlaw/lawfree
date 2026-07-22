@@ -65,16 +65,17 @@ const PaymentOrderTemplate = {
     return `
       <div class="doc-preview__date-line">
         <div class="doc-preview__date-row">
-          <span class="doc-preview__date-prefix">中華民國</span>
-          ${this.renderDateNumber(year)}
-          <span class="doc-preview__date-unit">年</span>
-          ${this.renderDateNumber(month)}
-          <span class="doc-preview__date-unit">月</span>
-          ${this.renderDateNumber(day)}
-          <span class="doc-preview__date-unit">日</span>
-        </div>
-      </div>
-    `;
+          <span class="doc-preview__date-char">中</span>
+<span class="doc-preview__date-char">華</span>
+<span class="doc-preview__date-char">民</span>
+<span class="doc-preview__date-char">國</span>
+
+${this.renderDateNumber(year)}
+<span class="doc-preview__date-unit">年</span>
+${this.renderDateNumber(month)}
+<span class="doc-preview__date-unit">月</span>
+${this.renderDateNumber(day)}
+<span class="doc-preview__date-unit">日</span>
   },
 
   formatRocDate(dateStr) {
