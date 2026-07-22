@@ -101,12 +101,20 @@
 .doc-preview__reason {
   .doc-preview__claim {
     display: block;
+    width: 100%;
     margin: 0;
     padding: 0;
-    white-space: pre-wrap;
-    text-align: left;
+  }
+  
+  .doc-preview__claim-item {
+    margin: 0 0 6px;
+    padding-left: 2em;
+    text-indent: -2em;
     line-height: 1.8;
-    text-indent: 0;
+    text-align: justify;
+    text-align-last: left;
+    overflow-wrap: anywhere;
+    word-break: break-word;
   }
   margin: 0;
   

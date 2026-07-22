@@ -135,24 +135,44 @@ const PaymentOrderTemplate = {
 
   renderClaimItem(claim) {
     const amount = this.formatAmount(claim.amount);
-    const hasRate = claim.interestRate !== '' && claim.interestRate != null;
+    const hasRate =
+      claim.interestRate !== '' &&
+      claim.interestRate !== null &&
+      claim.interestRate !== undefined;
+  
     const hasDate = Boolean(claim.interestStartDate);
-
+  
+    let firstItem = '';
+  
     if (hasRate && hasDate) {
-      return `相對人應給付聲請人新臺幣${amount}元，及自${this.formatRocDate(claim.interestStartDate)}起至清償日止，按年利率百分之${this.val(String(claim.interestRate), '　　')}計算之利息。`;
+      firstItem = `相對人應給付聲請人新臺幣${amount}元，及自${this.formatRocDate(
+        claim.interestStartDate
+      )}起至清償日止，按年利率百分之${this.val(
+        String(claim.interestRate),
+        '　　'
+      )}計算之利息。`;
+    } else if (hasDate) {
+      firstItem = `相對人應給付聲請人新臺幣${amount}元，及自${this.formatRocDate(
+        claim.interestStartDate
+      )}起至清償日止之利息。`;
+    } else if (hasRate) {
+      firstItem = `相對人應給付聲請人新臺幣${amount}元，及按年利率百分之${this.val(
+        String(claim.interestRate),
+        '　　'
+      )}計算之利息。`;
+    } else {
+      firstItem = `相對人應給付聲請人新臺幣${amount}元。`;
     }
-
-    if (hasDate) {
-      return `相對人應給付聲請人新臺幣${amount}元，及自${this.formatRocDate(claim.interestStartDate)}起至清償日止之利息。`;
-    }
-
-    if (hasRate) {
-      return `相對人應給付聲請人新臺幣${amount}元，及按年利率百分之${this.val(String(claim.interestRate), '　　')}計算之利息。`;
-    }
-
-    return `相對人應給付聲請人新臺幣${amount}元。`;
+  
+    return `
+      <p class="doc-preview__claim-item">
+        一、${firstItem}
+      </p>
+      <p class="doc-preview__claim-item">
+        二、督促程序費用由相對人負擔。
+      </p>
+    `;
   },
-
   formatCourt(court) {
     if (!court || !String(court).trim()) {
       return '<span class="doc-preview__court-placeholder">＿＿＿＿＿＿地方法院</span>';
@@ -217,7 +237,10 @@ const PaymentOrderTemplate = {
 
        <div class="doc-preview__block">
   <p class="doc-preview__line doc-preview__line--label">聲請事項：</p>
-  <div class="doc-preview__claim">${this.renderClaimItem(claim)}</div>
+
+  <div class="doc-preview__claim">
+    ${this.renderClaimItem(claim)}
+  </div>
 </div>
 
         <div class="doc-preview__block">
