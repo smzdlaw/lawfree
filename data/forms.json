@@ -375,6 +375,26 @@
             "prefix": "agreement",
             "fields": [
               {
+                "name": "hasMinorChildren",
+                "label": "是否有未成年子女",
+                "type": "select",
+                "required": true,
+                "options": [
+                  {
+                    "value": "",
+                    "label": "請選擇"
+                  },
+                  {
+                    "value": "yes",
+                    "label": "有未成年子女"
+                  },
+                  {
+                    "value": "no",
+                    "label": "無未成年子女"
+                  }
+                ]
+              },
+              {
                 "name": "childrenAgreement",
                 "label": "未成年子女約定",
                 "type": "textarea",

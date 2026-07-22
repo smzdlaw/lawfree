@@ -103,9 +103,11 @@ const DivorceTemplate = {
   
             <p class="doc-preview__paragraph">
               ${
-                agreement.childrenAgreement
-                  ? this.escapeHtml(agreement.childrenAgreement)
-                  : '雙方約定如本協議書所載。'
+                agreement.hasMinorChildren === 'no'
+                  ? '雙方確認無未成年子女，故無親權、扶養、探視等相關約定。'
+                  : agreement.childrenAgreement
+                    ? this.escapeHtml(agreement.childrenAgreement)
+                    : '請填寫未成年子女約定內容。'
               }
             </p>
           </div>
