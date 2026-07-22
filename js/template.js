@@ -104,5 +104,12 @@ const LegalDocumentLayout = {
           </p>
         </div>
       </div>
-    `;
+    `    `;
   }
+};
+
+window.CaseTypePresets = CaseTypePresets;
+window.CASE_TYPE_OPTIONS = CASE_TYPE_OPTIONS;
+window.ATTACHMENT_OPTIONS = ATTACHMENT_OPTIONS;
+window.CN_NUMERALS = CN_NUMERALS;
+window.LegalDocumentLayout = LegalDocumentLayout;
