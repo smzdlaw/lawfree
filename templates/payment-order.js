@@ -51,31 +51,28 @@ const PaymentOrderTemplate = {
     };
   },
 
-  renderDateNumber(value) {
-    if (value) {
-      return `<span class="doc-preview__date-num">${this.escapeHtml(value)}</span>`;
-    }
-
-    return '<span class="doc-preview__date-num doc-preview__date-num--empty" aria-hidden="true"></span>';
-  },
-
   renderDocumentDate(dateStr) {
     const { year, month, day } = this.getRocDateParts(dateStr);
-
-    return `
-      <div class="doc-preview__date-line">
-        <div class="doc-preview__date-row">
-          <span class="doc-preview__date-char">中</span>
-<span class="doc-preview__date-char">華</span>
-<span class="doc-preview__date-char">民</span>
-<span class="doc-preview__date-char">國</span>
-
-${this.renderDateNumber(year)}
-<span class="doc-preview__date-unit">年</span>
-${this.renderDateNumber(month)}
-<span class="doc-preview__date-unit">月</span>
-${this.renderDateNumber(day)}
-<span class="doc-preview__date-unit">日</span>
+  
+    return (
+      '<div class="doc-preview__date-line">' +
+        '<div class="doc-preview__date-row">' +
+          '<span class="doc-preview__date-char">中</span>' +
+          '<span class="doc-preview__date-char">華</span>' +
+          '<span class="doc-preview__date-char">民</span>' +
+          '<span class="doc-preview__date-char">國</span>' +
+  
+          this.renderDateNumber(year) +
+          '<span class="doc-preview__date-unit">年</span>' +
+  
+          this.renderDateNumber(month) +
+          '<span class="doc-preview__date-unit">月</span>' +
+  
+          this.renderDateNumber(day) +
+          '<span class="doc-preview__date-unit">日</span>' +
+        '</div>' +
+      '</div>'
+    );
   },
 
   formatRocDate(dateStr) {
