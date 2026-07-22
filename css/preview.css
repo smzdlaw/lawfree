@@ -155,31 +155,27 @@
 }
 
 .doc-preview__date-row {
-  display: grid;
-  grid-template-columns: auto 50px auto 50px auto 50px auto;
-  justify-content: center;
-  column-gap: 18px;
+  display: flex;
   align-items: center;
+  width: 100%;
 }
 
-.doc-preview__date-prefix{
-  min-width:110px;
+.doc-preview__date-prefix {
+  margin-right: auto;
 }
 
-.doc-preview__date-part{
-  display:flex;
-  align-items:center;
-  gap:6px;
+.doc-preview__date-num {
+  width: 48px;
+  text-align: center;
+  display: inline-block;
 }
 
-.doc-preview__date-num{
-  display:inline-block;
-  width:48px;
-  text-align:center;
+.doc-preview__date-unit {
+  margin: 0 18px 0 4px;
 }
 
-.doc-preview__date-unit{
-  margin-right:16px;
+.doc-preview__date-unit:last-child {
+  margin-right: 0;
 }
 .doc-preview__date-prefix {
   flex-shrink: 0;
