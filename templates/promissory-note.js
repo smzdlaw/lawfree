@@ -111,4 +111,5 @@ const PromissoryNoteTemplate = {
         </div>
       </div>
     `;
-     
+  }
+};
