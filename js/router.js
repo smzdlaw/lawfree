@@ -35,7 +35,11 @@ const Router = {
     });
 
     try {
-      if (docType === 'payment-order' || docType === 'promissory-note') {
+      if (
+        docType === 'payment-order' ||
+        docType === 'promissory-note' ||
+        docType === 'divorce'
+      ) {
         await Forms.init(docType);
       } else {
         Forms.currentDoc = docType;
