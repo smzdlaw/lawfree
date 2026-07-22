@@ -16,47 +16,48 @@ const Router = {
 
   bindSidebar() {
     const nav = document.getElementById('sidebarNav');
-
     if (!nav) return;
 
     nav.addEventListener('click', (e) => {
       const item = e.target.closest('.sidebar__item');
-
       if (!item) return;
 
       const docType = item.dataset.doc;
-
       this.switchDoc(docType);
     });
   },
-  switchDoc(docType) {
+
+  async switchDoc(docType) {
     this.currentDoc = docType;
-  
+
     document.querySelectorAll('.sidebar__item').forEach((el) => {
       el.classList.toggle('active', el.dataset.doc === docType);
     });
-  
-    if (
-      docType === 'payment-order' ||
-      docType === 'promissory-note'
-    ) {
-      Forms.init(docType)
-        .catch((err) => {
-          console.error('文件切換失敗：', err);
-        });
-    } else {
-      Forms.currentDoc = docType;
-      Forms.formConfig = null;
-      Forms.currentStep = 1;
-  
-      const formArea = document.getElementById('formArea');
-  
-      if (formArea) {
-        formArea.innerHTML = Forms.renderPlaceholder();
+
+    try {
+      if (docType === 'payment-order' || docType === 'promissory-note') {
+        await Forms.init(docType);
+      } else {
+        Forms.currentDoc = docType;
+        Forms.formConfig = null;
+        Forms.currentStep = 1;
+
+        const formArea = document.getElementById('formArea');
+        if (formArea) formArea.innerHTML = Forms.renderPlaceholder();
+
+        Preview.update(docType, {});
       }
-  
-      Preview.update(docType, {});
+    } catch (err) {
+      console.error('文件切換失敗：', err);
     }
-  
+
     this.closeSidebar();
   },
+
+  closeSidebar() {
+    document.getElementById('sidebar')?.classList.remove('open');
+    document.getElementById('sidebarOverlay')?.classList.remove('visible');
+  }
+};
+
+window.Router = Router;

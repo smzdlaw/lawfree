@@ -99,35 +99,33 @@
 }
 
 .doc-preview__reason {
-  .doc-preview__claim {
-    display: block;
-    width: 100%;
-    margin: 0;
-    padding: 0;
-  }
-  
-  .doc-preview__claim-item {
-    margin: 0 0 6px;
-    padding-left: 2em;
-    text-indent: -2em;
-    line-height: 1.8;
-    text-align: justify;
-    text-align-last: left;
-    overflow-wrap: anywhere;
-    word-break: break-word;
-  }
   margin: 0;
-  
   white-space: pre-wrap;
   overflow-wrap: anywhere;
   word-break: break-word;
-
   text-align: justify;
   text-indent: 2em;
   line-height: 1.8;
 }
 
+.doc-preview__claim {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
 
+.doc-preview__claim-item {
+  margin: 0 0 6px;
+  padding-left: 2.5em;
+  text-indent: -2.5em;
+  line-height: 1.8;
+  text-align: justify;
+  text-align-last: left;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
 
 .doc-preview__footer {
   margin-top: 24px;
@@ -231,7 +229,6 @@ body.pdf-export .doc-preview__signer-tip {
   padding-top: 10px;
   border-top: 1px solid #ddd;
 }
-
 /* ===== PDF 匯出分頁（html2pdf pagebreak css mode）===== */
 .doc-preview__line,
 .doc-preview__title,
