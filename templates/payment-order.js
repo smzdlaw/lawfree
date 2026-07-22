@@ -217,7 +217,7 @@ const PaymentOrderTemplate = {
 
         <div class="doc-preview__block">
           <p class="doc-preview__line doc-preview__line--label">聲請事項：</p>
-          <p class="doc-preview__line doc-preview__line--indent">${this.renderClaimItem(claim)}</p>
+         <p class="doc-preview__line" style="text-align:left;">${this.renderClaimItem(claim)}</p>
         </div>
 
         <div class="doc-preview__block">
