@@ -156,7 +156,7 @@
                 "label": "利率（%）",
                 "type": "number",
                 "required": false,
-                "placeholder": "例如：5"
+                "placeholder": "例如：若無特別約定，可填寫5%"
               },
               {
                 "name": "interestStartDate",
@@ -379,21 +379,21 @@
                 "label": "未成年子女約定",
                 "type": "textarea",
                 "required": false,
-                "placeholder": "例如：雙方無未成年子女。"
+                "placeholder": "例如：若有子女可填寫子女姓名、生日及身分證字號。若無子女，可填寫雙方無未成年子女，或未成年子女已成年，無須扶養義務。"
               },
               {
                 "name": "supportAgreement",
                 "label": "扶養費約定",
                 "type": "textarea",
                 "required": false,
-                "placeholder": "例如：雙方無扶養費之約定。"
+                "placeholder": "例如：若有扶養費，可填寫扶養費金額及扶養費給付方式。若無扶養費，可填寫雙方無扶養費之約定。"
               },
               {
                 "name": "propertyAgreement",
                 "label": "夫妻財產約定",
                 "type": "textarea",
                 "required": false,
-                "placeholder": "例如：雙方財產各自所有，互不請求。"
+                "placeholder": "例如：若有財產，可填寫雙方財產各自所有，互不請求。若無財產，可填寫雙方無財產之約定。或填寫財產分配方式"
               },
               {
                 "name": "otherAgreement",
