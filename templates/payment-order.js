@@ -215,10 +215,10 @@ const PaymentOrderTemplate = {
         ${this.renderPartySection('聲請人（即債權人）', creditor)}
         ${this.renderPartySection('相對人（即債務人）', debtor)}
 
-        <div class="doc-preview__block">
-          <p class="doc-preview__line doc-preview__line--label">聲請事項：</p>
-         <p class="doc-preview__line" style="text-align:left;">${this.renderClaimItem(claim)}</p>
-        </div>
+       <div class="doc-preview__block">
+  <p class="doc-preview__line doc-preview__line--label">聲請事項：</p>
+  <div class="doc-preview__claim">${this.renderClaimItem(claim)}</div>
+</div>
 
         <div class="doc-preview__block">
           <p class="doc-preview__line doc-preview__line--label">聲請理由：</p>

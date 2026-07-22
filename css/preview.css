@@ -94,28 +94,32 @@
 }
 
 .doc-preview__line--indent {
-  padding-left: 2em;
-  text-indent: 2em;
+  padding: 0;
+  text-indent: 0;
 }
 
 .doc-preview__reason {
-  display: block;
-  width: 100%;
-  box-sizing: border-box;
+  .doc-preview__claim {
+    display: block;
+    margin: 0;
+    padding: 0;
+    white-space: pre-wrap;
+    text-align: left;
+    line-height: 1.8;
+    text-indent: 0;
+  }
   margin: 0;
-  padding-left: 2em;
-
-  font-family: inherit;
-  font-size: inherit;
-  line-height: 1.8;
-
+  
   white-space: pre-wrap;
   overflow-wrap: anywhere;
   word-break: break-word;
 
   text-align: justify;
-  text-align-last: left;
+  text-indent: 2em;
+  line-height: 1.8;
 }
+
+
 
 .doc-preview__footer {
   margin-top: 24px;
