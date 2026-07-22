@@ -370,48 +370,70 @@
               }
             ]
           },
-          {
-            "title": "協議內容",
-            "prefix": "agreement",
-            "fields": [
-              {
-                "name": "childrenAgreement",
-                "label": "未成年子女約定",
-                "type": "textarea",
-                "required": false,
-                "placeholder": "例如：若有子女可填寫子女姓名、生日及身分證字號。若無子女，可填寫雙方無未成年子女，或未成年子女已成年，無須扶養義務。"
-              },
-              {
-                "name": "supportAgreement",
-                "label": "扶養費約定",
-                "type": "textarea",
-                "required": false,
-                "placeholder": "例如：若有扶養費，可填寫扶養費金額及扶養費給付方式。若無扶養費，可填寫雙方無扶養費之約定。"
-              },
-              {
-                "name": "propertyAgreement",
-                "label": "夫妻財產約定",
-                "type": "textarea",
-                "required": false,
-                "placeholder": "例如：若有財產，可填寫雙方財產各自所有，互不請求。若無財產，可填寫雙方無財產之約定。或填寫財產分配方式"
-              },
-              {
-                "name": "otherAgreement",
-                "label": "其他約定",
-                "type": "textarea",
-                "required": false,
-                "placeholder": "請輸入其他約定事項。"
-              },
-              {
-                "name": "documentDate",
-                "label": "協議日期",
-                "type": "date",
-                "required": false
-              }
-            ]
-          }
-        ]
+          "fields": [
+  {
+    "name": "childrenAgreement",
+    "label": "未成年子女約定",
+    "type": "textarea",
+    "required": false,
+    "placeholder": "例如：雙方育有未成年子女王小明（110年1月1日生），由女方任主要照顧者，男方同意共同負擔扶養義務。若無未成年子女，可填寫：雙方無未成年子女。"
+  },
+  {
+    "name": "supportAgreement",
+    "label": "扶養費及探視約定",
+    "type": "textarea",
+    "required": false,
+    "placeholder": "例如：男方每月5日前支付扶養費新臺幣15,000元至子女成年。男方每月第一、三週週六上午10時至週日下午6時得探視子女。"
+  },
+  {
+    "name": "propertyChoice",
+    "label": "夫妻財產及剩餘財產分配方式",
+    "type": "select",
+    "required": true,
+    "options": [
+      {
+        "value": "",
+        "label": "請選擇財產約定"
+      },
+      {
+        "value": "mutual-waiver",
+        "label": "雙方互不請求剩餘財產分配"
+      },
+      {
+        "value": "completed",
+        "label": "雙方已自行分配完成"
+      },
+      {
+        "value": "custom",
+        "label": "自行輸入財產分配方式"
       }
     ]
+  },
+  {
+    "name": "propertyAgreement",
+    "label": "自行約定財產分配內容",
+    "type": "textarea",
+    "required": false,
+    "placeholder": "選擇「自行輸入」時，請填寫房屋、汽車、存款、保險、股票或其他財產的分配方式。"
+  },
+  {
+    "name": "debtAgreement",
+    "label": "債務約定",
+    "type": "textarea",
+    "required": false,
+    "placeholder": "例如：雙方婚姻存續期間各自所負債務由各自負擔，他方不負連帶清償責任。"
+  },
+  {
+    "name": "otherAgreement",
+    "label": "其他約定",
+    "type": "textarea",
+    "required": false,
+    "placeholder": "例如：雙方互不請求精神慰撫金、互不干涉生活、其他特別約定事項。"
+  },
+  {
+    "name": "documentDate",
+    "label": "立協議書日期",
+    "type": "date",
+    "required": false
   }
-}
+]
