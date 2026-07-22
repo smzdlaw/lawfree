@@ -27,26 +27,16 @@ const Router = {
     });
   },
 
-  switchDoc(docType) {
+  async switchDoc(docType) {
     this.currentDoc = docType;
 
     document.querySelectorAll('.sidebar__item').forEach((el) => {
       el.classList.toggle('active', el.dataset.doc === docType);
     });
 
-    if (docType === 'payment-order') {
-      Forms.init(docType).then(() => {
-        Wizard.goTo(Forms.currentStep);
-      });
-    } else {
-      Forms.currentDoc = docType;
-      Forms.formConfig = null;
-      Forms.currentStep = 1;
-      Wizard.goTo(1);
-      const formArea = document.getElementById('formArea');
-      if (formArea) formArea.innerHTML = Forms.renderPlaceholder();
-      Preview.update(docType, {});
-    }
+    await Forms.init(docType);
+
+    Wizard.goTo(Forms.currentStep);
 
     this.closeSidebar();
   },
@@ -56,3 +46,5 @@ const Router = {
     document.getElementById('sidebarOverlay')?.classList.remove('visible');
   }
 };
+
+window.Router = Router;
