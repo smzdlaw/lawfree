@@ -87,24 +87,22 @@ const LegalDocumentLayout = {
       .replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;');
   },
-
   renderSigner(name, fallback = '　　　　') {
     const display = name && String(name).trim()
       ? this.escapeHtml(String(name).trim())
       : fallback;
-
-      return `
+  
+    return `
       <div class="doc-preview__signer-row">
         <div>
           <p class="doc-preview__line doc-preview__signer">
-            具狀人　${name}
+            具狀人　${display}
           </p>
-      
+  
           <p class="doc-preview__signer-tip">
             ⚠ 提醒您：列印後請於具狀人欄位親自簽名。
           </p>
         </div>
       </div>
-      `;
+    `;
   }
-};

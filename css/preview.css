@@ -169,6 +169,10 @@
   color: #d32f2f;
   font-family: "Microsoft JhengHei", sans-serif;
 }
+
+body.pdf-export .doc-preview__signer-tip {
+  display: none !important;
+}
 .doc-preview__date-char {
   text-align: left;
 }
@@ -236,7 +240,4 @@
 .doc-preview__footer {
   page-break-inside: avoid;
   break-inside: avoid;
-}
-body.pdf-export .doc-preview__signer-tip {
-  display: none !important;
 }
