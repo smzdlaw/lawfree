@@ -399,7 +399,7 @@
                 "label": "未成年子女約定",
                 "type": "textarea",
                 "required": false,
-                "placeholder": "例如：若有子女可填寫子女姓名、生日及身分證字號。若無子女，可填寫雙方無未成年子女，或未成年子女已成年，無須扶養義務。"
+                "placeholder": "例如：若有未成年子女可填寫子女姓名、生日及身分證字號。如無子女，此欄可不填。"
               },
               {
                 "name": "supportAgreement",
