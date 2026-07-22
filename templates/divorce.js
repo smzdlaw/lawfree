@@ -128,18 +128,14 @@ const DivorceTemplate = {
             <p class="doc-preview__heading">
               第四條　夫妻剩餘財產
             </p>
-  <p class="doc-preview__paragraph">
-  ${
-    agreement.propertyChoice === 'mutual-waiver'
-      ? '雙方同意婚姻關係存續期間各自取得之財產均歸各自所有，並互相拋棄依民法第一千零三十條之一規定所得主張之夫妻剩餘財產分配請求權，日後均不得再向他方主張。'
-      : agreement.propertyChoice === 'completed'
-        ? '雙方確認婚姻關係存續期間之財產均已自行分配完畢，對於財產歸屬及夫妻剩餘財產分配均無爭議，日後不得再向他方主張。'
-        : agreement.propertyChoice === 'custom' &&
-          agreement.propertyAgreement
-          ? this.escapeHtml(agreement.propertyAgreement)
-          : '雙方尚未選擇夫妻財產及剩餘財產分配方式。'
-  }
-</p>
+  
+            <p class="doc-preview__paragraph">
+              ${
+                agreement.propertyAgreement
+                  ? this.escapeHtml(agreement.propertyAgreement)
+                  : '雙方就夫妻剩餘財產及其他財產權利義務均已協議完畢，日後不得再向他方主張。'
+              }
+            </p>
           </div>
   
           <div class="doc-preview__block">
