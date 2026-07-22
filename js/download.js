@@ -47,97 +47,70 @@ const Download = {
 
   async downloadPdf() {
 
-      if (typeof html2pdf === "undefined") {
+    if (typeof html2pdf === "undefined") {
+        alert("html2pdf 尚未載入");
+        return;
+    }
 
-          alert("html2pdf 尚未載入");
+    const element = this.getPreviewElement();
 
-          return;
+    if (!element) {
+        alert("找不到預覽內容");
+        return;
+    }
 
-      }
+    const docType =
+        (typeof Router !== "undefined" && Router.currentDoc)
+            ? Router.currentDoc
+            : "payment-order";
 
-      const element = this.getPreviewElement();
+    const filename = this.getFilename(docType);
 
-      if (!element) {
+    const button = document.getElementById("downloadPdfBtn");
 
-          alert("找不到預覽內容");
+    if (button) {
+        button.disabled = true;
+    }
 
-          return;
+    document.body.classList.add("pdf-export");
 
-      }
+    try {
 
-      const docType =
-          (typeof Router !== "undefined" && Router.currentDoc)
-              ? Router.currentDoc
-              : "payment-order";
+        await new Promise(resolve => {
+            requestAnimationFrame(() => {
+                requestAnimationFrame(resolve);
+            });
+        });
 
-      const filename = this.getFilename(docType);
+        const opt = {
+            margin: 10,
+            filename,
 
-      const button = document.getElementById("downloadPdfBtn");
+            image: {
+                type: "jpeg",
+                quality: 1
+            },
 
-      if (button) {
+            html2canvas: {
+                scale: 2,
+                useCORS: true,
+                allowTaint: true,
+                backgroundColor: "#ffffff",
+                logging: false,
+                scrollX: 0,
+                scrollY: 0
+            },
 
-          button.disabled = true;
+            jsPDF: {
+                unit: "mm",
+                format: "a4",
+                orientation: "portrait"
+            },
 
-      }
-
-      await new Promise(resolve => {
-
-          requestAnimationFrame(() => {
-
-              requestAnimationFrame(resolve);
-
-          });
-
-      });
-
-      const opt = {
-
-          margin: 10,
-
-          filename,
-
-          image: {
-              type: "jpeg",
-              quality: 1
-          },
-
-          html2canvas: {
-
-              scale: 2,
-
-              useCORS: true,
-
-              allowTaint: true,
-
-              backgroundColor: "#ffffff",
-
-              logging: false,
-
-              scrollX: 0,
-
-              scrollY: 0
-          },
-
-          jsPDF: {
-
-              unit: "mm",
-
-              format: "a4",
-
-              orientation: "portrait"
-
-          },
-
-          pagebreak: {
-
-              mode: [
-                  "css",
-                  "legacy"
-              ]
-
-          }
-
-      };        try {
+            pagebreak: {
+                mode: ["css", "legacy"]
+            }
+        };
 
         await html2pdf()
             .from(element)
@@ -147,15 +120,14 @@ const Download = {
     } catch (err) {
 
         console.error(err);
-
         alert("PDF 下載失敗");
 
     } finally {
 
+        document.body.classList.remove("pdf-export");
+
         if (button) {
-
             button.disabled = false;
-
         }
 
     }
