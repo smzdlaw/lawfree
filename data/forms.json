@@ -10,22 +10,82 @@
             "title": "債權人",
             "prefix": "creditor",
             "fields": [
-              { "name": "name", "label": "姓名", "type": "text", "required": true, "placeholder": "例如：王小明" },
-              { "name": "idNumber", "label": "身分證字號", "type": "text", "required": false, "placeholder": "例如：A123456789" },
-              { "name": "birthDate", "label": "出生年月日", "type": "date", "required": false, "placeholder": "例如：1980-01-01" },
-              { "name": "phone", "label": "電話", "type": "tel", "required": true, "placeholder": "例如：0912-345-678" },
-              { "name": "address", "label": "地址", "type": "text", "required": true, "placeholder": "例如：臺中市西區XX路XX號" }
+              {
+                "name": "name",
+                "label": "姓名",
+                "type": "text",
+                "required": true,
+                "placeholder": "例如：王小明"
+              },
+              {
+                "name": "idNumber",
+                "label": "身分證字號",
+                "type": "text",
+                "required": false,
+                "placeholder": "例如：A123456789"
+              },
+              {
+                "name": "birthDate",
+                "label": "出生年月日",
+                "type": "date",
+                "required": false,
+                "placeholder": "例如：1980-01-01"
+              },
+              {
+                "name": "phone",
+                "label": "電話",
+                "type": "tel",
+                "required": true,
+                "placeholder": "例如：0912-345-678"
+              },
+              {
+                "name": "address",
+                "label": "地址",
+                "type": "text",
+                "required": true,
+                "placeholder": "例如：臺中市西區XX路XX號"
+              }
             ]
           },
           {
             "title": "債務人",
             "prefix": "debtor",
             "fields": [
-              { "name": "name", "label": "姓名", "type": "text", "required": true, "placeholder": "例如：陳大明" },
-              { "name": "idNumber", "label": "身分證字號", "type": "text", "required": false, "placeholder": "例如：B223456789" },
-              { "name": "birthDate", "label": "出生年月日", "type": "date", "required": false, "placeholder": "例如：1985-06-15" },
-              { "name": "phone", "label": "電話", "type": "tel", "required": false, "placeholder": "例如：0922-123-456" },
-              { "name": "address", "label": "地址", "type": "text", "required": false, "placeholder": "例如：臺中市西區XX路XX號" }
+              {
+                "name": "name",
+                "label": "姓名",
+                "type": "text",
+                "required": true,
+                "placeholder": "例如：陳大明"
+              },
+              {
+                "name": "idNumber",
+                "label": "身分證字號",
+                "type": "text",
+                "required": false,
+                "placeholder": "例如：B223456789"
+              },
+              {
+                "name": "birthDate",
+                "label": "出生年月日",
+                "type": "date",
+                "required": false,
+                "placeholder": "例如：1985-06-15"
+              },
+              {
+                "name": "phone",
+                "label": "電話",
+                "type": "tel",
+                "required": false,
+                "placeholder": "例如：0922-123-456"
+              },
+              {
+                "name": "address",
+                "label": "地址",
+                "type": "text",
+                "required": false,
+                "placeholder": "例如：臺中市西區XX路XX號"
+              }
             ]
           },
           {
@@ -38,23 +98,80 @@
                 "type": "select",
                 "required": true,
                 "options": [
-                  { "value": "", "label": "請選擇案件類型" },
-                  { "value": "借款", "label": "借款" },
-                  { "value": "買賣貨款", "label": "買賣貨款" },
-                  { "value": "租金", "label": "租金" },
-                  { "value": "工程款", "label": "工程款" },
-                  { "value": "薪資", "label": "薪資" },
-                  { "value": "和解金", "label": "和解金" },
-                  { "value": "損害賠償", "label": "損害賠償" },
-                  { "value": "服務費", "label": "服務費" },
-                  { "value": "承攬報酬", "label": "承攬報酬" },
-                  { "value": "其他", "label": "其他（自行輸入）" }
+                  {
+                    "value": "",
+                    "label": "請選擇案件類型"
+                  },
+                  {
+                    "value": "借款",
+                    "label": "借款"
+                  },
+                  {
+                    "value": "買賣貨款",
+                    "label": "買賣貨款"
+                  },
+                  {
+                    "value": "租金",
+                    "label": "租金"
+                  },
+                  {
+                    "value": "工程款",
+                    "label": "工程款"
+                  },
+                  {
+                    "value": "薪資",
+                    "label": "薪資"
+                  },
+                  {
+                    "value": "和解金",
+                    "label": "和解金"
+                  },
+                  {
+                    "value": "損害賠償",
+                    "label": "損害賠償"
+                  },
+                  {
+                    "value": "服務費",
+                    "label": "服務費"
+                  },
+                  {
+                    "value": "承攬報酬",
+                    "label": "承攬報酬"
+                  },
+                  {
+                    "value": "其他",
+                    "label": "其他（自行輸入）"
+                  }
                 ]
               },
-              { "name": "amount", "label": "請求金額", "type": "number", "required": true, "placeholder": "例如：100000" },
-              { "name": "interestRate", "label": "利率（%）", "type": "number", "required": false, "placeholder": "例如：5" },
-              { "name": "interestStartDate", "label": "利息起算日", "type": "date", "required": true, "placeholder": "例如：2024-01-01" },
-              { "name": "reason", "label": "聲請理由", "type": "textarea", "required": true, "placeholder": "依案件類型自動帶入正式範本。" },
+              {
+                "name": "amount",
+                "label": "請求金額",
+                "type": "number",
+                "required": true,
+                "placeholder": "例如：100000"
+              },
+              {
+                "name": "interestRate",
+                "label": "利率（%）",
+                "type": "number",
+                "required": false,
+                "placeholder": "例如：5"
+              },
+              {
+                "name": "interestStartDate",
+                "label": "利息起算日",
+                "type": "date",
+                "required": true,
+                "placeholder": "例如：2024-01-01"
+              },
+              {
+                "name": "reason",
+                "label": "聲請理由",
+                "type": "textarea",
+                "required": true,
+                "placeholder": "依案件類型自動帶入正式範本。"
+              },
               {
                 "name": "court",
                 "label": "法院",
@@ -68,7 +185,6 @@
       }
     ]
   },
-
   "promissory-note": {
     "title": "本票裁定聲請狀",
     "steps": [
@@ -80,140 +196,222 @@
             "title": "聲請人（執票人）",
             "prefix": "creditor",
             "fields": [
-              { "name": "name", "label": "姓名", "type": "text", "required": true, "placeholder": "例如：王小明" },
-              { "name": "idNumber", "label": "身分證字號", "type": "text", "required": false, "placeholder": "例如：A123456789" },
-              { "name": "phone", "label": "電話", "type": "tel", "required": true, "placeholder": "例如：0912-345-678" },
-              { "name": "address", "label": "地址", "type": "text", "required": true, "placeholder": "例如：臺中市西區XX路XX號" }
+              {
+                "name": "name",
+                "label": "姓名",
+                "type": "text",
+                "required": true,
+                "placeholder": "例如：王小明"
+              },
+              {
+                "name": "idNumber",
+                "label": "身分證字號",
+                "type": "text",
+                "required": false,
+                "placeholder": "例如：A123456789"
+              },
+              {
+                "name": "phone",
+                "label": "電話",
+                "type": "tel",
+                "required": true,
+                "placeholder": "例如：0912-345-678"
+              },
+              {
+                "name": "address",
+                "label": "地址",
+                "type": "text",
+                "required": true,
+                "placeholder": "例如：臺中市西區XX路XX號"
+              }
             ]
           },
           {
             "title": "相對人（發票人）",
             "prefix": "debtor",
             "fields": [
-              { "name": "name", "label": "姓名", "type": "text", "required": true, "placeholder": "例如：陳大明" },
-              { "name": "idNumber", "label": "身分證字號", "type": "text", "required": false, "placeholder": "例如：B223456789" },
-              { "name": "phone", "label": "電話", "type": "tel", "required": false, "placeholder": "例如：0922-123-456" },
-              { "name": "address", "label": "地址", "type": "text", "required": true, "placeholder": "例如：臺中市西區XX路XX號" }
+              {
+                "name": "name",
+                "label": "姓名",
+                "type": "text",
+                "required": true,
+                "placeholder": "例如：陳大明"
+              },
+              {
+                "name": "idNumber",
+                "label": "身分證字號",
+                "type": "text",
+                "required": false,
+                "placeholder": "例如：B223456789"
+              },
+              {
+                "name": "phone",
+                "label": "電話",
+                "type": "tel",
+                "required": false,
+                "placeholder": "例如：0922-123-456"
+              },
+              {
+                "name": "address",
+                "label": "地址",
+                "type": "text",
+                "required": true,
+                "placeholder": "例如：臺中市西區XX路XX號"
+              }
             ]
           },
           {
             "title": "本票資料",
             "prefix": "claim",
             "fields": [
-              { "name": "amount", "label": "本票金額", "type": "number", "required": true, "placeholder": "例如：100000" },
-              { "name": "issueDate", "label": "發票日期", "type": "date", "required": true },
-              { "name": "dueDate", "label": "到期日", "type": "date", "required": false },
-              { "name": "interestRate", "label": "利息（週年利率 %）", "type": "number", "required": true, "placeholder": "若無特別約定則可填寫6%" },
-              { "name": "interestStartDate", "label": "利息起算日", "type": "date", "required": true },
-              { "name": "court", "label": "法院", "type": "text", "required": true, "placeholder": "例如：臺灣臺中地方法院" }
+              {
+                "name": "amount",
+                "label": "本票金額",
+                "type": "number",
+                "required": true,
+                "placeholder": "例如：100000"
+              },
+              {
+                "name": "issueDate",
+                "label": "發票日期",
+                "type": "date",
+                "required": true
+              },
+              {
+                "name": "dueDate",
+                "label": "到期日",
+                "type": "date",
+                "required": false
+              },
+              {
+                "name": "interestRate",
+                "label": "利息（週年利率 %）",
+                "type": "number",
+                "required": true,
+                "placeholder": "若無特別約定則可填寫6%"
+              },
+              {
+                "name": "interestStartDate",
+                "label": "利息起算日",
+                "type": "date",
+                "required": true
+              },
+              {
+                "name": "court",
+                "label": "法院",
+                "type": "text",
+                "required": true,
+                "placeholder": "例如：臺灣臺中地方法院"
+              }
             ]
           }
         ]
       }
-    ]"divorce": {
-  "title": "離婚協議書",
-  "steps": [
-    {
-      "id": 1,
-      "label": "填寫資料",
-      "sections": [
-        {
-          "title": "男方資料",
-          "prefix": "husband",
-          "fields": [
-            {
-              "name": "name",
-              "label": "姓名",
-              "type": "text",
-              "required": true,
-              "placeholder": "例如：王小明"
-            },
-            {
-              "name": "idNumber",
-              "label": "身分證字號",
-              "type": "text",
-              "required": false,
-              "placeholder": "例如：A123456789"
-            },
-            {
-              "name": "address",
-              "label": "地址",
-              "type": "text",
-              "required": false,
-              "placeholder": "例如：臺中市西區○○路○○號"
-            }
-          ]
-        },
-        {
-          "title": "女方資料",
-          "prefix": "wife",
-          "fields": [
-            {
-              "name": "name",
-              "label": "姓名",
-              "type": "text",
-              "required": true,
-              "placeholder": "例如：陳小美"
-            },
-            {
-              "name": "idNumber",
-              "label": "身分證字號",
-              "type": "text",
-              "required": false,
-              "placeholder": "例如：B223456789"
-            },
-            {
-              "name": "address",
-              "label": "地址",
-              "type": "text",
-              "required": false,
-              "placeholder": "例如：臺中市西區○○路○○號"
-            }
-          ]
-        },
-        {
-          "title": "協議內容",
-          "prefix": "agreement",
-          "fields": [
-            {
-              "name": "childrenAgreement",
-              "label": "未成年子女約定",
-              "type": "textarea",
-              "required": false,
-              "placeholder": "例如：雙方無未成年子女。"
-            },
-            {
-              "name": "supportAgreement",
-              "label": "扶養費約定",
-              "type": "textarea",
-              "required": false,
-              "placeholder": "例如：雙方無扶養費之約定。"
-            },
-            {
-              "name": "propertyAgreement",
-              "label": "夫妻財產約定",
-              "type": "textarea",
-              "required": false,
-              "placeholder": "例如：雙方財產各自所有，互不請求。"
-            },
-            {
-              "name": "otherAgreement",
-              "label": "其他約定",
-              "type": "textarea",
-              "required": false,
-              "placeholder": "請輸入其他約定事項。"
-            },
-            {
-              "name": "documentDate",
-              "label": "協議日期",
-              "type": "date",
-              "required": false
-            }
-          ]
-        }
-      ]
-    }
-  ]
-}
+    ]
+  },
+  "divorce": {
+    "title": "離婚協議書",
+    "steps": [
+      {
+        "id": 1,
+        "label": "填寫資料",
+        "sections": [
+          {
+            "title": "男方資料",
+            "prefix": "husband",
+            "fields": [
+              {
+                "name": "name",
+                "label": "姓名",
+                "type": "text",
+                "required": true,
+                "placeholder": "例如：王小明"
+              },
+              {
+                "name": "idNumber",
+                "label": "身分證字號",
+                "type": "text",
+                "required": false,
+                "placeholder": "例如：A123456789"
+              },
+              {
+                "name": "address",
+                "label": "地址",
+                "type": "text",
+                "required": false,
+                "placeholder": "例如：臺中市西區○○路○○號"
+              }
+            ]
+          },
+          {
+            "title": "女方資料",
+            "prefix": "wife",
+            "fields": [
+              {
+                "name": "name",
+                "label": "姓名",
+                "type": "text",
+                "required": true,
+                "placeholder": "例如：陳小美"
+              },
+              {
+                "name": "idNumber",
+                "label": "身分證字號",
+                "type": "text",
+                "required": false,
+                "placeholder": "例如：B223456789"
+              },
+              {
+                "name": "address",
+                "label": "地址",
+                "type": "text",
+                "required": false,
+                "placeholder": "例如：臺中市西區○○路○○號"
+              }
+            ]
+          },
+          {
+            "title": "協議內容",
+            "prefix": "agreement",
+            "fields": [
+              {
+                "name": "childrenAgreement",
+                "label": "未成年子女約定",
+                "type": "textarea",
+                "required": false,
+                "placeholder": "例如：雙方無未成年子女。"
+              },
+              {
+                "name": "supportAgreement",
+                "label": "扶養費約定",
+                "type": "textarea",
+                "required": false,
+                "placeholder": "例如：雙方無扶養費之約定。"
+              },
+              {
+                "name": "propertyAgreement",
+                "label": "夫妻財產約定",
+                "type": "textarea",
+                "required": false,
+                "placeholder": "例如：雙方財產各自所有，互不請求。"
+              },
+              {
+                "name": "otherAgreement",
+                "label": "其他約定",
+                "type": "textarea",
+                "required": false,
+                "placeholder": "請輸入其他約定事項。"
+              },
+              {
+                "name": "documentDate",
+                "label": "協議日期",
+                "type": "date",
+                "required": false
+              }
+            ]
+          }
+        ]
+      }
+    ]
   }
 }
