@@ -110,6 +110,110 @@
           }
         ]
       }
-    ]
+    ]"divorce": {
+  "title": "離婚協議書",
+  "steps": [
+    {
+      "id": 1,
+      "label": "填寫資料",
+      "sections": [
+        {
+          "title": "男方資料",
+          "prefix": "husband",
+          "fields": [
+            {
+              "name": "name",
+              "label": "姓名",
+              "type": "text",
+              "required": true,
+              "placeholder": "例如：王小明"
+            },
+            {
+              "name": "idNumber",
+              "label": "身分證字號",
+              "type": "text",
+              "required": false,
+              "placeholder": "例如：A123456789"
+            },
+            {
+              "name": "address",
+              "label": "地址",
+              "type": "text",
+              "required": false,
+              "placeholder": "例如：臺中市西區○○路○○號"
+            }
+          ]
+        },
+        {
+          "title": "女方資料",
+          "prefix": "wife",
+          "fields": [
+            {
+              "name": "name",
+              "label": "姓名",
+              "type": "text",
+              "required": true,
+              "placeholder": "例如：陳小美"
+            },
+            {
+              "name": "idNumber",
+              "label": "身分證字號",
+              "type": "text",
+              "required": false,
+              "placeholder": "例如：B223456789"
+            },
+            {
+              "name": "address",
+              "label": "地址",
+              "type": "text",
+              "required": false,
+              "placeholder": "例如：臺中市西區○○路○○號"
+            }
+          ]
+        },
+        {
+          "title": "協議內容",
+          "prefix": "agreement",
+          "fields": [
+            {
+              "name": "childrenAgreement",
+              "label": "未成年子女約定",
+              "type": "textarea",
+              "required": false,
+              "placeholder": "例如：雙方無未成年子女。"
+            },
+            {
+              "name": "supportAgreement",
+              "label": "扶養費約定",
+              "type": "textarea",
+              "required": false,
+              "placeholder": "例如：雙方無扶養費之約定。"
+            },
+            {
+              "name": "propertyAgreement",
+              "label": "夫妻財產約定",
+              "type": "textarea",
+              "required": false,
+              "placeholder": "例如：雙方財產各自所有，互不請求。"
+            },
+            {
+              "name": "otherAgreement",
+              "label": "其他約定",
+              "type": "textarea",
+              "required": false,
+              "placeholder": "請輸入其他約定事項。"
+            },
+            {
+              "name": "documentDate",
+              "label": "協議日期",
+              "type": "date",
+              "required": false
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
   }
 }
