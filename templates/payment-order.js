@@ -50,7 +50,17 @@ const PaymentOrderTemplate = {
       day: String(source.getDate())
     };
   },
-
+  renderDateNumber(value) {
+    if (value === '' || value === null || value === undefined) {
+      return '<span class="doc-preview__date-num doc-preview__date-num--empty"></span>';
+    }
+  
+    return (
+      '<span class="doc-preview__date-num">' +
+      this.escapeHtml(String(value)) +
+      '</span>'
+    );
+  },
   renderDocumentDate(dateStr) {
     const { year, month, day } = this.getRocDateParts(dateStr);
   
