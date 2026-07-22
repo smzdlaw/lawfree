@@ -86,15 +86,26 @@ const Forms = {
 
   async loadConfig() {
     try {
-      const res = await fetch('data/forms.json');
-      if (!res.ok) throw new Error('fetch failed');
+      const res = await fetch(`data/forms.json?v=${Date.now()}`, {
+        cache: 'no-store'
+      });
+  
+      if (!res.ok) {
+        throw new Error(`fetch failed: ${res.status}`);
+      }
+  
       const config = await res.json();
-      this.formConfig = config[this.currentDoc];
-    } catch {
+  
+      this.formConfig = config[this.currentDoc] || null;
+  
+      if (!this.formConfig) {
+        console.error(`找不到表單設定：${this.currentDoc}`);
+      }
+    } catch (err) {
+      console.error('表單設定載入失敗：', err);
       this.formConfig = FALLBACK_FORM_CONFIG[this.currentDoc] || null;
     }
   },
-
   saveFormData() {
     Storage.save(this.currentDoc, {
       formData: this.formData,
@@ -436,3 +447,127 @@ const Forms = {
     if (errorEl) errorEl.textContent = '';
   }
 };
+"promissory-note": {
+  "title": "本票裁定聲請狀",
+  "steps": [
+    {
+      "id": 1,
+      "label": "填寫資料",
+      "sections": [
+        {
+          "title": "聲請人（執票人）",
+          "prefix": "creditor",
+          "fields": [
+            {
+              "name": "name",
+              "label": "姓名",
+              "type": "text",
+              "required": true,
+              "placeholder": "例如：王小明"
+            },
+            {
+              "name": "idNumber",
+              "label": "身分證字號",
+              "type": "text",
+              "required": false,
+              "placeholder": "例如：A123456789"
+            },
+            {
+              "name": "phone",
+              "label": "電話",
+              "type": "tel",
+              "required": true,
+              "placeholder": "例如：0912-345-678"
+            },
+            {
+              "name": "address",
+              "label": "地址",
+              "type": "text",
+              "required": true,
+              "placeholder": "例如：臺中市西區XX路XX號"
+            }
+          ]
+        },
+        {
+          "title": "相對人（發票人）",
+          "prefix": "debtor",
+          "fields": [
+            {
+              "name": "name",
+              "label": "姓名",
+              "type": "text",
+              "required": true,
+              "placeholder": "例如：陳大明"
+            },
+            {
+              "name": "idNumber",
+              "label": "身分證字號",
+              "type": "text",
+              "required": false,
+              "placeholder": "例如：B223456789"
+            },
+            {
+              "name": "phone",
+              "label": "電話",
+              "type": "tel",
+              "required": false,
+              "placeholder": "例如：0922-123-456"
+            },
+            {
+              "name": "address",
+              "label": "地址",
+              "type": "text",
+              "required": true,
+              "placeholder": "例如：臺中市西區XX路XX號"
+            }
+          ]
+        },
+        {
+          "title": "本票資料",
+          "prefix": "claim",
+          "fields": [
+            {
+              "name": "amount",
+              "label": "本票金額",
+              "type": "number",
+              "required": true,
+              "placeholder": "例如：100000"
+            },
+            {
+              "name": "issueDate",
+              "label": "發票日期",
+              "type": "date",
+              "required": true
+            },
+            {
+              "name": "dueDate",
+              "label": "到期日",
+              "type": "date",
+              "required": false
+            },
+            {
+              "name": "interestRate",
+              "label": "利息（週年利率 %）",
+              "type": "number",
+              "required": true,
+              "placeholder": "例如：6"
+            },
+            {
+              "name": "interestStartDate",
+              "label": "利息起算日",
+              "type": "date",
+              "required": true
+            },
+            {
+              "name": "court",
+              "label": "法院",
+              "type": "text",
+              "required": true,
+              "placeholder": "例如：臺灣臺中地方法院"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
