@@ -94,15 +94,19 @@ const PromissoryNoteTemplate = {
             </p>
           </div>
   
-          <div class="doc-preview__footer">
-            <p class="doc-preview__line doc-preview__salutation">此　致</p>
-            <p class="doc-preview__line doc-preview__court">${court}　公鑒</p>
-  
-            ${LegalDocumentLayout.renderSigner(creditor.name)}
-          </div>
+                  <div class="doc-preview__footer">
+          <p class="doc-preview__line doc-preview__salutation">此　致</p>
+          <p class="doc-preview__line doc-preview__court">${court}　公鑒</p>
+
+          ${LegalDocumentLayout.renderSigner(creditor.name)}
         </div>
-      `;
-    }
-  };
-  
-  window.PromissoryNoteTemplate = PromissoryNoteTemplate;
+
+        <div class="doc-preview__block doc-preview__attachments">
+          <p class="doc-preview__line doc-preview__line--label">附件：</p>
+
+          <p class="doc-preview__line doc-preview__line--indent">
+            一、本票正本及影本各乙份（正本請確認後擲回）。
+          </p>
+        </div>
+      </div>
+    `;
