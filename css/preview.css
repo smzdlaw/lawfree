@@ -212,7 +212,7 @@ body.pdf-export .doc-preview__signer-tip {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  padding-right: 30mm;
+  padding-right: 20mm;
   margin-top: 8px;
   width: 100%;
   box-sizing: border-box;
