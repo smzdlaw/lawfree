@@ -13,6 +13,12 @@ const Preview = {
           ${PaymentOrderTemplate.render(formData)}
         </div>
       `;
+    } else if (docType === 'promissory-note') {
+      paper.innerHTML = `
+        <div class="preview-paper__inner">
+          ${PromissoryNoteTemplate.render(formData)}
+        </div>
+      `;
     } else {
       paper.innerHTML = `
         <div class="preview-paper__inner">
