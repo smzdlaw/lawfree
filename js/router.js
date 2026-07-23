@@ -41,6 +41,7 @@ const Router = {
         docType === 'divorce'
       ) {
         await Forms.init(docType);
+        Preview.update(this.currentDoc, Forms.formData || {});
       } else {
         Forms.currentDoc = docType;
         Forms.formConfig = null;

@@ -44,34 +44,53 @@
   }
 
   .doc-preview__date-line {
+    width: 100%;
+    margin: 30px 0 8px;
+    margin-left: -50px;
+  }
+
+  .doc-preview__signature-date {
+    margin-left: -50px;
+  }
+
+  .doc-preview__date-row.agreement-date {
+    display: grid;
+    grid-template-columns: 220px 100px 20px 100px 20px 104px 20px 1fr;
+    align-items: center;
+    width: 100%;
+  }
+
+  .date-prefix {
+    display: inline-grid;
+    grid-auto-flow: column;
+    gap: 18px;
+    width: 220px;
+    justify-content: end;
+  }
+
+  .date-prefix span {
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 20px;
+    margin: 0;
+    padding: 0;
+    transform: none;
+    position: static;
   }
 
-  .doc-preview__date-row {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 16px;
-    flex-wrap: nowrap;
-    white-space: nowrap;
+  .date-unit {
+    justify-self: start;
   }
 
-  .doc-preview__date-part {
-    display: flex;
-    align-items: center;
-    flex-shrink: 0;
-  }
-
-  .doc-preview__date-num {
-    min-width: 1.75em;
+  .date-num {
     text-align: center;
+    justify-self: center;
+    width: 100%;
   }
 
-  .doc-preview__date-num--empty {
-    min-width: 2em;
-    border-bottom: 1px solid #000;
+  .date-num--empty {
+    min-height: 1em;
   }
 
   .doc-preview__signer-row {

@@ -7,18 +7,13 @@ const Preview = {
 
     if (!paper) return;
 
-    let documentHtml = '';
+    const normalizedDocType = String(docType || '').trim();
+    const template = typeof resolveDocumentTemplate === 'function'
+      ? resolveDocumentTemplate(normalizedDocType)
+      : null;
 
-    if (docType === 'payment-order') {
-      documentHtml = PaymentOrderTemplate.render(formData);
-
-    } else if (docType === 'promissory-note') {
-      documentHtml = PromissoryNoteTemplate.render(formData);
-
-    } else if (docType === 'divorce') {
-      documentHtml = DivorceTemplate.render(formData);
-
-    } else {
+    if (!template || typeof template.render !== 'function') {
+      console.error('[Preview] 找不到對應模板：', normalizedDocType);
       paper.innerHTML = `
         <div class="preview-paper__inner">
           <p class="preview-paper__placeholder">
@@ -31,7 +26,7 @@ const Preview = {
 
     paper.innerHTML = `
       <div class="preview-paper__inner">
-        ${documentHtml}
+        ${template.render(formData)}
       </div>
     `;
   }

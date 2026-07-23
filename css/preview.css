@@ -1,15 +1,18 @@
 /* ===== Preview Wrapper ===== */
 .preview-wrapper {
-  position: sticky;
-  top: calc(var(--header-height) + 24px);
+  position: static;
   display: flex;
   justify-content: center;
   align-items: flex-start;
   width: 100%;
   max-width: 100%;
-  padding: 8px 0 32px;
+  padding: 16px;
   overflow-x: hidden;
   overflow-y: visible;
+  background: var(--color-surface);
+  border-radius: 20px;
+  border: 1px solid #E5E7EB;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
 }
 
 /* ===== A4 Paper (210mm × 297mm) ===== */
@@ -19,11 +22,10 @@
   max-width: 210mm;
   flex-shrink: 0;
   background: #fff;
-  border-radius: 2px;
+  border-radius: 4px;
   box-shadow:
-    0 2px 4px rgba(0, 0, 0, 0.06),
-    0 8px 20px rgba(0, 0, 0, 0.1),
-    0 20px 50px rgba(0, 0, 0, 0.08);
+    0 2px 4px rgba(0, 0, 0, 0.04),
+    0 8px 20px rgba(0, 0, 0, 0.06);
   overflow: hidden;
   box-sizing: border-box;
 }
@@ -62,6 +64,123 @@
   overflow-wrap: anywhere;
   word-wrap: break-word;
   word-break: break-word;
+  --preview-label-width: 150px;
+}
+
+.doc-preview__field-label {
+  display: inline-block;
+  width: var(--preview-label-width);
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+.doc-preview__field-value {
+  min-width: 0;
+}
+
+.doc-preview__field-row {
+  display: grid;
+  grid-template-columns: var(--preview-label-width) 1fr;
+  column-gap: 8px;
+  align-items: baseline;
+  margin: 0 0 2px;
+  width: 100%;
+}
+
+.doc-preview__signature-name-row,
+.doc-preview__witness-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  white-space: nowrap;
+}
+
+.doc-preview__witness-row {
+  margin: 0;
+}
+
+.doc-preview__witness-block .doc-preview__witness-row + .doc-preview__witness-row {
+  margin-top: 24px;
+}
+
+.doc-preview__witness-block {
+  width: 100%;
+}
+
+.doc-preview__signature-name-row .doc-preview__field-label,
+.doc-preview__witness-row .doc-preview__field-label {
+  width: var(--preview-label-width);
+}
+
+.doc-preview__signature-name-row .doc-preview__field-value {
+  flex: 1;
+  min-width: 0;
+}
+
+.doc-preview__signature-mark {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.doc-preview__signature-date {
+  width: 100%;
+  max-width: 100%;
+  margin: 2em 0 0;
+  margin-left: -50px;
+  box-sizing: border-box;
+}
+
+.agreement-date,
+.doc-preview__date-row.agreement-date {
+  display: grid;
+  grid-template-columns: 220px 100px 20px 100px 20px 104px 20px 1fr;
+  align-items: center;
+  width: 100%;
+}
+
+.date-prefix {
+  display: inline-grid;
+  grid-auto-flow: column;
+  gap: 18px;
+  width: 220px;
+  justify-content: end;
+}
+
+.date-prefix span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20px;
+  margin: 0;
+  padding: 0;
+  transform: none;
+  position: static;
+  white-space: nowrap;
+}
+
+.date-unit {
+  justify-self: start;
+  white-space: nowrap;
+}
+
+.date-num {
+  text-align: center;
+  justify-self: center;
+  width: 100%;
+  white-space: nowrap;
+}
+
+.date-num--empty {
+  min-height: 1em;
+}
+
+.doc-preview__signature-party {
+  margin-bottom: 4px;
+}
+
+.doc-preview__children-block {
+  width: 100%;
 }
 
 .doc-preview__title {
@@ -150,17 +269,13 @@
 .doc-preview__date-line {
   width: 100%;
   margin: 30px 0 8px;
+  margin-left: -50px;
 }
 
 .doc-preview__date-row {
-  display: grid;
   width: 100%;
-  grid-template-columns:
-    auto auto auto auto
-    repeat(5, 1fr)
-    auto;
-  align-items: center;
 }
+
 .doc-preview__signer-tip {
   margin-top: 6px;
   font-size: 14px;
@@ -170,42 +285,6 @@
 
 body.pdf-export .doc-preview__signer-tip {
   display: none !important;
-}
-.doc-preview__date-char {
-  text-align: left;
-}
-
-.doc-preview__date-num {
-  justify-self: center;
-  width: 48px;
-}
-
-.doc-preview__date-unit {
-  justify-self: center;
-}
-
-.doc-preview__date-unit:last-child {
-  justify-self: end;
-}
-.doc-preview__date-prefix {
-  flex-shrink: 0;
-}
-
-.doc-preview__date-part {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.doc-preview__date-num {
-  display: inline-block;
-  width: 42px;
-  text-align: center;
-
-}
-
-.doc-preview__date-unit {
-  flex-shrink: 0;
 }
 
 .doc-preview__signer-row {
@@ -224,17 +303,41 @@ body.pdf-export .doc-preview__signer-tip {
   white-space: nowrap;
 }
 
+.doc-preview__signature-divider {
+  margin: 16px 0;
+  border-top: 1px solid #999;
+}
+
+.doc-preview__custody-line {
+  margin-top: 14px;
+}
+
+.doc-preview__child-item + .doc-preview__child-item {
+  margin-top: 12px;
+}
+
+.doc-preview__child-index {
+  margin-bottom: 4px;
+}
+
 .doc-preview__attachments {
   margin-top: 16px;
   padding-top: 10px;
   border-top: 1px solid #ddd;
 }
-/* ===== PDF 匯出分頁（html2pdf pagebreak css mode）===== */
-.doc-preview__line,
+/* ===== PDF / 列印分頁（僅小型區塊避免切開）===== */
 .doc-preview__title,
+.doc-preview__heading,
+.doc-preview__child-item,
+.doc-preview__signature-party,
+.doc-preview__witness-row,
+.doc-preview__signature-date,
+.agreement-date,
 .doc-preview__date-line,
+.doc-preview__date-row,
 .doc-preview__signer-row,
-.doc-preview__footer {
+.doc-preview__claim-item,
+.doc-preview__court {
   page-break-inside: avoid;
   break-inside: avoid;
 }

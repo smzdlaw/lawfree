@@ -34,55 +34,8 @@ const PaymentOrderTemplate = {
     return num.toLocaleString('zh-TW');
   },
 
-  getRocDateParts(dateStr) {
-    if (dateStr === '') {
-      return { year: '', month: '', day: '' };
-    }
-
-    const source = dateStr ? new Date(dateStr) : new Date();
-    if (Number.isNaN(source.getTime())) {
-      return { year: '', month: '', day: '' };
-    }
-
-    return {
-      year: String(source.getFullYear() - 1911),
-      month: String(source.getMonth() + 1),
-      day: String(source.getDate())
-    };
-  },
-  renderDateNumber(value) {
-    if (value === '' || value === null || value === undefined) {
-      return '<span class="doc-preview__date-num doc-preview__date-num--empty"></span>';
-    }
-  
-    return (
-      '<span class="doc-preview__date-num">' +
-      this.escapeHtml(String(value)) +
-      '</span>'
-    );
-  },
   renderDocumentDate(dateStr) {
-    const { year, month, day } = this.getRocDateParts(dateStr);
-  
-    return (
-      '<div class="doc-preview__date-line">' +
-        '<div class="doc-preview__date-row">' +
-          '<span class="doc-preview__date-char">中</span>' +
-          '<span class="doc-preview__date-char">華</span>' +
-          '<span class="doc-preview__date-char">民</span>' +
-          '<span class="doc-preview__date-char">國</span>' +
-  
-          this.renderDateNumber(year) +
-          '<span class="doc-preview__date-unit">年</span>' +
-  
-          this.renderDateNumber(month) +
-          '<span class="doc-preview__date-unit">月</span>' +
-  
-          this.renderDateNumber(day) +
-          '<span class="doc-preview__date-unit">日</span>' +
-        '</div>' +
-      '</div>'
-    );
+    return LegalDocumentLayout.renderDocumentDate(dateStr, { wrapper: 'line' });
   },
 
   formatRocDate(dateStr) {
@@ -268,3 +221,5 @@ const PaymentOrderTemplate = {
     `;
   }
 };
+
+window.PaymentOrderTemplate = PaymentOrderTemplate;

@@ -55,11 +55,52 @@ const PromissoryNoteTemplate = {
         </div>
       `;
     },
+
+    parseOtherMaterials(text) {
+      if (!text || !String(text).trim()) {
+        return [];
+      }
+
+      return String(text)
+        .split(/[,，、\n\r]+/)
+        .map((item) => item.trim())
+        .filter(Boolean);
+    },
+
+    renderAttachments(attachments = {}) {
+      const lines = ['本票正本及影本各乙份（正本請確認後擲回）'];
+      const selected = attachments.selectedOrder || [];
+
+      if (selected.includes('other_materials')) {
+        const items = this.parseOtherMaterials(attachments.otherMaterialsText);
+
+        if (items.length === 0) {
+          lines.push('其他相關資料乙份');
+        } else {
+          items.forEach((item) => {
+            lines.push(`${this.escapeHtml(item)}乙份`);
+          });
+        }
+      }
+
+      const itemsHtml = lines.map((text, index) => {
+        const num = CN_NUMERALS[index] || String(index + 1);
+        return `<p class="doc-preview__line doc-preview__line--indent">${num}、${text}。</p>`;
+      }).join('');
+
+      return `
+        <div class="doc-preview__block doc-preview__attachments">
+          <p class="doc-preview__line doc-preview__line--label">附件：</p>
+          ${itemsHtml}
+        </div>
+      `;
+    },
   
     render(data = {}) {
       const creditor = data.creditor || {};
       const debtor = data.debtor || {};
       const claim = data.claim || {};
+      const attachments = data.attachments || {};
   
       const amount = this.formatAmount(claim.amount);
       const issueDate = this.formatRocDate(claim.issueDate);
@@ -98,18 +139,14 @@ const PromissoryNoteTemplate = {
   <p class="doc-preview__line doc-preview__salutation">此　致</p>
   <p class="doc-preview__line doc-preview__court">${court}　公鑒</p>
 
-  ${PaymentOrderTemplate.renderDocumentDate(claim.documentDate)}
+  ${LegalDocumentLayout.renderDocumentDate(claim.documentDate, { wrapper: 'line' })}
   ${LegalDocumentLayout.renderSigner(creditor.name)}
 </div>
 
-        <div class="doc-preview__block doc-preview__attachments">
-          <p class="doc-preview__line doc-preview__line--label">附件：</p>
-
-          <p class="doc-preview__line doc-preview__line--indent">
-            一、本票正本及影本各乙份（正本請確認後擲回）。
-          </p>
-        </div>
+        ${this.renderAttachments(attachments)}
       </div>
     `;
   }
 };
+
+window.PromissoryNoteTemplate = PromissoryNoteTemplate;

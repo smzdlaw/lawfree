@@ -88,6 +88,82 @@ const LegalDocumentLayout = {
       .replace(/"/g, '&quot;');
   },
 
+  getRocDateParts(dateStr) {
+    if (dateStr === '' || dateStr === null || dateStr === undefined) {
+      return { year: '', month: '', day: '' };
+    }
+
+    const text = String(dateStr).trim();
+    const isoMatch = text.match(/^(\d{4})[-/](\d{1,2})[-/](\d{1,2})$/);
+
+    if (isoMatch) {
+      return {
+        year: String(Number(isoMatch[1]) - 1911),
+        month: String(Number(isoMatch[2])),
+        day: String(Number(isoMatch[3]))
+      };
+    }
+
+    const source = new Date(text.includes('T') ? text : `${text}T00:00:00`);
+    if (Number.isNaN(source.getTime())) {
+      return { year: '', month: '', day: '' };
+    }
+
+    return {
+      year: String(source.getFullYear() - 1911),
+      month: String(source.getMonth() + 1),
+      day: String(source.getDate())
+    };
+  },
+
+  renderDateNumber(value, part) {
+    if (value === '' || value === null || value === undefined) {
+      return `<span class="date-num date-num--${part} date-num--empty"></span>`;
+    }
+
+    return (
+      `<span class="date-num date-num--${part}">` +
+      this.escapeHtml(String(value)) +
+      '</span>'
+    );
+  },
+
+  renderDocumentDateRow(dateStr) {
+    const { year, month, day } = this.getRocDateParts(dateStr);
+
+    return (
+      '<div class="doc-preview__date-row agreement-date">' +
+        '<span class="date-prefix">' +
+          '<span>中</span>' +
+          '<span>華</span>' +
+          '<span>民</span>' +
+          '<span>國</span>' +
+        '</span>' +
+        this.renderDateNumber(year, 'year') +
+        '<span class="date-unit">年</span>' +
+        this.renderDateNumber(month, 'month') +
+        '<span class="date-unit">月</span>' +
+        this.renderDateNumber(day, 'day') +
+        '<span class="date-unit date-unit--day">日</span>' +
+      '</div>'
+    );
+  },
+
+  renderDocumentDate(dateStr, options = {}) {
+    const row = this.renderDocumentDateRow(dateStr);
+    const wrapper = options.wrapper || 'line';
+
+    if (wrapper === 'signature') {
+      return `<div class="doc-preview__signature-date">${row}</div>`;
+    }
+
+    if (wrapper === 'line') {
+      return `<div class="doc-preview__date-line">${row}</div>`;
+    }
+
+    return row;
+  },
+
   renderSigner(name, fallback = '　　　　') {
     const display = name && String(name).trim()
       ? this.escapeHtml(String(name).trim())
@@ -114,3 +190,20 @@ window.CASE_TYPE_OPTIONS = CASE_TYPE_OPTIONS;
 window.ATTACHMENT_OPTIONS = ATTACHMENT_OPTIONS;
 window.CN_NUMERALS = CN_NUMERALS;
 window.LegalDocumentLayout = LegalDocumentLayout;
+
+/**
+ * 文件類型 → 預覽模板（固定對應，禁止交叉引用）
+ */
+const DocumentTemplates = {
+  'payment-order': 'PaymentOrderTemplate',
+  'promissory-note': 'PromissoryNoteTemplate',
+  divorce: 'DivorceTemplate'
+};
+
+window.DocumentTemplates = DocumentTemplates;
+
+window.resolveDocumentTemplate = function resolveDocumentTemplate(docType) {
+  const templateKey = DocumentTemplates[docType];
+  if (!templateKey) return null;
+  return window[templateKey] || null;
+};
