@@ -7,39 +7,14 @@
   .content {
     max-width: 100%;
   }
-
-  .toolbar-notice {
-    max-width: 320px;
-    margin-left: 16px;
-    margin-right: 24px;
-  }
 }
 
 @media (min-width: 769px) {
-  .main__header-bar {
-    display: flex;
-    align-items: center;
-  }
-
-  .main__toolbar {
-    display: contents;
-  }
-
   .main__mobile-head {
     display: none;
   }
 
-  .view-tabs {
-    order: 1;
-  }
-
-  .toolbar-notice {
-    order: 2;
-    flex: 1 1 auto;
-  }
-
   .main__toolbar-right {
-    order: 3;
     margin-left: auto;
   }
 }
@@ -48,7 +23,6 @@
   :root {
     --content-padding-x: 16px;
     --toolbar-height: auto;
-    --preview-scale: min(1, calc((100vw - 32px) / 210mm));
   }
 
   html,
@@ -137,25 +111,15 @@
     display: none;
   }
 
-  .toolbar-notice {
-    width: 100%;
-    max-width: none;
-    margin: 0;
-    padding: 7px 10px;
-    gap: 6px;
-    border-top: none;
+  .header-info {
+    margin: 8px 0 0;
+    padding: 10px 12px;
   }
 
-  .toolbar-notice__text {
-    font-size: 12px;
-    line-height: 1.45;
-    -webkit-line-clamp: 2;
-    display: -webkit-box;
-    overflow: hidden;
-  }
-
-  .toolbar-notice__icon {
-    font-size: 15px;
+  .header-info__icon,
+  .header-info__text {
+    font-size: 13px;
+    line-height: 1.6;
   }
 
   /* Wizard */
@@ -192,6 +156,7 @@
     width: 100%;
     max-width: 100%;
     min-width: 0;
+    overflow-x: hidden;
   }
 
   .form-panel {
@@ -204,30 +169,33 @@
     padding: 8px 14px 20px;
   }
 
-  /* Preview：自動縮放、置中、不橫向捲動 */
+  /* Preview：JS 動態縮放、置中、不橫向捲動 */
   .preview-wrapper {
     width: 100%;
     max-width: 100%;
-    padding: 12px 8px;
+    padding: 16px 12px;
     overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
     box-sizing: border-box;
   }
 
   .preview-stage {
-    width: calc(210mm * var(--preview-scale));
-    height: calc(297mm * var(--preview-scale));
+    width: auto;
+    height: auto;
+    max-width: 100%;
     margin: 0 auto;
     overflow: hidden;
+    flex-shrink: 0;
   }
 
   .preview-paper {
     width: 210mm;
     height: 297mm;
     min-width: 210mm;
-    max-width: none;
-    margin-left: calc(210mm * (var(--preview-scale) - 1) / 2);
-    transform-origin: center top;
-    transform: scale(var(--preview-scale));
+    max-width: 210mm;
+    margin: 0;
   }
 
   /* Mobile download bar */

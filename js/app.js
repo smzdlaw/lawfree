@@ -4,6 +4,7 @@
 document.addEventListener('DOMContentLoaded', async () => {
   initSidebarToggle();
   initViewTabs();
+  Preview.init();
 
   Router.init();
   Wizard.init(1);
@@ -45,6 +46,10 @@ function initViewTabs() {
     formArea?.classList.toggle('content-panel--hidden', view !== 'form');
     previewArea?.classList.toggle('content-panel--hidden', view !== 'preview');
     wizard?.classList.toggle('content-panel--hidden', view !== 'form');
+
+    if (view === 'preview') {
+      Preview.scheduleResize();
+    }
   };
 
   tabs.forEach((tab) => {
