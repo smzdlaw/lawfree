@@ -6,7 +6,8 @@ const Router = {
     'payment-order': '支付命令聲請狀',
     'promissory-note': '本票裁定聲請狀',
     divorce: '離婚協議書',
-    iou: '借據'
+    iou: '借據',
+    'promissory-bill': '本票'
   },
 
   defaultPageMeta: {
@@ -18,6 +19,10 @@ const Router = {
     iou: {
       title: '免費借據產生器｜線上製作借據與 PDF 下載｜SLawFree',
       description: '免費線上製作借據，填寫出借人、借款人、借款金額、利息、還款期限及交付方式，即時預覽並下載 PDF。'
+    },
+    'promissory-bill': {
+      title: '免費本票產生器｜線上製作本票與 PDF 下載｜SLawFree',
+      description: '免費線上製作本票，填寫本票金額、受款人、發票人、發票日、到期日及付款地，即時預覽並下載 A4 PDF。'
     }
   },
 
@@ -54,7 +59,8 @@ const Router = {
         docType === 'payment-order' ||
         docType === 'promissory-note' ||
         docType === 'divorce' ||
-        docType === 'iou'
+        docType === 'iou' ||
+        docType === 'promissory-bill'
       ) {
         await Forms.init(docType);
         Preview.update(this.currentDoc, Forms.formData || {});

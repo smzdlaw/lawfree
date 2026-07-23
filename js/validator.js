@@ -45,6 +45,14 @@ const Validator = {
       return '';
     },
 
+    integerAmount(value) {
+      if (value === '' || value === null || value === undefined) return '請輸入本票金額';
+      if (!/^\d+$/.test(String(value))) return '金額只能輸入正整數';
+      const num = Number(value);
+      if (Number.isNaN(num) || num <= 0) return '金額須大於零';
+      return '';
+    },
+
     interestRate(value) {
       if (value === '' || value === null || value === undefined) return '';
       if (!/^\d+(\.\d+)?$/.test(String(value))) return '利率只能輸入數字';
@@ -115,6 +123,25 @@ const Validator = {
       const num = Number(value);
       if (Number.isNaN(num) || num < 0 || num > 100) return '違約利息須為 0–100 之間的數字';
       return '';
+    },
+
+    issueDate(value) {
+      if (!value) return '請選擇發票日';
+      const d = new Date(`${value}T00:00:00`);
+      if (Number.isNaN(d.getTime())) return '日期格式不正確';
+      return '';
+    },
+
+    dueType(value) {
+      if (!value) return '請選擇到期方式';
+      return '';
+    },
+
+    billDueDate(value) {
+      if (!value) return '請選擇到期日';
+      const d = new Date(`${value}T00:00:00`);
+      if (Number.isNaN(d.getTime())) return '日期格式不正確';
+      return '';
     }
   },
 
@@ -136,7 +163,7 @@ const Validator = {
     return this.validateField(field.name, value);
   },
 
-  validateStep(formConfig, stepId, formData) {
+  validateStep(formConfig, stepId, formData, docType = '') {
     const step = formConfig.steps.find((s) => s.id === stepId);
     if (!step) return { valid: true, errors: {} };
 
@@ -145,9 +172,25 @@ const Validator = {
     step.sections.forEach((section) => {
       section.fields.forEach((field) => {
         const value = Utils.getNestedValue(formData, section.prefix, field.name);
+        const fieldKey = Utils.getFieldKey(section.prefix, field.name);
+
+        if (docType === 'promissory-bill' && section.prefix === 'note' && field.name === 'amount') {
+          const amountError = this.rules.integerAmount(value);
+          if (amountError) errors[fieldKey] = amountError;
+          return;
+        }
+
+        if (docType === 'promissory-bill' && section.prefix === 'note' && field.name === 'dueDate') {
+          return;
+        }
+
+        if (docType === 'promissory-bill' && section.prefix === 'note' && field.name === 'interestStartDate') {
+          if (!this.hasValue(formData.note?.interestRate)) return;
+        }
+
         const error = this.validateFieldConfig(field, value);
         if (error) {
-          errors[Utils.getFieldKey(section.prefix, field.name)] = error;
+          errors[fieldKey] = error;
         }
       });
     });
@@ -164,9 +207,30 @@ const Validator = {
       if (methodOtherError) errors['delivery.methodOther'] = methodOtherError;
     }
 
+    if (docType === 'promissory-bill') {
+      const note = formData.note || {};
+
+      if (note.dueType === 'fixed') {
+        const dueDateError = this.rules.billDueDate(note.dueDate);
+        if (dueDateError) {
+          errors['note.dueDate'] = dueDateError;
+        } else if (note.issueDate && note.dueDate) {
+          const issue = new Date(`${note.issueDate}T00:00:00`);
+          const due = new Date(`${note.dueDate}T00:00:00`);
+          if (!Number.isNaN(issue.getTime()) && !Number.isNaN(due.getTime()) && due < issue) {
+            errors['note.dueDate'] = '到期日不得早於發票日';
+          }
+        }
+      }
+    }
+
     return {
       valid: Object.keys(errors).length === 0,
       errors
     };
+  },
+
+  hasValue(value) {
+    return value !== '' && value !== null && value !== undefined && String(value).trim() !== '';
   }
 };

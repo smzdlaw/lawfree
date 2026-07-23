@@ -91,6 +91,24 @@ const Forms = {
       if (this.formData.delivery.delivered === undefined) {
         this.formData.delivery.delivered = false;
       }
+    } else if (docType === 'promissory-bill') {
+      this.formData = saved?.formData || {
+        payee: {},
+        drawer: {},
+        note: { dueType: '' },
+        terms: { waiveProtest: true, nonNegotiable: false },
+        other: {}
+      };
+      if (!this.formData.note) this.formData.note = { dueType: '' };
+      if (!this.formData.terms) {
+        this.formData.terms = { waiveProtest: true, nonNegotiable: false };
+      }
+      if (this.formData.terms.waiveProtest === undefined) {
+        this.formData.terms.waiveProtest = true;
+      }
+      if (this.formData.terms.nonNegotiable === undefined) {
+        this.formData.terms.nonNegotiable = false;
+      }
     } else {
       this.formData = saved?.formData || { creditor: {}, debtor: {}, claim: {}, attachments: { selectedOrder: [], otherText: '', otherMaterialsText: '' } };
       if (!this.formData.attachments) {
@@ -258,6 +276,9 @@ const Forms = {
     if (this.currentDoc === 'iou') {
       this.updateIouDeliveryUI();
     }
+    if (this.currentDoc === 'promissory-bill') {
+      this.updatePromissoryBillUI();
+    }
     Preview.update(this.currentDoc, this.formData);
   },
 
@@ -309,12 +330,18 @@ const Forms = {
     let inputHtml = '';
     const hint = field.name === 'caseType'
       ? '<p class="form-field__hint">僅供系統帶入聲請理由及利率範本，不會顯示於正式書狀</p>'
-      : '';
+      : field.hint
+        ? `<p class="form-field__hint">${this.escapeHtml(field.hint)}</p>`
+        : '';
 
     const placeholder = field.placeholder || '';
 
+    if (field.type === 'radio') {
+      return this.renderRadioGroup(prefix, field);
+    }
+
     if (field.type === 'checkbox') {
-      const checked = value === true || value === 'true';
+      const checked = value === true || value === 'true' || (value !== false && value !== 'false' && field.defaultChecked);
       return `
         <div class="form-field" data-field="${key}">
           <label class="form-checkbox">
@@ -334,22 +361,29 @@ const Forms = {
         .join('');
       inputHtml = `<select class="form-field__input form-field__select" id="${id}" name="${key}">${options}</select>`;
     } else if (field.type === 'number') {
-      const isIouAmount = this.currentDoc === 'iou' && field.name === 'amount';
-      const step = isIouAmount ? '1' : 'any';
-      const inputMode = isIouAmount ? 'numeric' : 'decimal';
+      const isIntegerAmount = field.name === 'amount'
+        && (this.currentDoc === 'iou' || this.currentDoc === 'promissory-bill');
+      const step = isIntegerAmount ? '1' : 'any';
+      const inputMode = isIntegerAmount ? 'numeric' : 'decimal';
       inputHtml = `<input class="form-field__input" type="number" id="${id}" name="${key}" value="${this.escapeHtml(value)}" min="0" step="${step}" inputmode="${inputMode}" placeholder="${this.escapeHtml(placeholder)}">`;
     } else {
       inputHtml = `<input class="form-field__input" type="${field.type}" id="${id}" name="${key}" value="${this.escapeHtml(value)}" placeholder="${this.escapeHtml(placeholder)}">`;
     }
 
     const otherHtml = field.name === 'caseType' ? this.renderCaseTypeOther(prefix, value) : '';
-    const hiddenClass = field.name === 'methodOther' ? ' form-field--iou-method-other' : '';
-    const hiddenStyle = field.name === 'methodOther' && Utils.getNestedValue(this.formData, prefix, 'method') !== 'other'
-      ? ' style="display:none"'
-      : '';
+    const hiddenClass = [
+      field.name === 'methodOther' ? 'form-field--iou-method-other' : '',
+      field.name === 'dueDate' ? 'form-field--promissory-due-date' : '',
+      field.name === 'interestStartDate' ? 'form-field--promissory-interest-start' : ''
+    ].filter(Boolean).join(' ');
+    const isDueDateHidden = field.name === 'dueDate'
+      && Utils.getNestedValue(this.formData, prefix, 'dueType') !== 'fixed';
+    const isInterestStartHidden = field.name === 'interestStartDate'
+      && !this.hasPromissoryInterestRate();
+    const hiddenStyle = (isDueDateHidden || isInterestStartHidden) ? ' style="display:none"' : '';
 
     return `
-      <div class="form-field${hiddenClass}" data-field="${key}"${hiddenStyle}>
+      <div class="form-field${hiddenClass ? ` ${hiddenClass}` : ''}" data-field="${key}"${hiddenStyle}>
         <label class="form-field__label" for="${id}">
           ${field.label}
           ${field.required ? '<span class="form-field__required">*</span>' : ''}
@@ -360,6 +394,42 @@ const Forms = {
         <p class="form-field__error" id="error-${key}"></p>
       </div>
     `;
+  },
+
+  renderRadioGroup(prefix, field) {
+    const key = Utils.getFieldKey(prefix, field.name);
+    const value = Utils.getNestedValue(this.formData, prefix, field.name) || '';
+
+    const radios = (field.options || []).map((opt) => `
+      <label class="form-checkbox">
+        <input
+          type="radio"
+          class="form-checkbox__input"
+          name="${key}"
+          value="${this.escapeHtml(opt.value)}"
+          ${value === opt.value ? 'checked' : ''}
+        >
+        <span class="form-checkbox__label">${this.escapeHtml(opt.label)}</span>
+      </label>
+    `).join('');
+
+    return `
+      <div class="form-field" data-field="${key}">
+        <span class="form-field__label">
+          ${field.label}
+          ${field.required ? '<span class="form-field__required">*</span>' : ''}
+        </span>
+        <div class="form-checkbox-group">
+          ${radios}
+        </div>
+        <p class="form-field__error" id="error-${key}"></p>
+      </div>
+    `;
+  },
+
+  hasPromissoryInterestRate() {
+    const rate = this.formData.note?.interestRate;
+    return rate !== '' && rate !== null && rate !== undefined && String(rate).trim() !== '';
   },
 
   renderDivorceAgreementSection(section) {
@@ -1325,6 +1395,36 @@ const Forms = {
     }
   },
 
+  updatePromissoryBillUI() {
+    const dueField = document.querySelector('.form-field--promissory-due-date');
+    const dueInput = document.getElementById('field-note-dueDate');
+    const isFixedDue = this.formData.note?.dueType === 'fixed';
+
+    if (dueField) {
+      dueField.style.display = isFixedDue ? '' : 'none';
+    }
+    if (!isFixedDue && dueInput) {
+      dueInput.value = '';
+      if (this.formData.note) {
+        this.formData.note.dueDate = '';
+      }
+    }
+
+    const interestField = document.querySelector('.form-field--promissory-interest-start');
+    const interestInput = document.getElementById('field-note-interestStartDate');
+    const hasRate = this.hasPromissoryInterestRate();
+
+    if (interestField) {
+      interestField.style.display = hasRate ? '' : 'none';
+    }
+    if (!hasRate && interestInput) {
+      interestInput.value = '';
+      if (this.formData.note) {
+        this.formData.note.interestStartDate = '';
+      }
+    }
+  },
+
   handleInput(key, value, applyPreset = false) {
     const childMatch = key.match(/^agreement\.children\.(\d+)\.(name|birthDate|idNumber)$/);
     if (childMatch) {
@@ -1373,6 +1473,24 @@ const Forms = {
         if (methodOtherEl) methodOtherEl.value = '';
       }
       this.updateIouDeliveryUI();
+    }
+
+    if (prefix === 'note' && name === 'dueType') {
+      if (value !== 'fixed') {
+        Utils.setNestedValue(this.formData, 'note', 'dueDate', '');
+        const dueDateEl = document.getElementById('field-note-dueDate');
+        if (dueDateEl) dueDateEl.value = '';
+      }
+      this.updatePromissoryBillUI();
+    }
+
+    if (prefix === 'note' && name === 'interestRate') {
+      if (!this.hasPromissoryInterestRate()) {
+        Utils.setNestedValue(this.formData, 'note', 'interestStartDate', '');
+        const interestStartEl = document.getElementById('field-note-interestStartDate');
+        if (interestStartEl) interestStartEl.value = '';
+      }
+      this.updatePromissoryBillUI();
     }
 
     if (prefix === 'agreement' && name === 'supportStatus' && value === 'no') {
@@ -1538,6 +1656,44 @@ const Forms = {
       }
     }
     return null;
+  },
+
+  validateBeforeDownload() {
+    if (!this.formConfig) return { valid: true, errors: {} };
+    this.clearAllErrors();
+    return Validator.validateStep(this.formConfig, this.currentStep, this.formData, this.currentDoc);
+  },
+
+  clearAllErrors() {
+    document.querySelectorAll('.form-field--error').forEach((el) => {
+      el.classList.remove('form-field--error');
+    });
+    document.querySelectorAll('.form-field__error').forEach((el) => {
+      el.textContent = '';
+    });
+  },
+
+  focusFirstError(errors) {
+    const firstKey = Object.keys(errors)[0];
+    if (!firstKey) return;
+
+    this.showErrors(errors);
+
+    const formTab = document.querySelector('.view-tab[data-view="form"]');
+    if (formTab && !formTab.classList.contains('view-tab--active')) {
+      formTab.click();
+    }
+
+    const fieldEl = document.querySelector(`[data-field="${firstKey}"]`);
+    const inputEl = document.getElementById(`field-${firstKey.replace(/\./g, '-')}`);
+
+    fieldEl?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+    if (inputEl && typeof inputEl.focus === 'function') {
+      inputEl.focus({ preventScroll: true });
+    } else {
+      fieldEl?.querySelector('input, select, textarea')?.focus({ preventScroll: true });
+    }
   },
 
   validateSingleField(key) {

@@ -608,5 +608,180 @@
         ]
       }
     ]
+  },
+  "promissory-bill": {
+    "title": "本票",
+    "steps": [
+      {
+        "id": 1,
+        "label": "填寫資料",
+        "sections": [
+          {
+            "title": "受款人",
+            "prefix": "payee",
+            "fields": [
+              {
+                "name": "name",
+                "label": "受款人姓名",
+                "type": "text",
+                "required": true,
+                "placeholder": "例如：王小明"
+              },
+              {
+                "name": "idNumber",
+                "label": "受款人身分證字號",
+                "type": "text",
+                "required": false,
+                "placeholder": "例如：A123456789"
+              },
+              {
+                "name": "address",
+                "label": "受款人地址",
+                "type": "text",
+                "required": false,
+                "placeholder": "例如：臺中市西區○○路○○號"
+              }
+            ]
+          },
+          {
+            "title": "發票人",
+            "prefix": "drawer",
+            "fields": [
+              {
+                "name": "name",
+                "label": "發票人姓名",
+                "type": "text",
+                "required": true,
+                "placeholder": "例如：陳大明"
+              },
+              {
+                "name": "idNumber",
+                "label": "發票人身分證字號",
+                "type": "text",
+                "required": false,
+                "placeholder": "例如：B223456789"
+              },
+              {
+                "name": "address",
+                "label": "發票人地址",
+                "type": "text",
+                "required": false,
+                "placeholder": "例如：臺中市西區○○路○○號"
+              }
+            ]
+          },
+          {
+            "title": "本票內容",
+            "prefix": "note",
+            "fields": [
+              {
+                "name": "amount",
+                "label": "本票金額",
+                "type": "number",
+                "required": true,
+                "placeholder": "例如：100000"
+              },
+              {
+                "name": "issueDate",
+                "label": "發票日",
+                "type": "date",
+                "required": true
+              },
+              {
+                "name": "dueType",
+                "label": "到期方式",
+                "type": "radio",
+                "required": true,
+                "options": [
+                  {
+                    "value": "fixed",
+                    "label": "指定到期日"
+                  },
+                  {
+                    "value": "on_demand",
+                    "label": "見票即付"
+                  }
+                ]
+              },
+              {
+                "name": "dueDate",
+                "label": "到期日",
+                "type": "date",
+                "required": false
+              },
+              {
+                "name": "issuePlace",
+                "label": "發票地",
+                "type": "text",
+                "required": false,
+                "placeholder": "例如：臺中市"
+              },
+              {
+                "name": "paymentPlace",
+                "label": "付款地",
+                "type": "text",
+                "required": false,
+                "placeholder": "例如：臺中市"
+              }
+            ]
+          },
+          {
+            "title": "利息條款",
+            "prefix": "note",
+            "fields": [
+              {
+                "name": "interestRate",
+                "label": "年利率（%）",
+                "type": "number",
+                "required": false,
+                "placeholder": "例如：5"
+              },
+              {
+                "name": "interestStartDate",
+                "label": "利息起算日",
+                "type": "date",
+                "required": false
+              }
+            ]
+          },
+          {
+            "title": "票據條款",
+            "prefix": "terms",
+            "fields": [
+              {
+                "name": "waiveProtest",
+                "label": "免除作成拒絕證書",
+                "type": "checkbox",
+                "required": false,
+                "defaultChecked": true,
+                "checkboxLabel": "免除作成拒絕證書"
+              },
+              {
+                "name": "nonNegotiable",
+                "label": "禁止背書轉讓",
+                "type": "checkbox",
+                "required": false,
+                "defaultChecked": false,
+                "checkboxLabel": "禁止背書轉讓"
+              }
+            ]
+          },
+          {
+            "title": "備註",
+            "prefix": "other",
+            "fields": [
+              {
+                "name": "remark",
+                "label": "備註",
+                "type": "textarea",
+                "required": false,
+                "placeholder": "請輸入備註事項",
+                "hint": "請勿填寫「符合特定條件才付款」等條件文字，以免影響票據效力。"
+              }
+            ]
+          }
+        ]
+      }
+    ]
   }
 }

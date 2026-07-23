@@ -198,7 +198,8 @@ const DocumentTemplates = {
   'payment-order': 'PaymentOrderTemplate',
   'promissory-note': 'PromissoryNoteTemplate',
   divorce: 'DivorceTemplate',
-  iou: 'IouTemplate'
+  iou: 'IouTemplate',
+  'promissory-bill': 'PromissoryBillTemplate'
 };
 
 window.DocumentTemplates = DocumentTemplates;

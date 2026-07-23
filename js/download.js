@@ -6,7 +6,8 @@ const Download = {
     'payment-order': '支付命令.pdf',
     'promissory-note': '本票裁定.pdf',
     divorce: '離婚協議書.pdf',
-    iou: '借據.pdf'
+    iou: '借據.pdf',
+    'promissory-bill': '本票.pdf'
   },
 
   /** A4 210mm − 15mm × 2 邊界 = 180mm 內容寬 */
@@ -715,6 +716,20 @@ const Download = {
     if (typeof html2canvas === 'undefined') {
       alert('html2canvas 尚未載入');
       return;
+    }
+
+    if (
+      typeof Forms !== 'undefined'
+      && typeof Forms.validateBeforeDownload === 'function'
+      && typeof Router !== 'undefined'
+      && Router.currentDoc === 'promissory-bill'
+    ) {
+      const validation = Forms.validateBeforeDownload();
+      if (!validation.valid) {
+        if (pendingWindow && !pendingWindow.closed) pendingWindow.close();
+        Forms.focusFirstError(validation.errors);
+        return;
+      }
     }
 
     const paper = this.getPreviewPaper();
