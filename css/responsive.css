@@ -141,14 +141,21 @@
     width: 100%;
     max-width: none;
     margin: 0;
-    padding: 10px 0 12px;
-    border-top: 1px solid var(--color-border);
+    padding: 7px 10px;
+    gap: 6px;
+    border-top: none;
   }
 
   .toolbar-notice__text {
-    -webkit-line-clamp: unset;
-    display: block;
-    overflow: visible;
+    font-size: 12px;
+    line-height: 1.45;
+    -webkit-line-clamp: 2;
+    display: -webkit-box;
+    overflow: hidden;
+  }
+
+  .toolbar-notice__icon {
+    font-size: 15px;
   }
 
   /* Wizard */
