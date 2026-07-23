@@ -1,0 +1,108 @@
+/* ===== Print Styles ===== */
+@media print {
+  .preview-wrapper {
+    position: static;
+    padding: 0;
+    overflow: visible;
+  }
+
+  .preview-paper {
+    width: 210mm;
+    height: auto;
+    min-height: 297mm;
+    max-width: none;
+    box-shadow: none;
+    border-radius: 0;
+    overflow: visible;
+    page-break-inside: avoid;
+  }
+
+  .preview-paper__inner {
+    padding: 25mm;
+    overflow: visible;
+    font-family: "DFKai-SB", "標楷體", KaiTi, serif;
+    font-size: 20px;
+    line-height: 1.8;
+    text-align: justify;
+  }
+
+  .doc-preview {
+    font-family: "DFKai-SB", "標楷體", KaiTi, serif;
+    font-size: 20px;
+    line-height: 1.8;
+  }
+
+  .doc-preview__title {
+    font-size: 34px;
+    font-weight: 700;
+    text-align: center;
+  }
+
+  .doc-preview__line {
+    text-align: justify;
+    line-height: 1.8;
+  }
+
+  .doc-preview__date-line {
+    width: 100%;
+    margin: 30px 0 8px;
+    margin-left: -50px;
+  }
+
+  .doc-preview__signature-date {
+    margin-left: -50px;
+  }
+
+  .doc-preview__date-row.agreement-date {
+    display: grid;
+    grid-template-columns: 220px 100px 20px 100px 20px 104px 20px 1fr;
+    align-items: center;
+    width: 100%;
+  }
+
+  .date-prefix {
+    display: inline-grid;
+    grid-auto-flow: column;
+    gap: 18px;
+    width: 220px;
+    justify-content: end;
+  }
+
+  .date-prefix span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20px;
+    margin: 0;
+    padding: 0;
+    transform: none;
+    position: static;
+  }
+
+  .date-unit {
+    justify-self: start;
+  }
+
+  .date-num {
+    text-align: center;
+    justify-self: center;
+    width: 100%;
+  }
+
+  .date-num--empty {
+    min-height: 1em;
+  }
+
+  .doc-preview__signer-row {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: 30mm;
+  }
+
+  .doc-preview__signer {
+    margin: 0;
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+}

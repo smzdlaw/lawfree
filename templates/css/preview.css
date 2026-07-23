@@ -1,0 +1,353 @@
+/* ===== Preview Wrapper ===== */
+.preview-wrapper {
+  position: static;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 100%;
+  padding: 16px;
+  overflow-x: hidden;
+  overflow-y: visible;
+  background: var(--color-surface);
+  border-radius: 20px;
+  border: 1px solid #E5E7EB;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+  box-sizing: border-box;
+}
+
+.preview-stage {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+/* ===== A4 Paper (210mm × 297mm) ===== */
+.preview-paper {
+  width: 210mm;
+  height: 297mm;
+  max-width: 210mm;
+  flex-shrink: 0;
+  background: #fff;
+  border-radius: 4px;
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.04),
+    0 8px 20px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.preview-paper__inner {
+  width: 100%;
+  height: 100%;
+  padding: 25mm;
+  overflow-x: hidden;
+  overflow-y: auto;
+  box-sizing: border-box;
+  font-family: "DFKai-SB", "標楷體", KaiTi, serif;
+  font-size: 20px;
+  line-height: 1.8;
+  color: #000;
+  text-align: left;
+  -webkit-overflow-scrolling: touch;
+}
+
+.preview-paper__placeholder {
+  text-align: center;
+  color: var(--color-text-light);
+  padding: 48px 0;
+  font-family: "Microsoft JhengHei", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+}
+
+/* ===== Official Document Preview ===== */
+.doc-preview {
+  width: 100%;
+  max-width: 100%;
+  font-family: "DFKai-SB", "標楷體", KaiTi, serif;
+  font-size: 20px;
+  line-height: 1.8;
+  text-align: justify;
+  overflow-wrap: anywhere;
+  word-wrap: break-word;
+  word-break: break-word;
+  --preview-label-width: 150px;
+}
+
+.doc-preview__field-label {
+  display: inline-block;
+  width: var(--preview-label-width);
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+.doc-preview__field-value {
+  min-width: 0;
+}
+
+.doc-preview__field-row {
+  display: grid;
+  grid-template-columns: var(--preview-label-width) 1fr;
+  column-gap: 8px;
+  align-items: baseline;
+  margin: 0 0 2px;
+  width: 100%;
+}
+
+.doc-preview__signature-name-row,
+.doc-preview__witness-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  white-space: nowrap;
+}
+
+.doc-preview__witness-row {
+  margin: 0;
+}
+
+.doc-preview__witness-block .doc-preview__witness-row + .doc-preview__witness-row {
+  margin-top: 24px;
+}
+
+.doc-preview__witness-block {
+  width: 100%;
+}
+
+.doc-preview__signature-name-row .doc-preview__field-label,
+.doc-preview__witness-row .doc-preview__field-label {
+  width: var(--preview-label-width);
+}
+
+.doc-preview__signature-name-row .doc-preview__field-value {
+  flex: 1;
+  min-width: 0;
+}
+
+.doc-preview__signature-mark {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.doc-preview__signature-date {
+  width: 100%;
+  max-width: 100%;
+  margin: 2em 0 0;
+  margin-left: -50px;
+  box-sizing: border-box;
+}
+
+.agreement-date,
+.doc-preview__date-row.agreement-date {
+  display: grid;
+  grid-template-columns: 220px 100px 20px 100px 20px 104px 20px 1fr;
+  align-items: center;
+  width: 100%;
+}
+
+.date-prefix {
+  display: inline-grid;
+  grid-auto-flow: column;
+  gap: 18px;
+  width: 220px;
+  justify-content: end;
+}
+
+.date-prefix span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20px;
+  margin: 0;
+  padding: 0;
+  transform: none;
+  position: static;
+  white-space: nowrap;
+}
+
+.date-unit {
+  justify-self: start;
+  white-space: nowrap;
+}
+
+.date-num {
+  text-align: center;
+  justify-self: center;
+  width: 100%;
+  white-space: nowrap;
+}
+
+.date-num--empty {
+  min-height: 1em;
+}
+
+.doc-preview__signature-party {
+  margin-bottom: 4px;
+}
+
+.doc-preview__children-block {
+  width: 100%;
+}
+
+.doc-preview__title {
+  text-align: center;
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  margin: 0 0 20px;
+  line-height: 1.8;
+}
+
+.doc-preview__block {
+  margin-bottom: 14px;
+  max-width: 100%;
+}
+
+.doc-preview__line {
+  margin: 0 0 2px;
+  text-align: justify;
+  overflow-wrap: anywhere;
+  word-wrap: break-word;
+  word-break: break-word;
+  max-width: 100%;
+  line-height: 1.8;
+}
+
+.doc-preview__line--label {
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.doc-preview__line--indent {
+  padding: 0;
+  text-indent: 0;
+}
+
+.doc-preview__reason {
+  margin: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  text-align: justify;
+  text-indent: 2em;
+  line-height: 1.8;
+}
+
+.doc-preview__claim {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.doc-preview__claim-item {
+  margin: 0 0 6px;
+  padding-left: 2.5em;
+  text-indent: -2.5em;
+  line-height: 1.8;
+  text-align: justify;
+  text-align-last: left;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.doc-preview__footer {
+  margin-top: 24px;
+  margin-bottom: 20px;
+}
+
+.doc-preview__salutation {
+  letter-spacing: 0.5em;
+}
+
+.doc-preview__court {
+  padding-left: 2em;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+  word-wrap: break-word;
+}
+
+.doc-preview__court-placeholder {
+  letter-spacing: 0.05em;
+}
+
+.doc-preview__date-line {
+  width: 100%;
+  margin: 30px 0 8px;
+  margin-left: -50px;
+}
+
+.doc-preview__date-row {
+  width: 100%;
+}
+
+.doc-preview__signer-tip {
+  margin-top: 6px;
+  font-size: 14px;
+  color: #d32f2f;
+  font-family: "Microsoft JhengHei", sans-serif;
+}
+
+body.pdf-export .doc-preview__signer-tip {
+  display: none !important;
+}
+
+.doc-preview__signer-row {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-right: 10mm;
+  margin-top: 8px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.doc-preview__signer {
+  margin: 0;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.doc-preview__signature-divider {
+  margin: 16px 0;
+  border-top: 1px solid #999;
+}
+
+.doc-preview__custody-line {
+  margin-top: 14px;
+}
+
+.doc-preview__child-item + .doc-preview__child-item {
+  margin-top: 12px;
+}
+
+.doc-preview__child-index {
+  margin-bottom: 4px;
+}
+
+.doc-preview__attachments {
+  margin-top: 16px;
+  padding-top: 10px;
+  border-top: 1px solid #ddd;
+}
+/* ===== PDF / 列印分頁（僅小型區塊避免切開）===== */
+.doc-preview__title,
+.doc-preview__heading,
+.doc-preview__child-item,
+.doc-preview__signature-party,
+.doc-preview__witness-row,
+.doc-preview__signature-date,
+.agreement-date,
+.doc-preview__date-line,
+.doc-preview__date-row,
+.doc-preview__signer-row,
+.doc-preview__claim-item,
+.doc-preview__court {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
