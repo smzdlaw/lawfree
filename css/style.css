@@ -251,8 +251,8 @@ a.sidebar__logo {
   transition: margin-left var(--transition);
 }
 
-/* ===== Toolbar ===== */
-.main__toolbar {
+/* ===== Header Bar ===== */
+.main__header-bar {
   position: sticky;
   top: 0;
   z-index: 100;
@@ -263,6 +263,14 @@ a.sidebar__logo {
   padding: 12px var(--content-padding-x);
   background: var(--color-surface);
   border-bottom: 1px solid var(--color-border);
+}
+
+/* ===== Toolbar ===== */
+.main__toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
 }
 
 .main__toolbar-left {
@@ -477,7 +485,7 @@ a.sidebar__logo {
 }
 
 .content-panel--hidden {
-  display: none !important;
+  display: none;
 }
 
 .content__form {
@@ -584,10 +592,11 @@ a.sidebar__item {
 
 .site-footer__nav {
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
-  gap: 8px 24px;
-  margin-bottom: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 32px;
+  margin: 12px 0;
 }
 
 .site-footer__nav a {
@@ -605,4 +614,13 @@ a.sidebar__item {
 .site-footer__copy {
   font-size: 13px;
   color: var(--color-text-light);
+}
+
+.site-footer__copy a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.site-footer__copy a:hover {
+  text-decoration: underline;
 }
