@@ -433,5 +433,180 @@
         ]
       }
     ]
+  },
+  "iou": {
+    "title": "借據",
+    "steps": [
+      {
+        "id": 1,
+        "label": "填寫資料",
+        "sections": [
+          {
+            "title": "出借人",
+            "prefix": "lender",
+            "fields": [
+              {
+                "name": "name",
+                "label": "出借人姓名",
+                "type": "text",
+                "required": true,
+                "placeholder": "例如：王小明"
+              },
+              {
+                "name": "idNumber",
+                "label": "出借人身分證字號",
+                "type": "text",
+                "required": false,
+                "placeholder": "例如：A123456789"
+              },
+              {
+                "name": "address",
+                "label": "出借人地址",
+                "type": "text",
+                "required": false,
+                "placeholder": "例如：臺中市西區○○路○○號"
+              }
+            ]
+          },
+          {
+            "title": "借款人",
+            "prefix": "borrower",
+            "fields": [
+              {
+                "name": "name",
+                "label": "借款人姓名",
+                "type": "text",
+                "required": true,
+                "placeholder": "例如：陳大明"
+              },
+              {
+                "name": "idNumber",
+                "label": "借款人身分證字號",
+                "type": "text",
+                "required": false,
+                "placeholder": "例如：B223456789"
+              },
+              {
+                "name": "address",
+                "label": "借款人地址",
+                "type": "text",
+                "required": false,
+                "placeholder": "例如：臺中市西區○○路○○號"
+              }
+            ]
+          },
+          {
+            "title": "借款內容",
+            "prefix": "loan",
+            "fields": [
+              {
+                "name": "amount",
+                "label": "借款金額",
+                "type": "number",
+                "required": true,
+                "placeholder": "例如：100000"
+              },
+              {
+                "name": "loanDate",
+                "label": "借款日期",
+                "type": "date",
+                "required": true
+              },
+              {
+                "name": "dueDate",
+                "label": "還款期限",
+                "type": "date",
+                "required": true
+              },
+              {
+                "name": "interestRate",
+                "label": "年利率（%）",
+                "type": "number",
+                "required": false,
+                "placeholder": "例如：5"
+              },
+              {
+                "name": "defaultInterestRate",
+                "label": "違約利息（%）",
+                "type": "number",
+                "required": false,
+                "placeholder": "例如：6"
+              }
+            ]
+          },
+          {
+            "title": "借款交付方式",
+            "prefix": "delivery",
+            "fields": [
+              {
+                "name": "method",
+                "label": "交付方式",
+                "type": "select",
+                "required": true,
+                "options": [
+                  {
+                    "value": "",
+                    "label": "請選擇"
+                  },
+                  {
+                    "value": "cash",
+                    "label": "現金交付"
+                  },
+                  {
+                    "value": "transfer",
+                    "label": "銀行轉帳"
+                  },
+                  {
+                    "value": "remittance",
+                    "label": "匯款"
+                  },
+                  {
+                    "value": "check",
+                    "label": "支票"
+                  },
+                  {
+                    "value": "other",
+                    "label": "其他"
+                  }
+                ]
+              },
+              {
+                "name": "methodOther",
+                "label": "其他交付方式",
+                "type": "text",
+                "required": false,
+                "placeholder": "請輸入其他交付方式"
+              },
+              {
+                "name": "delivered",
+                "label": "借款已交付完成",
+                "type": "checkbox",
+                "required": false,
+                "checkboxLabel": "借款已於簽署本借據時交付完成。"
+              }
+            ]
+          },
+          {
+            "title": "其他",
+            "prefix": "other",
+            "fields": [
+              {
+                "name": "remark",
+                "label": "備註",
+                "type": "textarea",
+                "required": false,
+                "placeholder": "請輸入其他約定事項"
+              },
+              {
+                "name": "signDate",
+                "label": "簽署日期",
+                "type": "date",
+                "required": true
+              }
+            ]
+          }
+        ]
+      }
+    ]
   }
 }

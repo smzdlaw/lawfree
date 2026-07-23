@@ -197,7 +197,8 @@ window.LegalDocumentLayout = LegalDocumentLayout;
 const DocumentTemplates = {
   'payment-order': 'PaymentOrderTemplate',
   'promissory-note': 'PromissoryNoteTemplate',
-  divorce: 'DivorceTemplate'
+  divorce: 'DivorceTemplate',
+  iou: 'IouTemplate'
 };
 
 window.DocumentTemplates = DocumentTemplates;

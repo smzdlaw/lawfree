@@ -77,6 +77,20 @@ const Forms = {
       this.formData = saved?.formData || { husband: {}, wife: {}, agreement: {} };
       this.ensureDivorcePartyDefaults();
       this.ensureDivorceAgreementDefaults();
+    } else if (docType === 'iou') {
+      this.formData = saved?.formData || {
+        lender: {},
+        borrower: {},
+        loan: {},
+        delivery: { delivered: false },
+        other: {}
+      };
+      if (!this.formData.delivery) {
+        this.formData.delivery = { delivered: false };
+      }
+      if (this.formData.delivery.delivered === undefined) {
+        this.formData.delivery.delivered = false;
+      }
     } else {
       this.formData = saved?.formData || { creditor: {}, debtor: {}, claim: {}, attachments: { selectedOrder: [], otherText: '', otherMaterialsText: '' } };
       if (!this.formData.attachments) {
@@ -241,6 +255,9 @@ const Forms = {
       this.updateDivorceChildrenUI();
       this.updateDivorceSignaturePreview();
     }
+    if (this.currentDoc === 'iou') {
+      this.updateIouDeliveryUI();
+    }
     Preview.update(this.currentDoc, this.formData);
   },
 
@@ -296,6 +313,19 @@ const Forms = {
 
     const placeholder = field.placeholder || '';
 
+    if (field.type === 'checkbox') {
+      const checked = value === true || value === 'true';
+      return `
+        <div class="form-field" data-field="${key}">
+          <label class="form-checkbox">
+            <input type="checkbox" class="form-checkbox__input" id="${id}" name="${key}" ${checked ? 'checked' : ''}>
+            <span class="form-checkbox__label">${this.escapeHtml(field.checkboxLabel || field.label)}</span>
+          </label>
+          <p class="form-field__error" id="error-${key}"></p>
+        </div>
+      `;
+    }
+
     if (field.type === 'textarea') {
       inputHtml = `<textarea class="form-field__input form-field__textarea" id="${id}" name="${key}" rows="5" placeholder="${this.escapeHtml(placeholder)}">${this.escapeHtml(value)}</textarea>`;
     } else if (field.type === 'select') {
@@ -304,15 +334,22 @@ const Forms = {
         .join('');
       inputHtml = `<select class="form-field__input form-field__select" id="${id}" name="${key}">${options}</select>`;
     } else if (field.type === 'number') {
-      inputHtml = `<input class="form-field__input" type="number" id="${id}" name="${key}" value="${this.escapeHtml(value)}" min="0" step="any" inputmode="decimal" placeholder="${this.escapeHtml(placeholder)}">`;
+      const isIouAmount = this.currentDoc === 'iou' && field.name === 'amount';
+      const step = isIouAmount ? '1' : 'any';
+      const inputMode = isIouAmount ? 'numeric' : 'decimal';
+      inputHtml = `<input class="form-field__input" type="number" id="${id}" name="${key}" value="${this.escapeHtml(value)}" min="0" step="${step}" inputmode="${inputMode}" placeholder="${this.escapeHtml(placeholder)}">`;
     } else {
       inputHtml = `<input class="form-field__input" type="${field.type}" id="${id}" name="${key}" value="${this.escapeHtml(value)}" placeholder="${this.escapeHtml(placeholder)}">`;
     }
 
     const otherHtml = field.name === 'caseType' ? this.renderCaseTypeOther(prefix, value) : '';
+    const hiddenClass = field.name === 'methodOther' ? ' form-field--iou-method-other' : '';
+    const hiddenStyle = field.name === 'methodOther' && Utils.getNestedValue(this.formData, prefix, 'method') !== 'other'
+      ? ' style="display:none"'
+      : '';
 
     return `
-      <div class="form-field" data-field="${key}">
+      <div class="form-field${hiddenClass}" data-field="${key}"${hiddenStyle}>
         <label class="form-field__label" for="${id}">
           ${field.label}
           ${field.required ? '<span class="form-field__required">*</span>' : ''}
@@ -1180,6 +1217,10 @@ const Forms = {
         this.handleAttachmentToggle(target.dataset.attachment, target.checked);
         return;
       }
+      if (target.type === 'checkbox' && target.name) {
+        this.handleInput(target.name, target.checked, false);
+        return;
+      }
       if (!target.name) return;
       const isCaseType = target.name === 'claim.caseType';
       this.handleInput(target.name, target.value, isCaseType);
@@ -1268,6 +1309,22 @@ const Forms = {
     }
   },
 
+  updateIouDeliveryUI() {
+    const otherField = document.querySelector('.form-field--iou-method-other');
+    const otherInput = document.getElementById('field-delivery-methodOther');
+    const isOther = this.formData.delivery?.method === 'other';
+
+    if (otherField) {
+      otherField.style.display = isOther ? '' : 'none';
+    }
+    if (!isOther && otherInput) {
+      otherInput.value = '';
+      if (this.formData.delivery) {
+        this.formData.delivery.methodOther = '';
+      }
+    }
+  },
+
   handleInput(key, value, applyPreset = false) {
     const childMatch = key.match(/^agreement\.children\.(\d+)\.(name|birthDate|idNumber)$/);
     if (childMatch) {
@@ -1307,6 +1364,15 @@ const Forms = {
         this.lastCaseType = value;
       }
       this.updateCaseTypeOtherUI(prefix, value);
+    }
+
+    if (prefix === 'delivery' && name === 'method') {
+      if (value !== 'other') {
+        Utils.setNestedValue(this.formData, 'delivery', 'methodOther', '');
+        const methodOtherEl = document.getElementById('field-delivery-methodOther');
+        if (methodOtherEl) methodOtherEl.value = '';
+      }
+      this.updateIouDeliveryUI();
     }
 
     if (prefix === 'agreement' && name === 'supportStatus' && value === 'no') {
@@ -1481,6 +1547,14 @@ const Forms = {
     if (name === 'caseTypeOther') {
       if (this.formData.claim?.caseType !== '其他') return;
       const error = Validator.rules.caseTypeOther(value);
+      if (error) this.showErrors({ [key]: error });
+      else this.clearFieldError(key);
+      return;
+    }
+
+    if (name === 'methodOther') {
+      if (this.formData.delivery?.method !== 'other') return;
+      const error = Validator.rules.methodOther(value);
       if (error) this.showErrors({ [key]: error });
       else this.clearFieldError(key);
       return;

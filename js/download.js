@@ -5,7 +5,8 @@ const Download = {
   pdfFilenames: {
     'payment-order': '支付命令.pdf',
     'promissory-note': '本票裁定.pdf',
-    divorce: '離婚協議書.pdf'
+    divorce: '離婚協議書.pdf',
+    iou: '借據.pdf'
   },
 
   /** A4 210mm − 15mm × 2 邊界 = 180mm 內容寬 */

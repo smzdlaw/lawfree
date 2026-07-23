@@ -75,6 +75,46 @@ const Validator = {
       if (!value || !String(value).trim()) return '請輸入案件類型說明';
       if (String(value).trim().length < 2) return '說明至少 2 個字';
       return '';
+    },
+
+    loanDate(value) {
+      if (!value) return '請選擇借款日期';
+      const d = new Date(`${value}T00:00:00`);
+      if (Number.isNaN(d.getTime())) return '日期格式不正確';
+      return '';
+    },
+
+    dueDate(value) {
+      if (!value) return '請選擇還款期限';
+      const d = new Date(`${value}T00:00:00`);
+      if (Number.isNaN(d.getTime())) return '日期格式不正確';
+      return '';
+    },
+
+    signDate(value) {
+      if (!value) return '請選擇簽署日期';
+      const d = new Date(`${value}T00:00:00`);
+      if (Number.isNaN(d.getTime())) return '日期格式不正確';
+      return '';
+    },
+
+    method(value) {
+      if (!value) return '請選擇交付方式';
+      return '';
+    },
+
+    methodOther(value) {
+      if (!value || !String(value).trim()) return '請輸入其他交付方式';
+      if (String(value).trim().length < 2) return '說明至少 2 個字';
+      return '';
+    },
+
+    defaultInterestRate(value) {
+      if (value === '' || value === null || value === undefined) return '';
+      if (!/^\d+(\.\d+)?$/.test(String(value))) return '違約利息只能輸入數字';
+      const num = Number(value);
+      if (Number.isNaN(num) || num < 0 || num > 100) return '違約利息須為 0–100 之間的數字';
+      return '';
     }
   },
 
@@ -116,6 +156,12 @@ const Validator = {
     if (claim.caseType === '其他') {
       const otherError = this.rules.caseTypeOther(claim.caseTypeOther);
       if (otherError) errors['claim.caseTypeOther'] = otherError;
+    }
+
+    const delivery = formData.delivery || {};
+    if (delivery.method === 'other') {
+      const methodOtherError = this.rules.methodOther(delivery.methodOther);
+      if (methodOtherError) errors['delivery.methodOther'] = methodOtherError;
     }
 
     return {
