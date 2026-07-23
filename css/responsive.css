@@ -158,4 +158,22 @@
   .form__actions .btn {
     justify-content: center;
   }
+
+  .static-page {
+    padding-top: 24px;
+    padding-bottom: 32px;
+  }
+
+  .static-page__title {
+    font-size: 26px;
+  }
+
+  .site-footer {
+    padding: 20px 16px;
+  }
+
+  .site-footer__nav {
+    flex-direction: column;
+    gap: 12px;
+  }
 }
