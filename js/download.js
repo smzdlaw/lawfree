@@ -18,12 +18,16 @@ const Download = {
       const btn = document.getElementById(id);
       if (!btn || btn.dataset.bound === '1') return;
       btn.dataset.bound = '1';
-      btn.addEventListener('click', () => {
+      btn.addEventListener('click', (event) => {
+        event.preventDefault();
         let pendingWindow = null;
         if (this.isMobileDevice() && !this.shouldUseDirectDownload()) {
           pendingWindow = this.openPendingWindow();
         }
-        this.downloadPdf(pendingWindow);
+        this.downloadPdf(pendingWindow).catch((error) => {
+          if (pendingWindow && !pendingWindow.closed) pendingWindow.close();
+          console.error('PDF 下載失敗：', error);
+        });
       });
     });
   },
@@ -664,23 +668,24 @@ const Download = {
       anchor.click();
       document.body.removeChild(anchor);
     } finally {
-      this.scheduleRevokeBlobUrl(url, 2000);
+      this.scheduleRevokeBlobUrl(url, 60000);
     }
   },
 
-  openPdfBlob(blob, pendingWindow = null) {
+  openPdfBlob(blob, pendingWindow = null, filename = '法律文件.pdf') {
     const url = URL.createObjectURL(blob);
-    let opened = null;
+    let opened = false;
 
     try {
       if (pendingWindow && !pendingWindow.closed) {
-        pendingWindow.location.href = url;
-        opened = pendingWindow;
+        pendingWindow.location.replace(url);
+        opened = true;
       } else {
-        opened = window.open(url, '_blank');
+        const win = window.open(url, '_blank');
+        opened = Boolean(win);
       }
     } catch (_) {
-      opened = null;
+      opened = false;
     }
 
     if (!opened) {
@@ -688,13 +693,19 @@ const Download = {
       anchor.href = url;
       anchor.target = '_blank';
       anchor.rel = 'noopener noreferrer';
+      anchor.download = filename;
       anchor.style.display = 'none';
       document.body.appendChild(anchor);
-      anchor.click();
-      document.body.removeChild(anchor);
+      anchor.dispatchEvent(new MouseEvent('click', {
+        bubbles: true,
+        cancelable: true,
+        view: window
+      }));
+      anchor.remove();
     }
 
-    this.scheduleRevokeBlobUrl(url, 120000);
+    // iOS Safari 可能需要較長時間載入 Blob URL，不要太早釋放。
+    this.scheduleRevokeBlobUrl(url, 10 * 60 * 1000);
   },
 
   async savePdfDesktop(element, opt) {
@@ -709,7 +720,7 @@ const Download = {
       return;
     }
 
-    this.openPdfBlob(blob);
+    this.openPdfBlob(blob, null, filename);
   },
 
   async downloadPdf(pendingWindow = null) {
@@ -780,17 +791,12 @@ const Download = {
         }
       } else if (this.shouldUseDirectDownload()) {
         this.downloadBlobWithAnchor(blob, filename);
-      } else if (this.isIOSDevice() && pdf) {
-        // iPhone/iPad Safari 對 Blob URL 的相容性不穩定；
-        // 使用者點擊時已先開啟 pendingWindow，完成後直接導向 PDF data URI。
-        const dataUri = pdf.output('datauristring');
-        if (pendingWindow && !pendingWindow.closed) {
-          pendingWindow.location.replace(dataUri);
-        } else {
-          window.location.href = dataUri;
-        }
+      } else if (this.isIOSDevice()) {
+        // iPhone/iPad Safari：使用者點擊時先建立視窗，PDF 完成後導向 Blob URL。
+        // 避免 data URI 過長造成白頁或無法開啟。
+        this.openPdfBlob(blob, pendingWindow, filename);
       } else {
-        this.openPdfBlob(blob, pendingWindow);
+        this.openPdfBlob(blob, pendingWindow, filename);
       }
     } catch (error) {
       if (pendingWindow && !pendingWindow.closed) pendingWindow.close();
