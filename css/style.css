@@ -488,6 +488,10 @@ a.sidebar__logo {
   width: 100%;
 }
 
+.mobile-download-bar {
+  display: none;
+}
+
 a.sidebar__item {
   text-decoration: none;
   color: inherit;

@@ -12,13 +12,29 @@ const Download = {
   CONTENT_WIDTH_MM: 180,
 
   init() {
-    const btn = document.getElementById('downloadPdfBtn');
-    if (!btn) return;
-    if (btn.dataset.bound === '1') return;
-    btn.dataset.bound = '1';
-    btn.addEventListener('click', () => {
-      this.downloadPdf();
+    ['downloadPdfBtn', 'downloadPdfBtnMobile'].forEach((id) => {
+      const btn = document.getElementById(id);
+      if (!btn || btn.dataset.bound === '1') return;
+      btn.dataset.bound = '1';
+      btn.addEventListener('click', () => {
+        const pendingWindow = this.isIOSDevice() ? this.openPendingWindow() : null;
+        this.downloadPdf(pendingWindow);
+      });
     });
+  },
+
+
+  openPendingWindow() {
+    try {
+      const win = window.open('', '_blank');
+      if (win) {
+        win.document.write('<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>正在產生 PDF</title></head><body style="font-family:-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;padding:24px;line-height:1.6"><p>正在產生 PDF，請勿關閉此頁面…</p></body></html>');
+        win.document.close();
+      }
+      return win;
+    } catch (_) {
+      return null;
+    }
   },
 
   getFilename(docType) {
@@ -538,12 +554,17 @@ const Download = {
     }
   },
 
-  openPdfBlob(blob) {
+  openPdfBlob(blob, pendingWindow = null) {
     const url = URL.createObjectURL(blob);
     let opened = null;
 
     try {
-      opened = window.open(url, '_blank');
+      if (pendingWindow && !pendingWindow.closed) {
+        pendingWindow.location.href = url;
+        opened = pendingWindow;
+      } else {
+        opened = window.open(url, '_blank');
+      }
     } catch (_) {
       opened = null;
     }
@@ -577,7 +598,7 @@ const Download = {
     this.openPdfBlob(blob);
   },
 
-  async downloadPdf() {
+  async downloadPdf(pendingWindow = null) {
     if (typeof html2canvas === 'undefined') {
       alert('html2canvas 尚未載入');
       return;
@@ -595,9 +616,13 @@ const Download = {
         : 'payment-order';
 
     const filename = this.getFilename(docType);
-    const button = document.getElementById('downloadPdfBtn');
+    const buttons = ['downloadPdfBtn', 'downloadPdfBtnMobile']
+      .map((id) => document.getElementById(id))
+      .filter(Boolean);
 
-    if (button) button.disabled = true;
+    buttons.forEach((btn) => {
+      btn.disabled = true;
+    });
 
     try {
       const { pdf, blob } = await this.generateStablePdf(element);
@@ -607,13 +632,16 @@ const Download = {
       } else if (this.shouldUseDirectDownload()) {
         this.downloadBlobWithAnchor(blob, filename);
       } else {
-        this.openPdfBlob(blob);
+        this.openPdfBlob(blob, pendingWindow);
       }
     } catch (error) {
+      if (pendingWindow && !pendingWindow.closed) pendingWindow.close();
       console.error('PDF 下載失敗：', error);
       alert('PDF 下載失敗，請重新整理後再試一次。');
     } finally {
-      if (button) button.disabled = false;
+      buttons.forEach((btn) => {
+        btn.disabled = false;
+      });
     }
   }
 };
