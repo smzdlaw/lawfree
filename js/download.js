@@ -14,55 +14,207 @@ const Download = {
   CONTENT_WIDTH_MM: 180,
 
   init() {
-    // 使用事件代理，避免行動版按鈕因 RWD／DOM 更新後失去 click 綁定。
     if (document.documentElement.dataset.pdfDownloadDelegated === '1') return;
     document.documentElement.dataset.pdfDownloadDelegated = '1';
 
-    document.addEventListener('click', (event) => {
-      const button = event.target.closest('#downloadPdfBtn, #downloadPdfBtnMobile');
-      if (!button) return;
-      this.handlePdfDownload({
-        preventDefault: () => event.preventDefault(),
-        stopPropagation: () => event.stopPropagation(),
-        currentTarget: button
-      });
-    }, { passive: false });
-  },
+    document.addEventListener('click', async (event) => {
+      const button = event.target.closest(
+        '#downloadPdfBtn, #downloadPdfBtnMobile, [data-action="download-pdf"]'
+      );
 
-  async handlePdfDownload(event) {
-    event.preventDefault();
-    event.stopPropagation();
+      if (!button || button.disabled) return;
 
-    const button = event.currentTarget;
-    if (button?.disabled) return;
+      event.preventDefault();
+      event.stopPropagation();
 
-    let pendingWindow = null;
+      console.log('[PDF] click captured');
 
-    if (this.isMobileDevice()) {
-      pendingWindow = this.openPendingWindow();
-    }
-
-    try {
-      await this.downloadPdf(pendingWindow);
-    } catch (error) {
-      if (pendingWindow && !pendingWindow.closed) pendingWindow.close();
-      console.error('[Download] PDF 下載失敗：', error);
-      alert('PDF 產生失敗，請重新整理後再試一次。');
-    }
-  },
-
-  openPendingWindow() {
-    try {
-      const win = window.open('', '_blank');
-      if (win) {
-        win.document.write('<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>正在產生 PDF</title></head><body style="font-family:-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;padding:24px;line-height:1.6"><p>正在產生 PDF，請勿關閉此頁面…</p></body></html>');
-        win.document.close();
+      try {
+        await handlePdfDownload(button);
+      } catch (error) {
+        console.error('[PDF] failed');
+        console.error(error);
+        alert('PDF 產生失敗，請重新整理後再試一次。');
+        Download.setDownloadButtonsLoading(Download.getDownloadButtons(), false);
       }
-      return win;
-    } catch (error) {
-      console.warn('[Download] openPendingWindow failed:', error);
-      return null;
+    }, true);
+  },
+
+  pdfModalState: null,
+
+  hidePdfReadyModal(revokeNow = true) {
+    const state = this.pdfModalState;
+    if (!state) return;
+
+    if (state.revokeTimer) {
+      clearTimeout(state.revokeTimer);
     }
+
+    if (revokeNow && state.blobUrl) {
+      this.revokeBlobUrl(state.blobUrl);
+    }
+
+    state.overlay?.remove();
+    this.pdfModalState = null;
+  },
+
+  showPdfReadyModal(blob, filename, options = {}) {
+    const { showShare = false, shareFile = null } = options;
+
+    this.hidePdfReadyModal(true);
+
+    const blobUrl = URL.createObjectURL(blob);
+    const overlay = document.createElement('div');
+    overlay.id = 'pdf-ready-modal';
+    overlay.setAttribute('role', 'dialog');
+    overlay.setAttribute('aria-modal', 'true');
+    overlay.setAttribute('aria-label', 'PDF 已產生完成');
+    Object.assign(overlay.style, {
+      position: 'fixed',
+      inset: '0',
+      zIndex: '99999',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '24px',
+      background: 'rgba(15, 23, 42, 0.55)',
+      boxSizing: 'border-box'
+    });
+
+    const panel = document.createElement('div');
+    Object.assign(panel.style, {
+      width: '100%',
+      maxWidth: '420px',
+      padding: '24px',
+      borderRadius: '16px',
+      background: '#ffffff',
+      boxShadow: '0 20px 40px rgba(15, 23, 42, 0.18)',
+      boxSizing: 'border-box',
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif'
+    });
+
+    const title = document.createElement('h2');
+    title.textContent = 'PDF 已產生完成';
+    Object.assign(title.style, {
+      margin: '0 0 16px',
+      fontSize: '20px',
+      fontWeight: '700',
+      color: '#0f172a',
+      textAlign: 'center'
+    });
+
+    const actions = document.createElement('div');
+    Object.assign(actions.style, {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '12px'
+    });
+
+    const openLink = document.createElement('a');
+    openLink.href = blobUrl;
+    openLink.target = '_blank';
+    openLink.rel = 'noopener';
+    openLink.textContent = '開啟 PDF';
+    Object.assign(openLink.style, {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      minHeight: '48px',
+      padding: '12px 16px',
+      borderRadius: '12px',
+      background: '#2563eb',
+      color: '#ffffff',
+      fontSize: '16px',
+      fontWeight: '600',
+      textDecoration: 'none'
+    });
+
+    actions.appendChild(openLink);
+
+    if (showShare && shareFile) {
+      const shareButton = document.createElement('button');
+      shareButton.type = 'button';
+      shareButton.textContent = '分享或儲存 PDF';
+      Object.assign(shareButton.style, {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minHeight: '48px',
+        padding: '12px 16px',
+        borderRadius: '12px',
+        border: '1px solid #cbd5e1',
+        background: '#ffffff',
+        color: '#0f172a',
+        fontSize: '16px',
+        fontWeight: '600',
+        cursor: 'pointer'
+      });
+
+      shareButton.addEventListener('click', async () => {
+        try {
+          await navigator.share({
+            files: [shareFile],
+            title: filename
+          });
+        } catch (error) {
+          if (error?.name !== 'AbortError') {
+            console.error('[PDF] failed');
+            console.error(error);
+          }
+        }
+      });
+
+      actions.appendChild(shareButton);
+    }
+
+    const closeButton = document.createElement('button');
+    closeButton.type = 'button';
+    closeButton.textContent = '關閉';
+    Object.assign(closeButton.style, {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      minHeight: '44px',
+      padding: '10px 16px',
+      border: '0',
+      borderRadius: '12px',
+      background: 'transparent',
+      color: '#64748b',
+      fontSize: '15px',
+      cursor: 'pointer'
+    });
+
+    closeButton.addEventListener('click', () => {
+      this.hidePdfReadyModal(true);
+    });
+
+    overlay.addEventListener('click', (event) => {
+      if (event.target === overlay) {
+        this.hidePdfReadyModal(true);
+      }
+    });
+
+    actions.appendChild(closeButton);
+    panel.appendChild(title);
+    panel.appendChild(actions);
+    overlay.appendChild(panel);
+    document.body.appendChild(overlay);
+
+    const revokeTimer = setTimeout(() => {
+      this.revokeBlobUrl(blobUrl);
+    }, 10 * 60 * 1000);
+
+    this.pdfModalState = {
+      blobUrl,
+      revokeTimer,
+      shareFile,
+      overlay
+    };
+  },
+
+  async handlePdfDownload(button) {
+    if (button?.disabled) return;
+    await this.downloadPdf({ triggerButton: button });
   },
 
   getFilename(docType) {
@@ -608,17 +760,16 @@ const Download = {
     }
   },
 
-  openPdfBlobUrl(blobUrl, pendingWindow = null) {
-    // iOS Safari 對「非同步完成後再開新視窗」限制很嚴格。
-    // 優先沿用點擊當下已開啟的視窗；若遭封鎖，直接在目前分頁開啟 PDF，
-    // 使用者可透過 Safari 分享選單選擇「儲存到檔案」。
+  openPdfBlobUrl(blobUrl) {
     try {
-      if (pendingWindow && !pendingWindow.closed) {
-        pendingWindow.location.href = blobUrl;
-        return true;
-      }
-
-      window.location.href = blobUrl;
+      const anchor = document.createElement('a');
+      anchor.href = blobUrl;
+      anchor.target = '_blank';
+      anchor.rel = 'noopener';
+      anchor.style.display = 'none';
+      document.body.appendChild(anchor);
+      anchor.click();
+      document.body.removeChild(anchor);
       return true;
     } catch (error) {
       console.warn('[Download] 無法開啟 PDF Blob URL：', error);
@@ -626,76 +777,49 @@ const Download = {
     }
   },
 
-  async deliverIosPdf(blob, filename, pendingWindow = null) {
-    let file = null;
+  createSharePdfFile(blob, filename) {
     try {
-      file = new File([blob], filename, { type: 'application/pdf' });
+      return new File([blob], filename, { type: 'application/pdf' });
     } catch (error) {
-      console.warn('[Download] iOS File 建立失敗，改用 PDF 預覽：', error);
+      console.warn('[Download] 無法建立 PDF File 物件：', error);
+      return null;
     }
+  },
 
-    if (file && this.canSharePdfFile(file)) {
-      try {
-        await navigator.share({
-          files: [file],
-          title: filename,
-          text: 'SLawFree 產生的 PDF 文件'
-        });
-        if (pendingWindow && !pendingWindow.closed) pendingWindow.close();
-        return;
-      } catch (error) {
-        if (error && error.name === 'AbortError') {
-          if (pendingWindow && !pendingWindow.closed) pendingWindow.close();
-          return;
-        }
-        console.warn('[Download] iOS 分享失敗，改為開啟 PDF 預覽：', error);
-      }
-    }
+  deliverIosPdf(blob, filename) {
+    const shareFile = this.createSharePdfFile(blob, filename);
+    const showShare = Boolean(shareFile && this.canSharePdfFile(shareFile));
 
-    const blobUrl = URL.createObjectURL(blob);
-    const opened = this.openPdfBlobUrl(blobUrl, pendingWindow);
-    if (!opened) {
-      this.revokeBlobUrl(blobUrl);
-      throw new Error('Safari 無法開啟 PDF 預覽');
-    }
-
-    // iOS 讀取 Blob URL 可能需要較久，延後 30 分鐘再釋放。
-    this.scheduleRevokeBlobUrl(blobUrl, 30 * 60 * 1000);
+    this.showPdfReadyModal(blob, filename, {
+      showShare,
+      shareFile: showShare ? shareFile : null
+    });
   },
 
   deliverAndroidPdf(blob, filename) {
-    this.downloadBlobWithAnchor(blob, filename);
+    try {
+      this.downloadBlobWithAnchor(blob, filename);
+    } catch (error) {
+      console.warn('[Download] Android anchor download failed, showing open link modal:', error);
+      this.showPdfReadyModal(blob, filename, { showShare: false });
+    }
   },
 
-  async deliverMobilePdf(blob, filename, pendingWindow = null) {
+  async deliverMobilePdf(blob, filename) {
     if (this.isIOSDevice()) {
-      await this.deliverIosPdf(blob, filename, pendingWindow);
+      this.deliverIosPdf(blob, filename);
       return;
     }
 
     if (this.isAndroidDevice()) {
-      try {
-        this.deliverAndroidPdf(blob, filename);
-        if (pendingWindow && !pendingWindow.closed) pendingWindow.close();
-        return;
-      } catch (error) {
-        console.warn('[Download] Android anchor download failed, opening Blob URL:', error);
-        const blobUrl = URL.createObjectURL(blob);
-        const opened = this.openPdfBlobUrl(blobUrl, pendingWindow);
-        if (!opened) {
-          this.revokeBlobUrl(blobUrl);
-          throw error;
-        }
-        this.scheduleRevokeBlobUrl(blobUrl, 10 * 60 * 1000);
-        return;
-      }
+      this.deliverAndroidPdf(blob, filename);
+      return;
     }
 
     this.downloadBlobWithAnchor(blob, filename);
-    if (pendingWindow && !pendingWindow.closed) pendingWindow.close();
   },
 
-  async downloadPdf(pendingWindow = null) {
+  async downloadPdf(options = {}) {
     if (typeof html2canvas === 'undefined') {
       throw new Error('html2canvas 尚未載入');
     }
@@ -709,7 +833,6 @@ const Download = {
     ) {
       const validation = Forms.validateBeforeDownload();
       if (!validation.valid) {
-        if (pendingWindow && !pendingWindow.closed) pendingWindow.close();
         Forms.focusFirstError(validation.errors);
         return;
       }
@@ -719,9 +842,10 @@ const Download = {
     const element = this.getPreviewElement();
 
     if (!paper || !element) {
-      if (pendingWindow && !pendingWindow.closed) pendingWindow.close();
       throw new Error('找不到文件預覽內容');
     }
+
+    console.log('[PDF] preview found');
 
     const docType =
       typeof Router !== 'undefined' && Router.currentDoc
@@ -736,6 +860,8 @@ const Download = {
 
     try {
       await this.waitForLayout();
+      console.log('[PDF] rendering started');
+
       let pdf = null;
       let blob = null;
 
@@ -759,6 +885,8 @@ const Download = {
         throw new Error('產生的 PDF 為空白檔案');
       }
 
+      console.log('[PDF] blob created');
+
       if (!this.isMobileDevice()) {
         if (pdf) {
           pdf.save(filename);
@@ -766,8 +894,14 @@ const Download = {
           this.downloadBlobWithAnchor(blob, filename);
         }
       } else {
-        await this.deliverMobilePdf(blob, filename, pendingWindow);
+        await this.deliverMobilePdf(blob, filename);
       }
+
+      console.log('[PDF] ready');
+    } catch (error) {
+      console.error('[PDF] failed');
+      console.error(error);
+      throw error;
     } finally {
       this.restorePaperAfterExport(paperState);
       this.setDownloadButtonsLoading(buttons, false);
@@ -777,8 +911,14 @@ const Download = {
 
 window.Download = Download;
 
-function handlePdfDownload(event) {
-  return Download.handlePdfDownload(event);
+async function handlePdfDownload(button) {
+  return Download.handlePdfDownload(button);
 }
 
 window.handlePdfDownload = handlePdfDownload;
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => Download.init());
+} else {
+  Download.init();
+}
