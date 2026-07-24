@@ -10,10 +10,11 @@
 
   .sidebar__brand .brand-logo-image,
   .sidebar__brand .brand-home-link img,
+  .sidebar__brand .sidebar-logo img,
   .sidebar__brand img {
     max-width: 220px;
     width: auto;
-    height: 48px;
+    height: 42px;
     max-height: none;
     object-fit: contain;
     display: block;
@@ -23,11 +24,11 @@
   .sidebar__tagline,
   .sidebar-title,
   .sidebar__title {
-    margin: 0 0 10px;
+    margin: 0 0 3px;
     font-size: 16px;
     font-weight: 700;
-    color: #0F172A;
-    line-height: 1.45;
+    color: #0f172a;
+    line-height: 1.3;
     text-align: center;
   }
 
@@ -36,7 +37,7 @@
   .sidebar__subtitle {
     margin: 0;
     font-size: 13px;
-    line-height: 1.75;
+    line-height: 1.4;
     color: #64748b;
     text-align: center;
   }
@@ -53,24 +54,28 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 14px 18px;
+    padding: 8px 18px 10px;
     border-bottom: 1px solid #e5e7eb;
     box-sizing: border-box;
   }
 
   .sidebar__brand > .brand-home-link,
   .sidebar__brand > .sidebar-logo {
-    margin: 0 auto 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin: 0 auto 4px;
   }
 
   .sidebar__tagline,
   .sidebar-title,
   .sidebar__title {
-    margin: 0 0 10px;
+    margin: 0 0 3px;
     font-size: 16px;
     font-weight: 700;
-    color: #0F172A;
-    line-height: 1.45;
+    color: #0f172a;
+    line-height: 1.3;
     text-align: center;
   }
 
@@ -79,7 +84,7 @@
   .sidebar__subtitle {
     margin: 0;
     font-size: 13px;
-    line-height: 1.75;
+    line-height: 1.4;
     color: #64748b;
     text-align: center;
   }
