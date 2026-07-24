@@ -5,29 +5,29 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>slawfree 免費法律文件快速產生器｜支付命令、本票裁定、離婚協議書</title>
+  <title>免費法律文件快速產生器｜SLawFree</title>
 
   <meta name="description"
-        content="slawfree 免費法律文件快速產生器，支援支付命令、本票裁定、離婚協議書等法律文件，免註冊、免登入、免安裝，一鍵下載 PDF。">
+        content="SLawFree 提供免費法律文件快速生成工具，支援支付命令、本票、本票裁定、借據及離婚協議書，即時預覽、免費下載 PDF。">
 
   <meta name="keywords"
-        content="slawfree,支付命令,本票裁定,離婚協議書,法律文件,免費法律文件,法律文件生成器,PDF">
+        content="slawfree,支付命令,本票,本票裁定,借據,離婚協議書,法律文件,免費法律文件,法律文件生成器,PDF">
 
   <meta name="author" content="slawfree">
   <meta name="robots" content="index,follow">
   <link rel="canonical" href="https://slawfree.com/">
 
-  <meta property="og:title" content="slawfree 免費法律文件快速產生器">
+  <meta property="og:title" content="免費法律文件快速產生器｜SLawFree">
   <meta property="og:description"
-        content="快速生成法律文件，簡單、免費、一鍵下載。支援支付命令、本票裁定、離婚協議書。">
+        content="SLawFree 提供免費法律文件快速生成工具，支援支付命令、本票、本票裁定、借據及離婚協議書，即時預覽、免費下載 PDF。">
   <meta property="og:url" content="https://slawfree.com/">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="zh_TW">
 
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="slawfree 免費法律文件快速產生器">
+  <meta name="twitter:title" content="免費法律文件快速產生器｜SLawFree">
   <meta name="twitter:description"
-        content="快速生成法律文件，簡單、免費、一鍵下載。支援支付命令、本票裁定、離婚協議書。">
+        content="SLawFree 提供免費法律文件快速生成工具，支援支付命令、本票、本票裁定、借據及離婚協議書，即時預覽、免費下載 PDF。">
 
   <!-- Google AdSense -->
   <script async
@@ -35,6 +35,7 @@
     crossorigin="anonymous"></script>
 
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/home.css">
   <link rel="stylesheet" href="css/form.css">
   <link rel="stylesheet" href="css/wizard.css">
   <link rel="stylesheet" href="css/preview.css">
@@ -43,7 +44,173 @@
 </head>
 
 <body>
-  <div class="app">
+  <div class="home-view" id="homeView">
+    <section class="home-hero">
+      <div class="home-hero__inner">
+        <div class="home-logo home-animate">slawfree</div>
+        <h1 class="home-hero__title home-animate home-animate--delay-1">免費法律文件快速產生器</h1>
+        <p class="home-hero__subtitle home-animate home-animate--delay-2">
+          免費建立常用法律文件，<br>免註冊、即時預覽、下載 PDF。
+        </p>
+        <p class="home-hero__tagline home-animate home-animate--delay-3">讓法律文件製作更簡單、更快速。</p>
+        <button class="btn btn--primary home-hero__cta home-animate home-animate--delay-4" type="button" id="homeStartBtn">立即開始</button>
+      </div>
+    </section>
+
+    <section class="home-section home-reveal" aria-labelledby="homeDocsTitle">
+      <div class="home-container">
+        <h2 class="home-section__title" id="homeDocsTitle">熱門法律文件</h2>
+        <p class="home-section__subtitle">選擇您需要的文件，立即開始填寫並預覽</p>
+        <div class="home-grid home-grid--docs">
+          <button class="home-card home-card--doc" type="button" data-home-doc="payment-order">
+            <h3 class="home-card__title">支付命令</h3>
+            <p class="home-card__text">快速建立法院支付命令文件。</p>
+          </button>
+          <button class="home-card home-card--doc" type="button" data-home-doc="promissory-bill">
+            <h3 class="home-card__title">本票</h3>
+            <p class="home-card__text">線上製作正式本票。</p>
+          </button>
+          <button class="home-card home-card--doc" type="button" data-home-doc="promissory-note">
+            <h3 class="home-card__title">本票裁定</h3>
+            <p class="home-card__text">快速建立本票裁定聲請文件。</p>
+          </button>
+          <button class="home-card home-card--doc" type="button" data-home-doc="iou">
+            <h3 class="home-card__title">借據</h3>
+            <p class="home-card__text">建立完整借據並下載 PDF。</p>
+          </button>
+          <button class="home-card home-card--doc" type="button" data-home-doc="divorce">
+            <h3 class="home-card__title">離婚協議書</h3>
+            <p class="home-card__text">快速建立離婚協議書。</p>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="home-section home-reveal" aria-labelledby="homeStepsTitle">
+      <div class="home-container">
+        <h2 class="home-section__title" id="homeStepsTitle">使用流程</h2>
+        <p class="home-section__subtitle">四個步驟，快速完成法律文件</p>
+        <div class="home-grid home-grid--steps">
+          <div class="home-step">
+            <div class="home-step__num">①</div>
+            <p class="home-step__label">選擇文件</p>
+          </div>
+          <div class="home-step">
+            <div class="home-step__num">②</div>
+            <p class="home-step__label">填寫資料</p>
+          </div>
+          <div class="home-step">
+            <div class="home-step__num">③</div>
+            <p class="home-step__label">即時預覽</p>
+          </div>
+          <div class="home-step">
+            <div class="home-step__num">④</div>
+            <p class="home-step__label">下載 PDF</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="home-section home-reveal" aria-labelledby="homeFeaturesTitle">
+      <div class="home-container">
+        <h2 class="home-section__title" id="homeFeaturesTitle">為什麼選擇 SLawFree</h2>
+        <p class="home-section__subtitle">簡單、快速、免費的法律文件生成體驗</p>
+        <div class="home-grid home-grid--features">
+          <article class="home-card">
+            <h3 class="home-card__title">免費使用</h3>
+            <p class="home-card__text">目前所有功能皆可免費使用。</p>
+          </article>
+          <article class="home-card">
+            <h3 class="home-card__title">免註冊</h3>
+            <p class="home-card__text">無需建立帳號即可開始。</p>
+          </article>
+          <article class="home-card">
+            <h3 class="home-card__title">即時預覽</h3>
+            <p class="home-card__text">輸入資料立即更新正式文件。</p>
+          </article>
+          <article class="home-card">
+            <h3 class="home-card__title">PDF 下載</h3>
+            <p class="home-card__text">快速下載正式 A4 PDF。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="home-section home-reveal" aria-labelledby="homeListTitle">
+      <div class="home-container">
+        <h2 class="home-section__title" id="homeListTitle">目前提供的法律文件</h2>
+        <div class="home-doc-list">
+          <p class="home-doc-list__item"><span class="home-doc-list__check" aria-hidden="true">✔</span>支付命令</p>
+          <p class="home-doc-list__item"><span class="home-doc-list__check" aria-hidden="true">✔</span>本票</p>
+          <p class="home-doc-list__item"><span class="home-doc-list__check" aria-hidden="true">✔</span>本票裁定</p>
+          <p class="home-doc-list__item"><span class="home-doc-list__check" aria-hidden="true">✔</span>借據</p>
+          <p class="home-doc-list__item"><span class="home-doc-list__check" aria-hidden="true">✔</span>離婚協議書</p>
+          <p class="home-doc-list__more">更多法律文件持續新增中……</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="home-section home-reveal" aria-labelledby="homeFaqTitle">
+      <div class="home-container">
+        <h2 class="home-section__title" id="homeFaqTitle">常見問題</h2>
+        <p class="home-section__subtitle">關於 SLawFree 的常見疑問</p>
+        <div class="home-faq">
+          <div class="home-faq__item">
+            <button class="home-faq__question" type="button" aria-expanded="false">
+              <span>SLawFree 免費嗎？</span>
+              <span class="home-faq__icon" aria-hidden="true">+</span>
+            </button>
+            <div class="home-faq__answer">目前所有文件皆可免費使用。</div>
+          </div>
+          <div class="home-faq__item">
+            <button class="home-faq__question" type="button" aria-expanded="false">
+              <span>需要登入才能使用嗎？</span>
+              <span class="home-faq__icon" aria-hidden="true">+</span>
+            </button>
+            <div class="home-faq__answer">不用。</div>
+          </div>
+          <div class="home-faq__item">
+            <button class="home-faq__question" type="button" aria-expanded="false">
+              <span>文件具有法律效力嗎？</span>
+              <span class="home-faq__icon" aria-hidden="true">+</span>
+            </button>
+            <div class="home-faq__answer">本系統提供法律文件快速生成工具，實際法律效力仍須依個案及法律規定判斷。</div>
+          </div>
+          <div class="home-faq__item">
+            <button class="home-faq__question" type="button" aria-expanded="false">
+              <span>我的資料會被保存嗎？</span>
+              <span class="home-faq__icon" aria-hidden="true">+</span>
+            </button>
+            <div class="home-faq__answer">目前填寫資料僅用於產生文件，不會主動建立會員資料。</div>
+          </div>
+          <div class="home-faq__item">
+            <button class="home-faq__question" type="button" aria-expanded="false">
+              <span>可以下載 PDF 嗎？</span>
+              <span class="home-faq__icon" aria-hidden="true">+</span>
+            </button>
+            <div class="home-faq__answer">可以，目前所有文件皆支援 PDF。</div>
+          </div>
+          <div class="home-faq__item">
+            <button class="home-faq__question" type="button" aria-expanded="false">
+              <span>未來會新增更多文件嗎？</span>
+              <span class="home-faq__icon" aria-hidden="true">+</span>
+            </button>
+            <div class="home-faq__answer">會，SLawFree 將持續新增更多法律文件與實用工具。</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="home-disclaimer home-reveal" aria-label="免責聲明">
+      <div class="home-container">
+        <div class="home-disclaimer__box">
+          本系統僅提供法律文件快速生成工具，如案件涉及高額爭議或特殊法律問題，仍建議諮詢專業律師，尋求專業協助。
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="app app-view app-view--hidden" id="appView">
     <!-- 左側 Sidebar -->
     <aside class="sidebar" id="sidebar">
       <div class="sidebar__brand">
@@ -242,6 +409,7 @@
   <script src="js/wizard.js"></script>
   <script src="js/router.js"></script>
   <script src="js/download.js?v=20260724-5"></script>
+  <script src="js/home.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

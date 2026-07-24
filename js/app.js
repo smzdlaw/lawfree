@@ -1,16 +1,22 @@
 /**
  * 應用程式入口
  */
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener('DOMContentLoaded', () => {
+  Home.init();
+});
+
+window.initApp = async function initApp() {
+  if (window.appInitialized) return;
+  window.appInitialized = true;
+
   initSidebarToggle();
   initViewTabs();
   Preview.init();
-
   Router.init();
   Wizard.init(1);
   Download.init();
   await Forms.init('payment-order');
-});
+};
 
 function initSidebarToggle() {
   const menuToggle = document.getElementById('menuToggle');
@@ -59,4 +65,4 @@ function initViewTabs() {
   });
 
   setView('form');
-}
+};
