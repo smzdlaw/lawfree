@@ -89,7 +89,7 @@ button {
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 14px 20px;
+  padding: 20px 18px;
   border-bottom: 1px solid var(--color-border);
   box-sizing: border-box;
   width: 100%;
@@ -106,7 +106,7 @@ button {
   align-items: center;
   width: 100%;
   max-width: 220px;
-  margin: 0 auto;
+  margin: 0 auto 12px;
 }
 
 .sidebar__brand picture {
@@ -122,7 +122,8 @@ button {
 .sidebar__brand img {
   max-width: 220px;
   width: auto;
-  height: auto;
+  height: 56px;
+  max-height: none;
   object-fit: contain;
   display: block;
   margin: 0 auto;
@@ -167,18 +168,20 @@ a.sidebar__logo {
   opacity: 0.72;
 }
 
-.sidebar__tagline {
-  margin: 14px 0 0;
+.sidebar__tagline,
+.sidebar-title {
+  margin: 0 0 12px;
   font-size: 16px;
   font-weight: 700;
   color: #0F172A;
-  line-height: 1.45;
+  line-height: 1.35;
 }
 
-.sidebar__desc {
-  margin: 10px 0 0;
+.sidebar__desc,
+.sidebar-subtitle {
+  margin: 0;
   font-size: 13px;
-  line-height: 1.7;
+  line-height: 1.8;
   color: #64748B;
 }
 

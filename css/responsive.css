@@ -13,23 +13,27 @@
   .sidebar__brand img {
     max-width: 220px;
     width: auto;
-    height: auto;
+    height: 48px;
+    max-height: none;
     object-fit: contain;
     display: block;
     margin: 0 auto;
   }
 
-  .sidebar__tagline {
-    margin-top: 14px;
+  .sidebar__tagline,
+  .sidebar-title {
+    margin: 0 0 12px;
     font-size: 16px;
     font-weight: 700;
     color: #0F172A;
+    line-height: 1.35;
   }
 
-  .sidebar__desc {
-    margin-top: 10px;
+  .sidebar__desc,
+  .sidebar-subtitle {
+    margin: 0;
     font-size: 13px;
-    line-height: 1.7;
+    line-height: 1.8;
     color: #64748B;
   }
 }
@@ -44,7 +48,7 @@
   .sidebar-brand,
   .brand {
     min-height: var(--app-top-area-height);
-    padding: 14px 20px;
+    padding: 20px 18px;
   }
 
   .main__header-bar {
@@ -100,7 +104,7 @@
   .brand {
     min-height: auto;
     height: auto;
-    padding: 24px 20px 18px;
+    padding: 20px 18px;
   }
 
   .sidebar__brand .brand-logo-image,
@@ -108,23 +112,27 @@
   .sidebar__brand img {
     max-width: 220px;
     width: auto;
-    height: auto;
+    height: 40px;
+    max-height: none;
     object-fit: contain;
     display: block;
     margin: 0 auto;
   }
 
-  .sidebar__tagline {
-    margin-top: 14px;
+  .sidebar__tagline,
+  .sidebar-title {
+    margin: 0 0 12px;
     font-size: 16px;
     font-weight: 700;
     color: #0F172A;
+    line-height: 1.35;
   }
 
-  .sidebar__desc {
-    margin-top: 10px;
+  .sidebar__desc,
+  .sidebar-subtitle {
+    margin: 0;
     font-size: 13px;
-    line-height: 1.7;
+    line-height: 1.8;
     color: #64748B;
   }
 
@@ -384,8 +392,9 @@
 
 @media (max-width: 480px) {
   .sidebar__brand,
+  .sidebar-brand,
   .brand {
-    padding: 24px 20px 18px;
+    padding: 20px 18px;
   }
 
   .sidebar__logo {
