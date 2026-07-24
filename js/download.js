@@ -42,16 +42,17 @@ const Download = {
 
   pdfModalState: null,
 
-  hidePdfReadyModal(revokeNow = true) {
+  hidePdfReadyModal(revokeNow = false) {
     const state = this.pdfModalState;
     if (!state) return;
 
-    if (state.revokeTimer) {
-      clearTimeout(state.revokeTimer);
-    }
-
-    if (revokeNow && state.blobUrl) {
-      this.revokeBlobUrl(state.blobUrl);
+    if (revokeNow) {
+      if (state.revokeTimer) {
+        clearTimeout(state.revokeTimer);
+      }
+      if (state.blobUrl) {
+        this.revokeBlobUrl(state.blobUrl);
+      }
     }
 
     state.overlay?.remove();
@@ -93,13 +94,27 @@ const Download = {
       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif'
     });
 
+    panel.addEventListener('click', (event) => {
+      event.stopPropagation();
+    });
+
     const title = document.createElement('h2');
     title.textContent = 'PDF 已產生完成';
     Object.assign(title.style, {
-      margin: '0 0 16px',
+      margin: '0 0 12px',
       fontSize: '20px',
       fontWeight: '700',
       color: '#0f172a',
+      textAlign: 'center'
+    });
+
+    const hint = document.createElement('p');
+    hint.textContent = '若「開啟 PDF」沒有反應，請使用「分享或儲存 PDF」並選擇「儲存到檔案」。';
+    Object.assign(hint.style, {
+      margin: '0 0 16px',
+      fontSize: '14px',
+      lineHeight: '1.6',
+      color: '#64748b',
       textAlign: 'center'
     });
 
@@ -110,26 +125,46 @@ const Download = {
       gap: '12px'
     });
 
-    const openLink = document.createElement('a');
-    openLink.href = blobUrl;
-    openLink.target = '_blank';
-    openLink.rel = 'noopener';
-    openLink.textContent = '開啟 PDF';
-    Object.assign(openLink.style, {
+    const openButton = document.createElement('button');
+    openButton.type = 'button';
+    openButton.id = 'openGeneratedPdfBtn';
+    openButton.textContent = '開啟 PDF';
+    Object.assign(openButton.style, {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
       minHeight: '48px',
       padding: '12px 16px',
       borderRadius: '12px',
+      border: '0',
       background: '#2563eb',
       color: '#ffffff',
       fontSize: '16px',
       fontWeight: '600',
-      textDecoration: 'none'
+      cursor: 'pointer'
     });
 
-    actions.appendChild(openLink);
+    openButton.addEventListener('click', (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+
+      console.log('[PDF] open button clicked', blobUrl);
+
+      try {
+        window.location.assign(blobUrl);
+      } catch (error) {
+        console.error('[PDF] blob navigation failed', error);
+
+        try {
+          window.location.href = blobUrl;
+        } catch (fallbackError) {
+          console.error('[PDF] open fallback failed', fallbackError);
+          alert('無法直接開啟 PDF，請改用「分享或儲存 PDF」。');
+        }
+      }
+    });
+
+    actions.appendChild(openButton);
 
     if (showShare && shareFile) {
       const shareButton = document.createElement('button');
@@ -150,7 +185,10 @@ const Download = {
         cursor: 'pointer'
       });
 
-      shareButton.addEventListener('click', async () => {
+      shareButton.addEventListener('click', async (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+
         try {
           await navigator.share({
             files: [shareFile],
@@ -184,24 +222,27 @@ const Download = {
       cursor: 'pointer'
     });
 
-    closeButton.addEventListener('click', () => {
-      this.hidePdfReadyModal(true);
+    closeButton.addEventListener('click', (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      this.hidePdfReadyModal(false);
     });
 
     overlay.addEventListener('click', (event) => {
       if (event.target === overlay) {
-        this.hidePdfReadyModal(true);
+        this.hidePdfReadyModal(false);
       }
     });
 
     actions.appendChild(closeButton);
     panel.appendChild(title);
+    panel.appendChild(hint);
     panel.appendChild(actions);
     overlay.appendChild(panel);
     document.body.appendChild(overlay);
 
     const revokeTimer = setTimeout(() => {
-      this.revokeBlobUrl(blobUrl);
+      URL.revokeObjectURL(blobUrl);
     }, 10 * 60 * 1000);
 
     this.pdfModalState = {
