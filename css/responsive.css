@@ -43,14 +43,15 @@
   .sidebar-brand,
   .sidebar-header,
   .brand {
-    min-height: auto;
+    min-height: 0;
     height: auto;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 16px 18px;
-    border-bottom: 1px solid #E5E7EB;
+    padding: 12px 18px;
+    border-bottom: 1px solid #e5e7eb;
+    box-sizing: border-box;
   }
 
   .sidebar__brand .sidebar-logo,
@@ -77,7 +78,7 @@
   }
 
   .main__header-bar {
-    min-height: auto;
+    min-height: 0;
     height: auto;
     box-sizing: border-box;
     padding: 14px 32px 12px;

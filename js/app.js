@@ -3,6 +3,7 @@
  */
 document.addEventListener('DOMContentLoaded', async () => {
   initSidebarToggle();
+  initSidebarBrandHeightSync();
   initViewTabs();
   Preview.init();
   Router.init();
@@ -17,6 +18,36 @@ document.addEventListener('DOMContentLoaded', async () => {
     updateHistory: needsUrlReplace ? 'replace' : false
   });
 });
+
+function initSidebarBrandHeightSync() {
+  const rightHeader = document.querySelector('.main__header-bar');
+  const sidebarBrand = document.querySelector('.sidebar__brand');
+
+  if (!rightHeader || !sidebarBrand) return;
+
+  const DESKTOP_MIN_WIDTH = 769;
+
+  function syncSidebarBrandHeight() {
+    if (window.innerWidth >= DESKTOP_MIN_WIDTH) {
+      const height = Math.ceil(rightHeader.getBoundingClientRect().height);
+      sidebarBrand.style.height = `${height}px`;
+      sidebarBrand.style.minHeight = `${height}px`;
+    } else {
+      sidebarBrand.style.height = '';
+      sidebarBrand.style.minHeight = '';
+    }
+  }
+
+  syncSidebarBrandHeight();
+
+  if ('ResizeObserver' in window) {
+    const observer = new ResizeObserver(syncSidebarBrandHeight);
+    observer.observe(rightHeader);
+  }
+
+  window.addEventListener('resize', syncSidebarBrandHeight);
+  window.addEventListener('load', syncSidebarBrandHeight);
+}
 
 function initSidebarToggle() {
   const menuToggle = document.getElementById('menuToggle');
