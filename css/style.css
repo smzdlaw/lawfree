@@ -95,7 +95,6 @@ button {
   width: 100%;
   overflow: visible;
   flex-shrink: 0;
-  min-height: var(--app-top-area-height, auto);
 }
 
 .sidebar__brand .sidebar-logo,

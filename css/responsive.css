@@ -47,25 +47,26 @@
   .sidebar-brand,
   .sidebar-header,
   .brand {
-    min-height: 240px;
+    min-height: auto;
+    height: auto;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 24px;
+    padding: 16px 18px;
     border-bottom: 1px solid #E5E7EB;
   }
 
   .sidebar__brand .sidebar-logo,
   .sidebar__brand .brand-logo,
   .sidebar-logo {
-    margin: 0 auto 14px;
+    margin: 0 auto 8px;
   }
 
   .sidebar__tagline,
   .sidebar-title {
-    margin: 6px 0 10px;
-    font-size: 30px;
+    margin: 0 0 8px;
+    font-size: 16px;
     font-weight: 700;
     color: #0F172A;
     line-height: 1.35;
@@ -73,10 +74,10 @@
 
   .sidebar__desc,
   .sidebar-subtitle {
-    margin: 6px 0 0;
-    font-size: 15px;
-    line-height: 1.9;
-    color: #64748B;
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #6B7280;
   }
 
   .main__header-bar {
