@@ -7,14 +7,6 @@
   background: var(--color-bg);
 }
 
-.home-view--hidden {
-  display: none;
-}
-
-.app-view--hidden {
-  display: none;
-}
-
 .home-container {
   width: 100%;
   max-width: 1120px;
@@ -90,11 +82,15 @@
 }
 
 .home-hero__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   min-width: 180px;
   padding: 14px 36px;
   font-size: 18px;
   font-weight: 600;
   border-radius: var(--radius-full);
+  text-decoration: none;
   transition: background var(--transition), box-shadow var(--transition), transform var(--transition);
 }
 
@@ -158,6 +154,9 @@
 
 .home-card--doc {
   cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
 }
 
 .home-card--doc:focus-visible {

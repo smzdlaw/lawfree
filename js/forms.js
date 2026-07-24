@@ -211,7 +211,7 @@ const Forms = {
 
   async loadConfig() {
     try {
-      const res = await fetch(`data/forms.json?v=${Date.now()}`, {
+      const res = await fetch(`../data/forms.json?v=${Date.now()}`, {
         cache: 'no-store'
       });
   

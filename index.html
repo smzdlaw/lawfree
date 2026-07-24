@@ -36,15 +36,10 @@
 
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/home.css">
-  <link rel="stylesheet" href="css/form.css">
-  <link rel="stylesheet" href="css/wizard.css">
-  <link rel="stylesheet" href="css/preview.css">
-  <link rel="stylesheet" href="css/print.css">
-  <link rel="stylesheet" href="css/responsive.css?v=20260724-5">
 </head>
 
 <body>
-  <div class="home-view" id="homeView">
+  <div class="home-view">
     <section class="home-hero">
       <div class="home-hero__inner">
         <div class="home-logo home-animate">slawfree</div>
@@ -53,7 +48,7 @@
           免費建立常用法律文件，<br>免註冊、即時預覽、下載 PDF。
         </p>
         <p class="home-hero__tagline home-animate home-animate--delay-3">讓法律文件製作更簡單、更快速。</p>
-        <button class="btn btn--primary home-hero__cta home-animate home-animate--delay-4" type="button" id="homeStartBtn">立即開始</button>
+        <a class="btn btn--primary home-hero__cta home-animate home-animate--delay-4" href="/app/">立即開始</a>
       </div>
     </section>
 
@@ -62,26 +57,26 @@
         <h2 class="home-section__title" id="homeDocsTitle">熱門法律文件</h2>
         <p class="home-section__subtitle">選擇您需要的文件，立即開始填寫並預覽</p>
         <div class="home-grid home-grid--docs">
-          <button class="home-card home-card--doc" type="button" data-home-doc="payment-order">
+          <a class="home-card home-card--doc" href="/app/?doc=payment-order">
             <h3 class="home-card__title">支付命令</h3>
             <p class="home-card__text">快速建立法院支付命令文件。</p>
-          </button>
-          <button class="home-card home-card--doc" type="button" data-home-doc="promissory-bill">
+          </a>
+          <a class="home-card home-card--doc" href="/app/?doc=promissory-bill">
             <h3 class="home-card__title">本票</h3>
             <p class="home-card__text">線上製作正式本票。</p>
-          </button>
-          <button class="home-card home-card--doc" type="button" data-home-doc="promissory-note">
+          </a>
+          <a class="home-card home-card--doc" href="/app/?doc=promissory-note">
             <h3 class="home-card__title">本票裁定</h3>
             <p class="home-card__text">快速建立本票裁定聲請文件。</p>
-          </button>
-          <button class="home-card home-card--doc" type="button" data-home-doc="iou">
+          </a>
+          <a class="home-card home-card--doc" href="/app/?doc=iou">
             <h3 class="home-card__title">借據</h3>
             <p class="home-card__text">建立完整借據並下載 PDF。</p>
-          </button>
-          <button class="home-card home-card--doc" type="button" data-home-doc="divorce">
+          </a>
+          <a class="home-card home-card--doc" href="/app/?doc=divorce">
             <h3 class="home-card__title">離婚協議書</h3>
             <p class="home-card__text">快速建立離婚協議書。</p>
-          </button>
+          </a>
         </div>
       </div>
     </section>
@@ -107,45 +102,6 @@
             <div class="home-step__num">④</div>
             <p class="home-step__label">下載 PDF</p>
           </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="home-section home-reveal" aria-labelledby="homeFeaturesTitle">
-      <div class="home-container">
-        <h2 class="home-section__title" id="homeFeaturesTitle">為什麼選擇 SLawFree</h2>
-        <p class="home-section__subtitle">簡單、快速、免費的法律文件生成體驗</p>
-        <div class="home-grid home-grid--features">
-          <article class="home-card">
-            <h3 class="home-card__title">免費使用</h3>
-            <p class="home-card__text">目前所有功能皆可免費使用。</p>
-          </article>
-          <article class="home-card">
-            <h3 class="home-card__title">免註冊</h3>
-            <p class="home-card__text">無需建立帳號即可開始。</p>
-          </article>
-          <article class="home-card">
-            <h3 class="home-card__title">即時預覽</h3>
-            <p class="home-card__text">輸入資料立即更新正式文件。</p>
-          </article>
-          <article class="home-card">
-            <h3 class="home-card__title">PDF 下載</h3>
-            <p class="home-card__text">快速下載正式 A4 PDF。</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="home-section home-reveal" aria-labelledby="homeListTitle">
-      <div class="home-container">
-        <h2 class="home-section__title" id="homeListTitle">目前提供的法律文件</h2>
-        <div class="home-doc-list">
-          <p class="home-doc-list__item"><span class="home-doc-list__check" aria-hidden="true">✔</span>支付命令</p>
-          <p class="home-doc-list__item"><span class="home-doc-list__check" aria-hidden="true">✔</span>本票</p>
-          <p class="home-doc-list__item"><span class="home-doc-list__check" aria-hidden="true">✔</span>本票裁定</p>
-          <p class="home-doc-list__item"><span class="home-doc-list__check" aria-hidden="true">✔</span>借據</p>
-          <p class="home-doc-list__item"><span class="home-doc-list__check" aria-hidden="true">✔</span>離婚協議書</p>
-          <p class="home-doc-list__more">更多法律文件持續新增中……</p>
         </div>
       </div>
     </section>
@@ -200,189 +156,12 @@
         </div>
       </div>
     </section>
-
-    <section class="home-disclaimer home-reveal" aria-label="免責聲明">
-      <div class="home-container">
-        <div class="home-disclaimer__box">
-          本系統僅提供法律文件快速生成工具，如案件涉及高額爭議或特殊法律問題，仍建議諮詢專業律師，尋求專業協助。
-        </div>
-      </div>
-    </section>
-  </div>
-
-  <div class="app app-view app-view--hidden" id="appView">
-    <!-- 左側 Sidebar -->
-    <aside class="sidebar" id="sidebar">
-      <div class="sidebar__brand">
-        <div class="sidebar__logo">slawfree</div>
-        <p class="sidebar__tagline">免費法律文件快速產生器</p>
-        <p class="sidebar__desc">快速生成法律文件，<br>簡單、免費、一鍵下載。</p>
-      </div>
-
-      <nav class="sidebar__nav" id="sidebarNav" aria-label="文件選單">
-        <button class="sidebar__item active" type="button" data-doc="payment-order" aria-label="選擇支付命令">
-          <svg class="sidebar__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-            <polyline points="14 2 14 8 20 8"/>
-            <line x1="16" y1="13" x2="8" y2="13"/>
-            <line x1="16" y1="17" x2="8" y2="17"/>
-          </svg>
-          <span class="sidebar__label">支付命令</span>
-        </button>
-        <button class="sidebar__item" type="button" data-doc="promissory-bill" aria-label="選擇本票">
-          <svg class="sidebar__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-            <polyline points="14 2 14 8 20 8"/>
-            <line x1="16" y1="13" x2="8" y2="13"/>
-            <line x1="16" y1="17" x2="8" y2="17"/>
-          </svg>
-          <span class="sidebar__label">本票</span>
-        </button>
-        <button class="sidebar__item" type="button" data-doc="promissory-note" aria-label="選擇本票裁定">
-          <svg class="sidebar__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-            <polyline points="14 2 14 8 20 8"/>
-            <line x1="16" y1="13" x2="8" y2="13"/>
-            <line x1="16" y1="17" x2="8" y2="17"/>
-          </svg>
-          <span class="sidebar__label">本票裁定</span>
-        </button>
-        <button class="sidebar__item" type="button" data-doc="divorce" aria-label="選擇離婚協議書">
-          <svg class="sidebar__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-            <polyline points="14 2 14 8 20 8"/>
-            <line x1="16" y1="13" x2="8" y2="13"/>
-            <line x1="16" y1="17" x2="8" y2="17"/>
-          </svg>
-          <span class="sidebar__label">離婚協議書</span>
-        </button>
-        <button class="sidebar__item" type="button" data-doc="iou" aria-label="選擇借據">
-          <svg class="sidebar__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-            <polyline points="14 2 14 8 20 8"/>
-            <line x1="16" y1="13" x2="8" y2="13"/>
-            <line x1="16" y1="17" x2="8" y2="17"/>
-          </svg>
-          <span class="sidebar__label">借據</span>
-        </button>
-      </nav>
-
-      <div class="sidebar__coming">
-        <span class="sidebar__coming-label">更多法律文件</span>
-        <span class="sidebar__coming-tag">Coming Soon</span>
-      </div>
-
-      <div class="sidebar__privacy">
-        <p class="sidebar__privacy-title">🔒 隱私保護</p>
-        <p class="sidebar__privacy-text">所有資料皆於瀏覽器本機處理，不會上傳至 slawfree 伺服器。</p>
-      </div>
-    </aside>
-
-    <div class="sidebar-overlay" id="sidebarOverlay"></div>
-
-    <!-- 主區域 -->
-    <main class="main">
-      <div class="main__header-bar">
-        <div class="main__toolbar">
-          <div class="main__mobile-head">
-            <button class="main__menu-btn" type="button" id="menuToggle" aria-label="開啟選單">
-              <span class="main__menu-icon" aria-hidden="true">☰</span>
-            </button>
-            <span class="main__mobile-brand">slawfree</span>
-          </div>
-
-          <div class="view-tabs" id="viewTabs" role="tablist" aria-label="檢視模式">
-            <button class="view-tab view-tab--active" type="button" role="tab" data-view="form" aria-selected="true" aria-label="切換至填寫模式">填寫</button>
-            <button class="view-tab" type="button" role="tab" data-view="preview" aria-selected="false" aria-label="切換至預覽模式">預覽</button>
-          </div>
-
-          <div class="main__toolbar-right">
-            <div class="main__actions">
-              <button class="btn btn--primary" type="button" id="downloadPdfBtn" aria-label="下載 PDF">
-                <svg class="btn__icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                  <polyline points="7 10 12 15 17 10"/>
-                  <line x1="12" y1="15" x2="12" y2="3"/>
-                </svg>
-                下載 PDF
-              </button>
-              <button class="btn btn--outline btn--disabled" type="button" disabled title="Coming Soon" aria-label="下載 Word（即將推出）">
-                下載 Word
-                <span class="btn__tag">Coming Soon</span>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <aside class="header-info" aria-label="使用提醒">
-          <span class="header-info__icon" aria-hidden="true">⚠️</span>
-          <p class="header-info__text">本系統僅提供一般法律文件快速生成服務，不構成法律意見。若案件涉及高額爭議、複雜法律關係或特殊情形，仍建議諮詢專業律師，尋求專業協助，以保障自身權益。</p>
-        </aside>
-      </div>
-
-      <div class="wizard" id="wizard">
-        <div class="wizard__track">
-          <div class="wizard__step active" data-step="1">
-            <div class="wizard__circle">1</div>
-            <span class="wizard__label">基本資料</span>
-          </div>
-          <div class="wizard__connector"></div>
-          <div class="wizard__step" data-step="2">
-            <div class="wizard__circle">2</div>
-            <span class="wizard__label">文件內容</span>
-          </div>
-          <div class="wizard__connector"></div>
-          <div class="wizard__step" data-step="3">
-            <div class="wizard__circle">3</div>
-            <span class="wizard__label">預覽確認</span>
-          </div>
-          <div class="wizard__connector"></div>
-          <div class="wizard__step" data-step="4">
-            <div class="wizard__circle">4</div>
-            <span class="wizard__label">完成</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="content">
-        <section class="content__form" id="formArea"></section>
-
-        <section class="content__preview content-panel--hidden" id="previewArea">
-          <div class="preview-wrapper">
-            <div class="preview-stage">
-              <div class="preview-paper" id="previewPaper">
-                <div class="preview-paper__inner">
-                  <p class="preview-paper__placeholder">文件預覽將在此顯示</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-      </div>
-
-      <div class="mobile-download-bar" id="mobileDownloadBar">
-        <div class="main__actions">
-          <button class="btn btn--primary" type="button" id="downloadPdfBtnMobile" aria-label="下載 PDF">
-            <svg class="btn__icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-              <polyline points="7 10 12 15 17 10"/>
-              <line x1="12" y1="15" x2="12" y2="3"/>
-            </svg>
-            下載 PDF
-          </button>
-          <button class="btn btn--outline btn--disabled" type="button" disabled title="Coming Soon" aria-label="下載 Word（即將推出）">
-            下載 Word
-            <span class="btn__tag">Coming Soon</span>
-          </button>
-        </div>
-      </div>
-    </main>
   </div>
 
   <footer class="site-footer">
     <p class="site-footer__brand">SLawFree｜免費法律文件快速生成工具</p>
     <nav class="site-footer__nav" aria-label="網站資訊">
-      <a href="index.html">首頁</a>
+      <a href="/">首頁</a>
       <a href="contact.html">聯絡我們</a>
       <a href="privacy.html">隱私權政策</a>
       <a href="terms.html">使用條款</a>
@@ -392,24 +171,6 @@
     <p class="site-footer__copy">最後更新：2026/07</p>
   </footer>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="js/template.js"></script>
-  <script src="templates/payment-order.js?v=20260723-1"></script>
-  <script src="templates/promissory-note.js?v=20260723-1"></script>
-  <script src="templates/divorce.js?v=20260723-1"></script>
-  <script src="templates/iou.js?v=20260724-1"></script>
-  <script src="templates/promissory-bill.js?v=20260724-2"></script>
-  <script src="js/utils.js"></script>
-  <script src="js/storage.js"></script>
-  <script src="js/validator.js"></script>
-  <script src="js/preview.js?v=20260724-5"></script>
-  <script src="js/forms.js"></script>
-  <script src="js/wizard.js"></script>
-  <script src="js/router.js"></script>
-  <script src="js/download.js?v=20260724-5"></script>
   <script src="js/home.js"></script>
-  <script src="js/app.js"></script>
 </body>
 </html>
