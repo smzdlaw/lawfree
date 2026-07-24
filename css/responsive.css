@@ -35,12 +35,35 @@
 }
 
 @media (min-width: 769px) {
+  :root {
+    /* toolbar 52 + header-info margin 12 + header-info ~61 + bar padding 24 */
+    --app-top-area-height: 149px;
+  }
+
+  .sidebar__brand,
+  .sidebar-brand,
+  .brand {
+    min-height: var(--app-top-area-height);
+    padding: 14px 20px;
+  }
+
+  .main__header-bar {
+    min-height: var(--app-top-area-height);
+  }
+
   .main__mobile-head {
     display: none;
   }
 
   .main__toolbar-right {
     margin-left: auto;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1200px) {
+  :root {
+    /* 較窄主欄：注意事項提示列可能換行為 3 行 */
+    --app-top-area-height: 172px;
   }
 }
 
@@ -70,6 +93,14 @@
 
   .sidebar-overlay.visible {
     display: block;
+  }
+
+  .sidebar__brand,
+  .sidebar-brand,
+  .brand {
+    min-height: auto;
+    height: auto;
+    padding: 24px 20px 18px;
   }
 
   .sidebar__brand .brand-logo-image,
