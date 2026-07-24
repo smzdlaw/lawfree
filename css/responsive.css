@@ -39,10 +39,6 @@
 }
 
 @media (min-width: 769px) {
-  :root {
-    --app-top-area-height: 240px;
-  }
-
   .sidebar__brand,
   .sidebar-brand,
   .sidebar-header,
@@ -81,16 +77,23 @@
   }
 
   .main__header-bar {
-    min-height: var(--app-top-area-height);
+    min-height: auto;
+    height: auto;
+    box-sizing: border-box;
+    padding: 14px 32px 12px;
+  }
+
+  .main__toolbar {
+    margin-bottom: 12px;
+  }
+
+  .header-info {
+    margin: 0;
   }
 
   .app .wizard {
-    margin-top: -10px;
+    margin-top: 16px;
     padding-bottom: 0;
-  }
-
-  .app .content {
-    padding-top: 16px;
   }
 
   .main__mobile-head {
@@ -99,12 +102,6 @@
 
   .main__toolbar-right {
     margin-left: auto;
-  }
-}
-
-@media (min-width: 769px) and (max-width: 1200px) {
-  :root {
-    --app-top-area-height: 240px;
   }
 }
 
