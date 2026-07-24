@@ -7,6 +7,28 @@
   .content {
     max-width: 100%;
   }
+
+  .sidebar__brand .brand-home-link {
+    max-height: 52px;
+  }
+
+  .sidebar__brand .brand-logo-image {
+    height: 52px;
+    width: auto;
+    object-fit: contain;
+  }
+
+  .sidebar__tagline {
+    font-size: 15px;
+    line-height: 1.45;
+    color: #0F172A;
+  }
+
+  .sidebar__desc {
+    font-size: 13px;
+    line-height: 1.7;
+    color: #64748B;
+  }
 }
 
 @media (min-width: 769px) {
@@ -48,7 +70,25 @@
   }
 
   .sidebar__brand .brand-home-link {
-    max-height: 60px;
+    max-height: 42px;
+  }
+
+  .sidebar__brand .brand-logo-image {
+    height: 42px;
+    width: auto;
+    object-fit: contain;
+  }
+
+  .sidebar__tagline {
+    font-size: 15px;
+    line-height: 1.45;
+    color: #0F172A;
+  }
+
+  .sidebar__desc {
+    font-size: 12px;
+    line-height: 1.7;
+    color: #64748B;
   }
 
   .main {
@@ -314,19 +354,11 @@
 
 @media (max-width: 480px) {
   .sidebar__brand {
-    padding: 14px 20px;
+    padding: 20px 24px;
   }
 
   .sidebar__logo {
     font-size: 24px;
-  }
-
-  .sidebar__tagline {
-    font-size: 18px;
-  }
-
-  .sidebar__desc {
-    font-size: 15px;
   }
 
   .form__actions {
