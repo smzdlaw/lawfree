@@ -770,3 +770,13 @@ function handlePdfDownload(event) {
 }
 
 window.handlePdfDownload = handlePdfDownload;
+
+function bootPdfDownloadButtons() {
+  Download.init();
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', bootPdfDownloadButtons);
+} else {
+  bootPdfDownloadButtons();
+}
