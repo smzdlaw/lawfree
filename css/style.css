@@ -706,6 +706,28 @@ a.sidebar__item {
   text-decoration: underline;
 }
 
+/* /app：Footer 置中於右側主內容區 */
+.app + .site-footer,
+.app-footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-left: var(--sidebar-width);
+  width: calc(100% - var(--sidebar-width));
+  box-sizing: border-box;
+  padding: 40px 0 32px;
+  text-align: center;
+}
+
+.app + .site-footer > *,
+.footer-inner {
+  max-width: 760px;
+  width: 100%;
+  margin: auto;
+  text-align: center;
+}
+
 
 /* SLawFree mobile header logo */
 .main__mobile-brand.sidebar-logo img,

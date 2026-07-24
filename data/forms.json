@@ -695,11 +695,11 @@
                 "options": [
                   {
                     "value": "fixed",
-                    "label": "指定到期日"
+                    "label": "指定到期日（請填寫到期日期）"
                   },
                   {
                     "value": "on_demand",
-                    "label": "見票即付"
+                    "label": "見票即付（持票人提示本票時即應付款）"
                   }
                 ]
               },
@@ -731,10 +731,11 @@
             "fields": [
               {
                 "name": "interestRate",
-                "label": "年利率（%）",
+                "label": "約定年利率（未約定者依法定利率計算）",
                 "type": "number",
                 "required": false,
-                "placeholder": "例如：5"
+                "placeholder": "例如：６",
+                "hint": "僅輸入數字，系統會自動補上％；未填寫則顯示「未約定（依法定利率計算）」。"
               },
               {
                 "name": "interestStartDate",

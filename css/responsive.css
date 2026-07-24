@@ -40,19 +40,56 @@
 
 @media (min-width: 769px) {
   :root {
-    /* toolbar 52 + header-info margin 12 + header-info ~61 + bar padding 24 */
-    --app-top-area-height: 149px;
+    --app-top-area-height: 240px;
   }
 
   .sidebar__brand,
   .sidebar-brand,
+  .sidebar-header,
   .brand {
-    min-height: var(--app-top-area-height);
-    padding: 16px 18px;
+    min-height: 240px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+    border-bottom: 1px solid #E5E7EB;
+  }
+
+  .sidebar__brand .sidebar-logo,
+  .sidebar__brand .brand-logo,
+  .sidebar-logo {
+    margin: 0 auto 14px;
+  }
+
+  .sidebar__tagline,
+  .sidebar-title {
+    margin: 6px 0 10px;
+    font-size: 30px;
+    font-weight: 700;
+    color: #0F172A;
+    line-height: 1.35;
+  }
+
+  .sidebar__desc,
+  .sidebar-subtitle {
+    margin: 6px 0 0;
+    font-size: 15px;
+    line-height: 1.9;
+    color: #64748B;
   }
 
   .main__header-bar {
     min-height: var(--app-top-area-height);
+  }
+
+  .app .wizard {
+    margin-top: -10px;
+    padding-bottom: 0;
+  }
+
+  .app .content {
+    padding-top: 16px;
   }
 
   .main__mobile-head {
@@ -66,8 +103,7 @@
 
 @media (min-width: 769px) and (max-width: 1200px) {
   :root {
-    /* 較窄主欄：注意事項提示列可能換行為 3 行 */
-    --app-top-area-height: 172px;
+    --app-top-area-height: 240px;
   }
 }
 
@@ -140,6 +176,11 @@
     margin-left: 0;
     width: 100%;
     min-width: 0;
+  }
+
+  .app + .site-footer {
+    margin-left: 0;
+    width: 100%;
   }
 
   /* Header：第一列 ☰ slawfree、第二列 填寫/預覽 各 50% */

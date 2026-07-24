@@ -25,7 +25,7 @@ const Download = {
       event.stopPropagation();
 
       let pendingWindow = null;
-      if (this.isIOSDevice()) {
+      if (this.isMobileDevice()) {
         pendingWindow = this.openPendingWindow();
       }
 
@@ -430,11 +430,12 @@ const Download = {
   },
 
   createStableExportClone(sourceElement) {
+    const mobile = this.isMobileDevice();
     const wrapper = document.createElement('div');
     wrapper.id = 'pdf-stable-export-root';
     Object.assign(wrapper.style, {
       position: 'fixed',
-      left: '-100000px',
+      left: mobile ? '0' : '-100000px',
       top: '0',
       width: `${this.CONTENT_WIDTH_MM}mm`,
       maxWidth: `${this.CONTENT_WIDTH_MM}mm`,
@@ -443,7 +444,9 @@ const Download = {
       background: '#fff',
       overflow: 'visible',
       pointerEvents: 'none',
-      zIndex: '-1'
+      zIndex: mobile ? '2147483646' : '-1',
+      opacity: mobile ? '0.01' : '1',
+      clip: mobile ? 'auto' : 'auto'
     });
 
     const clone = sourceElement.cloneNode(true);
@@ -489,17 +492,25 @@ const Download = {
     }
 
     return html2canvas(element, {
-      scale: this.isMobileDevice() ? 1.5 : 2.5,
+      scale: this.isMobileDevice() ? 1.25 : 2.5,
       useCORS: true,
       allowTaint: true,
       backgroundColor: '#FFFFFF',
       logging: false,
       scrollX: 0,
       scrollY: 0,
-      windowWidth: element.scrollWidth,
-      windowHeight: element.scrollHeight,
+      windowWidth: element.scrollWidth || element.offsetWidth,
+      windowHeight: element.scrollHeight || element.offsetHeight,
+      width: element.scrollWidth || element.offsetWidth,
+      height: element.scrollHeight || element.offsetHeight,
       letterRendering: true
     });
+  },
+
+  assertCanvasHasContent(canvas) {
+    if (!canvas || canvas.width < 8 || canvas.height < 8) {
+      throw new Error('PDF canvas is empty');
+    }
   },
 
   findSafePageCut(canvas, startY, idealEndY) {
@@ -603,25 +614,29 @@ const Download = {
     this.injectPdfExportStyles();
     document.body.classList.add('pdf-export');
 
+    const { wrapper, clone } = this.createStableExportClone(element);
+
     try {
       await this.waitForLayout();
-      const opt = this.getPdfOptions(filename, element);
+      const opt = this.getPdfOptions(filename, clone);
       opt.html2canvas = {
         ...opt.html2canvas,
-        scale: 2,
+        scale: this.isMobileDevice() ? 1.25 : 2,
         scrollX: 0,
         scrollY: 0,
-        windowWidth: element.scrollWidth,
-        width: element.scrollWidth,
-        height: element.scrollHeight
+        windowWidth: clone.scrollWidth || clone.offsetWidth,
+        windowHeight: clone.scrollHeight || clone.offsetHeight,
+        width: clone.scrollWidth || clone.offsetWidth,
+        height: clone.scrollHeight || clone.offsetHeight
       };
 
-      const blob = await html2pdf().set(opt).from(element).output('blob');
+      const blob = await html2pdf().set(opt).from(clone).output('blob');
       if (!(blob instanceof Blob) || blob.size === 0) {
         throw new Error('產生的 PDF 為空白檔案');
       }
       return blob;
     } finally {
+      wrapper.remove();
       document.body.classList.remove('pdf-export');
     }
   },
@@ -633,6 +648,7 @@ const Download = {
     try {
       await this.waitForLayout();
       const canvas = await this.renderStableCanvas(clone);
+      this.assertCanvasHasContent(canvas);
       const pdf = this.canvasToStablePdf(canvas);
       return { pdf, blob: pdf.output('blob') };
     } finally {
@@ -679,38 +695,74 @@ const Download = {
 
   openPdfBlob(blob, pendingWindow = null, filename = '法律文件.pdf') {
     const url = URL.createObjectURL(blob);
+    const safeName = this.escapeHtml(filename);
+    const viewerHtml = `<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>${safeName}</title>
+  <style>
+    html, body { margin: 0; height: 100%; background: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+    .pdf-frame { position: fixed; inset: 0; width: 100%; height: 100%; border: 0; background: #fff; }
+    .pdf-fallback { padding: 20px; line-height: 1.7; text-align: center; }
+    .pdf-fallback a { color: #2563eb; font-weight: 600; }
+  </style>
+</head>
+<body>
+  <iframe class="pdf-frame" src="${url}" title="${safeName}"></iframe>
+  <noscript>
+    <div class="pdf-fallback">
+      <p>請<a href="${url}" download="${safeName}">點此下載 PDF</a></p>
+    </div>
+  </noscript>
+</body>
+</html>`;
+
     let opened = false;
 
     try {
       if (pendingWindow && !pendingWindow.closed) {
-        pendingWindow.location.replace(url);
+        pendingWindow.document.open();
+        pendingWindow.document.write(viewerHtml);
+        pendingWindow.document.close();
         opened = true;
       } else {
-        const win = window.open(url, '_blank');
-        opened = Boolean(win);
+        const win = window.open('', '_blank');
+        if (win) {
+          win.document.write(viewerHtml);
+          win.document.close();
+          opened = true;
+        }
       }
     } catch (_) {
       opened = false;
     }
 
     if (!opened) {
-      const anchor = document.createElement('a');
-      anchor.href = url;
-      anchor.target = '_blank';
-      anchor.rel = 'noopener noreferrer';
-      anchor.download = filename;
-      anchor.style.display = 'none';
-      document.body.appendChild(anchor);
-      anchor.dispatchEvent(new MouseEvent('click', {
-        bubbles: true,
-        cancelable: true,
-        view: window
-      }));
-      anchor.remove();
+      try {
+        this.downloadBlobWithAnchor(blob, filename);
+      } catch (_) {
+        const anchor = document.createElement('a');
+        anchor.href = url;
+        anchor.target = '_blank';
+        anchor.rel = 'noopener noreferrer';
+        anchor.style.display = 'none';
+        document.body.appendChild(anchor);
+        anchor.click();
+        anchor.remove();
+      }
     }
 
-    // iOS Safari 可能需要較長時間載入 Blob URL，不要太早釋放。
     this.scheduleRevokeBlobUrl(url, 10 * 60 * 1000);
+  },
+
+  escapeHtml(str) {
+    return String(str ?? '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
   },
 
   async savePdfDesktop(element, opt) {
@@ -739,30 +791,36 @@ const Download = {
   async deliverMobilePdf(blob, filename, pendingWindow = null) {
     const file = new File([blob], filename, { type: 'application/pdf' });
 
-    // iPhone / iPad: native share sheet is the most reliable route to Save to Files.
     if (this.isIOSDevice() && this.canSharePdfFile(file)) {
       try {
-        if (pendingWindow && !pendingWindow.closed) pendingWindow.close();
+        if (pendingWindow && !pendingWindow.closed) {
+          pendingWindow.document.open();
+          pendingWindow.document.write('<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>正在開啟分享</title></head><body style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;padding:24px;line-height:1.6"><p>請選擇「儲存到檔案」以下載 PDF。</p></body></html>');
+          pendingWindow.document.close();
+        }
         await navigator.share({ files: [file], title: filename });
+        if (pendingWindow && !pendingWindow.closed) pendingWindow.close();
         return;
       } catch (error) {
-        if (error && error.name === 'AbortError') return;
-        console.warn('[Download] Web Share failed, falling back to Blob URL:', error);
+        if (error && error.name === 'AbortError') {
+          if (pendingWindow && !pendingWindow.closed) pendingWindow.close();
+          return;
+        }
+        console.warn('[Download] Web Share failed, falling back to PDF viewer:', error);
       }
     }
 
-    if (this.isIOSDevice()) {
-      this.openPdfBlob(blob, pendingWindow, filename);
-      return;
+    if (this.isAndroidDevice()) {
+      try {
+        this.downloadBlobWithAnchor(blob, filename);
+        if (pendingWindow && !pendingWindow.closed) pendingWindow.close();
+        return;
+      } catch (error) {
+        console.warn('[Download] Android direct download failed, opening PDF viewer:', error);
+      }
     }
 
-    // Android Chrome: trigger a real file download first.
-    try {
-      this.downloadBlobWithAnchor(blob, filename);
-    } catch (error) {
-      console.warn('[Download] Direct download failed, opening PDF:', error);
-      this.openPdfBlob(blob, pendingWindow, filename);
-    }
+    this.openPdfBlob(blob, pendingWindow, filename);
   },
 
   async downloadPdf(pendingWindow = null) {
@@ -809,16 +867,19 @@ const Download = {
       let pdf = null;
       let blob = null;
 
-      try {
+      if (this.isMobileDevice()) {
+        try {
+          const result = await this.generateStablePdf(element);
+          pdf = result.pdf;
+          blob = result.blob;
+        } catch (stableError) {
+          console.warn('[Download] Mobile stable PDF failed, using html2pdf fallback:', stableError);
+          blob = await this.generateMobilePdfBlob(element, filename);
+        }
+      } else {
         const result = await this.generateStablePdf(element);
         pdf = result.pdf;
         blob = result.blob;
-      } catch (stableError) {
-        if (!this.isMobileDevice()) {
-          throw stableError;
-        }
-        console.warn('[Download] Stable PDF failed, using mobile fallback:', stableError);
-        blob = await this.generateMobilePdfBlob(element, filename);
       }
 
       if (!blob || blob.size === 0) {

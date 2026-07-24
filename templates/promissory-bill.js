@@ -54,6 +54,27 @@ const PromissoryBillTemplate = {
     `;
   },
 
+  formatInterestRate(rate) {
+    if (!this.hasValue(rate)) return '';
+    return this.escapeHtml(String(rate).trim().replace(/[%％]/g, ''));
+  },
+
+  renderInterestBlock(note = {}) {
+    if (!this.hasValue(note.interestRate)) {
+      return '<p class="doc-preview__line">未約定（依法定利率計算）</p>';
+    }
+
+    const interestStart = note.interestStartDate || note.issueDate || '';
+    const rateText = this.formatInterestRate(note.interestRate);
+    const rateLine = `年利率：${rateText}％`;
+
+    if (this.hasValue(interestStart)) {
+      return `<p class="doc-preview__line">本票金額自${this.formatChineseDate(interestStart)}起，${rateLine}</p>`;
+    }
+
+    return `<p class="doc-preview__line">${rateLine}</p>`;
+  },
+
   render(data = {}) {
     const payee = data.payee || {};
     const drawer = data.drawer || {};
@@ -63,15 +84,12 @@ const PromissoryBillTemplate = {
 
     const amount = this.formatAmountDisplay(note.amount);
     const dueType = note.dueType || '';
-    const interestStart = note.interestStartDate || note.issueDate || '';
 
     const dueBlock = dueType === 'on_demand'
       ? '<p class="doc-preview__line doc-preview__line--emphasis">見票即付</p>'
       : `<p class="doc-preview__line">到期日：${this.formatChineseDate(note.dueDate)}</p>`;
 
-    const interestBlock = this.hasValue(note.interestRate)
-      ? `<p class="doc-preview__line">本票金額自${this.formatChineseDate(interestStart)}起，按年利率百分之${this.escapeHtml(String(note.interestRate).trim())}計付利息。</p>`
-      : '';
+    const interestBlock = this.renderInterestBlock(note);
 
     const waiveBlock = terms.waiveProtest === true || terms.waiveProtest === 'true'
       ? '<p class="doc-preview__line">免除作成拒絕證書</p>'
