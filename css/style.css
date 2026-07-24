@@ -99,6 +99,21 @@ a.sidebar__logo {
   color: #2563EB;
 }
 
+.brand-home-link {
+  display: inline-flex;
+  align-items: center;
+  color: inherit;
+  text-decoration: none;
+}
+
+.brand-home-link:hover {
+  opacity: 0.85;
+}
+
+a.sidebar__brand.brand-home-link {
+  display: block;
+}
+
 .sidebar__tagline {
   margin: 10px 0 0;
   font-size: 20px;

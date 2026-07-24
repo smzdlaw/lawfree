@@ -1,20 +1,6 @@
 /**
  * 應用程式入口
  */
-const APP_DOC_TYPES = [
-  'payment-order',
-  'promissory-note',
-  'divorce',
-  'iou',
-  'promissory-bill'
-];
-
-function getInitialDocType() {
-  const params = new URLSearchParams(window.location.search);
-  const docParam = params.get('doc');
-  return APP_DOC_TYPES.includes(docParam) ? docParam : 'payment-order';
-}
-
 document.addEventListener('DOMContentLoaded', async () => {
   initSidebarToggle();
   initViewTabs();
@@ -22,7 +8,14 @@ document.addEventListener('DOMContentLoaded', async () => {
   Router.init();
   Wizard.init(1);
   Download.init();
-  await Router.switchDoc(getInitialDocType());
+
+  const initialDoc = Router.getInitialDocType();
+  const rawDoc = new URLSearchParams(window.location.search).get('doc');
+  const needsUrlReplace = !rawDoc || !Router.isValidDocType(rawDoc);
+
+  await Router.switchDoc(initialDoc, {
+    updateHistory: needsUrlReplace ? 'replace' : false
+  });
 });
 
 function initSidebarToggle() {

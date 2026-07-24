@@ -26,10 +26,57 @@ const Router = {
     }
   },
 
+  validDocTypes: [
+    'payment-order',
+    'promissory-note',
+    'divorce',
+    'iou',
+    'promissory-bill'
+  ],
+
   currentDoc: 'payment-order',
+
+  isValidDocType(docType) {
+    return this.validDocTypes.includes(docType);
+  },
+
+  normalizeDocType(docType) {
+    return this.isValidDocType(docType) ? docType : 'payment-order';
+  },
+
+  getDocFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    return this.normalizeDocType(params.get('doc'));
+  },
+
+  getInitialDocType() {
+    return this.getDocFromUrl();
+  },
+
+  buildDocUrl(docType) {
+    const url = new URL(window.location.href);
+    url.searchParams.set('doc', docType);
+    return `${url.pathname}?${url.searchParams.toString()}`;
+  },
+
+  syncUrl(docType, mode) {
+    const nextUrl = this.buildDocUrl(docType);
+    const currentUrl = `${window.location.pathname}${window.location.search}`;
+
+    if (nextUrl === currentUrl) return;
+
+    const state = { doc: docType };
+
+    if (mode === 'push') {
+      history.pushState(state, '', nextUrl);
+    } else if (mode === 'replace') {
+      history.replaceState(state, '', nextUrl);
+    }
+  },
 
   init() {
     this.bindSidebar();
+    this.bindPopState();
   },
 
   bindSidebar() {
@@ -41,41 +88,56 @@ const Router = {
       if (!item) return;
 
       const docType = item.dataset.doc;
-      this.switchDoc(docType);
+      this.switchDoc(docType, { updateHistory: 'push' });
     });
   },
 
-  async switchDoc(docType) {
-    this.currentDoc = docType;
+  bindPopState() {
+    window.addEventListener('popstate', () => {
+      this.switchDoc(this.getDocFromUrl(), { updateHistory: false });
+    });
+  },
+
+  async switchDoc(docType, options = {}) {
+    const updateHistory = options.updateHistory ?? 'push';
+    const normalizedDoc = this.normalizeDocType(docType);
+
+    this.currentDoc = normalizedDoc;
 
     document.querySelectorAll('.sidebar__item').forEach((el) => {
-      el.classList.toggle('active', el.dataset.doc === docType);
+      el.classList.toggle('active', el.dataset.doc === normalizedDoc);
     });
 
-    this.updatePageMeta(docType);
+    this.updatePageMeta(normalizedDoc);
 
     try {
       if (
-        docType === 'payment-order' ||
-        docType === 'promissory-note' ||
-        docType === 'divorce' ||
-        docType === 'iou' ||
-        docType === 'promissory-bill'
+        normalizedDoc === 'payment-order' ||
+        normalizedDoc === 'promissory-note' ||
+        normalizedDoc === 'divorce' ||
+        normalizedDoc === 'iou' ||
+        normalizedDoc === 'promissory-bill'
       ) {
-        await Forms.init(docType);
+        await Forms.init(normalizedDoc);
         Preview.update(this.currentDoc, Forms.formData || {});
       } else {
-        Forms.currentDoc = docType;
+        Forms.currentDoc = normalizedDoc;
         Forms.formConfig = null;
         Forms.currentStep = 1;
 
         const formArea = document.getElementById('formArea');
         if (formArea) formArea.innerHTML = Forms.renderPlaceholder();
 
-        Preview.update(docType, {});
+        Preview.update(normalizedDoc, {});
       }
     } catch (err) {
       console.error('文件切換失敗：', err);
+    }
+
+    if (updateHistory === 'push') {
+      this.syncUrl(normalizedDoc, 'push');
+    } else if (updateHistory === 'replace') {
+      this.syncUrl(normalizedDoc, 'replace');
     }
 
     this.closeSidebar();

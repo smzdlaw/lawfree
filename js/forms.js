@@ -40,7 +40,7 @@ const FALLBACK_FORM_CONFIG = {
                 label: '案件類型',
                 type: 'select',
                 required: true,
-                options: CASE_TYPE_OPTIONS
+                options: window.CASE_TYPE_OPTIONS || []
               },
               { name: 'amount', label: '請求金額', type: 'number', required: true, placeholder: '例如：100000' },
               { name: 'interestRate', label: '利率（%）', type: 'number', required: false, placeholder: '例如：5' },
@@ -211,7 +211,8 @@ const Forms = {
 
   async loadConfig() {
     try {
-      const res = await fetch(`../data/forms.json?v=${Date.now()}`, {
+      const configUrl = new URL('../data/forms.json', window.location.href).href;
+      const res = await fetch(`${configUrl}?v=${Date.now()}`, {
         cache: 'no-store'
       });
   
