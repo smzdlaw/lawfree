@@ -89,7 +89,7 @@ button {
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 20px 18px;
+  padding: 16px 18px;
   border-bottom: 1px solid var(--color-border);
   box-sizing: border-box;
   width: 100%;
@@ -98,7 +98,6 @@ button {
   min-height: var(--app-top-area-height, auto);
 }
 
-.sidebar__brand .brand-home-link,
 .sidebar__brand .sidebar-logo,
 .sidebar__brand .brand-logo {
   display: flex;
@@ -106,7 +105,7 @@ button {
   align-items: center;
   width: 100%;
   max-width: 220px;
-  margin: 0 auto 12px;
+  margin: 0 auto 8px;
 }
 
 .sidebar__brand picture {
@@ -170,7 +169,7 @@ a.sidebar__logo {
 
 .sidebar__tagline,
 .sidebar-title {
-  margin: 0 0 12px;
+  margin: 0 0 8px;
   font-size: 16px;
   font-weight: 700;
   color: #0F172A;
@@ -181,8 +180,8 @@ a.sidebar__logo {
 .sidebar-subtitle {
   margin: 0;
   font-size: 13px;
-  line-height: 1.8;
-  color: #64748B;
+  line-height: 1.6;
+  color: #6B7280;
 }
 
 .sidebar__nav {

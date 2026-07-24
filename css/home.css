@@ -54,7 +54,7 @@
 .home-logo {
   display: inline-flex;
   justify-content: center;
-  margin-bottom: 36px;
+  margin-bottom: 24px;
 }
 
 .home-logo-link picture,
@@ -411,6 +411,25 @@
   .home-step {
     min-height: 120px;
     padding: 22px 16px;
+  }
+}
+
+@media (min-width: 769px) {
+  .home-hero {
+    padding-top: 80px;
+    padding-bottom: 120px;
+  }
+
+  .home-logo-link {
+    margin-bottom: 32px;
+  }
+
+  .home-hero__title {
+    margin-bottom: 24px;
+  }
+
+  .home-hero__subtitle {
+    margin-bottom: 40px;
   }
 }
 
