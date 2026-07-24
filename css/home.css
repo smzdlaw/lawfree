@@ -49,14 +49,19 @@
   padding: 0 24px;
 }
 
-.home-logo {
-  display: inline-block;
-  font-size: clamp(2rem, 5vw, 2.75rem);
-  font-weight: 700;
-  letter-spacing: -0.5px;
-  color: var(--color-primary);
-  line-height: 1.15;
+.home-logo-link {
+  display: inline-flex;
+  justify-content: center;
   margin-bottom: 28px;
+}
+
+.home-logo-image {
+  display: block;
+  height: 80px;
+  width: auto;
+  max-width: min(420px, 90vw);
+  margin: 0 auto;
+  object-fit: contain;
 }
 
 .home-hero__title {
@@ -397,17 +402,15 @@
   }
 }
 
+@media (max-width: 768px) {
+  .home-logo-image {
+    height: 60px;
+  }
+}
+
 @media (max-width: 480px) {
   .home-hero__cta {
     width: 100%;
     max-width: 320px;
   }
-}
-
-
-.home-logo-image {
-  display: block;
-  width: min(360px, 72vw);
-  height: auto;
-  margin: 0 auto 24px;
 }
