@@ -86,19 +86,25 @@ button {
   border-bottom: 1px solid var(--color-border);
 }
 
-.sidebar__brand .brand-home-link {
+.sidebar__brand .brand-home-link,
+.sidebar-logo,
+.brand-logo {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
-  max-height: 60px;
 }
 
+.sidebar-logo img,
+.brand-logo img,
+.sidebar__brand img,
+.sidebar__brand .brand-home-link img,
 .sidebar__brand .brand-logo-image {
-  display: block;
-  height: 60px;
+  height: 56px;
   width: auto;
-  max-width: 100%;
+  max-width: none;
+  max-height: none;
+  display: block;
   object-fit: contain;
 }
 
@@ -673,12 +679,15 @@ a.sidebar__item {
 
 
 /* SLawFree mobile header logo */
+.main__mobile-brand.sidebar-logo img,
+.main__mobile-brand.brand-logo img,
 .main__mobile-brand .brand-logo-image {
-  display: block;
-  height: 32px;
+  height: 40px;
   width: auto;
-  max-width: 100%;
-  flex-shrink: 1;
-  min-width: 0;
+  max-width: none;
+  max-height: none;
+  display: block;
   object-fit: contain;
+  flex-shrink: 0;
+  min-width: 0;
 }

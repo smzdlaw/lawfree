@@ -8,13 +8,16 @@
     max-width: 100%;
   }
 
-  .sidebar__brand .brand-home-link {
-    max-height: 52px;
-  }
-
+  .sidebar-logo img,
+  .brand-logo img,
+  .sidebar__brand img,
+  .sidebar__brand .brand-home-link img,
   .sidebar__brand .brand-logo-image {
-    height: 52px;
+    height: 48px;
     width: auto;
+    max-width: none;
+    max-height: none;
+    display: block;
     object-fit: contain;
   }
 
@@ -69,13 +72,16 @@
     display: block;
   }
 
-  .sidebar__brand .brand-home-link {
-    max-height: 42px;
-  }
-
+  .sidebar-logo img,
+  .brand-logo img,
+  .sidebar__brand img,
+  .sidebar__brand .brand-home-link img,
   .sidebar__brand .brand-logo-image {
-    height: 42px;
+    height: 40px;
     width: auto;
+    max-width: none;
+    max-height: none;
+    display: block;
     object-fit: contain;
   }
 
@@ -141,26 +147,17 @@
     overflow: visible;
   }
 
+  .main__mobile-brand.sidebar-logo img,
+  .main__mobile-brand.brand-logo img,
   .main__mobile-brand .brand-logo-image {
-    height: 32px;
+    height: 40px;
     width: auto;
-    max-width: 100%;
-    flex-shrink: 1;
-    min-width: 0;
+    max-width: none;
+    max-height: none;
+    display: block;
     object-fit: contain;
-  }
-
-  @container mobile-head (max-width: 220px) {
-    .main__mobile-brand .brand-logo-image {
-      transform: scale(0.92);
-      transform-origin: left center;
-    }
-  }
-
-  @container mobile-head (max-width: 190px) {
-    .main__mobile-brand .brand-logo-image {
-      transform: scale(0.84);
-    }
+    flex-shrink: 0;
+    min-width: 0;
   }
 
   .view-tabs {
@@ -347,8 +344,10 @@
 }
 
 @media (min-width: 481px) and (max-width: 768px) {
+  .main__mobile-brand.sidebar-logo img,
+  .main__mobile-brand.brand-logo img,
   .main__mobile-brand .brand-logo-image {
-    height: 32px;
+    height: 40px;
   }
 }
 
