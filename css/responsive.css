@@ -78,6 +78,8 @@
     align-items: center;
     gap: 10px;
     min-height: 40px;
+    container-type: inline-size;
+    container-name: mobile-head;
   }
 
   .main__menu-btn {
@@ -87,7 +89,46 @@
   }
 
   .main__mobile-brand {
-    font-size: 1.125rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+    flex: 1;
+    max-width: calc(100% - 50px);
+    font-size: inherit;
+  }
+
+  .main__mobile-logo-image {
+    display: block;
+    height: 36px;
+    width: auto;
+    max-width: none;
+    flex-shrink: 0;
+    object-fit: contain;
+  }
+
+  .main__mobile-logo-text {
+    font-size: clamp(0.875rem, 4vw, 1.125rem);
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    color: #2563EB;
+    line-height: 1;
+    white-space: nowrap;
+    flex-shrink: 1;
+    min-width: 0;
+  }
+
+  @container mobile-head (max-width: 220px) {
+    .main__mobile-brand {
+      transform: scale(0.92);
+      transform-origin: left center;
+    }
+  }
+
+  @container mobile-head (max-width: 190px) {
+    .main__mobile-brand {
+      transform: scale(0.84);
+    }
   }
 
   .view-tabs {
@@ -270,6 +311,12 @@
 
   .site-footer__nav {
     gap: 16px;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  .main__mobile-logo-image {
+    height: 40px;
   }
 }
 

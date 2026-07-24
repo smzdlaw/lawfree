@@ -662,6 +662,7 @@ a.sidebar__item {
 }
 .main__mobile-logo-image {
   display: block;
-  width: 132px;
   height: auto;
+  max-height: 100%;
+  object-fit: contain;
 }
