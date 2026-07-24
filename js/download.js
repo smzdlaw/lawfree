@@ -14,22 +14,27 @@ const Download = {
   CONTENT_WIDTH_MM: 180,
 
   init() {
-    ['downloadPdfBtn', 'downloadPdfBtnMobile'].forEach((id) => {
-      const btn = document.getElementById(id);
-      if (!btn || btn.dataset.bound === '1') return;
-      btn.dataset.bound = '1';
-      btn.addEventListener('click', (event) => {
-        event.preventDefault();
-        let pendingWindow = null;
-        if (this.isMobileDevice() && !this.shouldUseDirectDownload()) {
-          pendingWindow = this.openPendingWindow();
-        }
-        this.downloadPdf(pendingWindow).catch((error) => {
-          if (pendingWindow && !pendingWindow.closed) pendingWindow.close();
-          console.error('PDF 下載失敗：', error);
-        });
+    if (document.documentElement.dataset.pdfDownloadBound === '1') return;
+    document.documentElement.dataset.pdfDownloadBound = '1';
+
+    document.addEventListener('click', (event) => {
+      const btn = event.target.closest('#downloadPdfBtn, #downloadPdfBtnMobile');
+      if (!btn || btn.disabled) return;
+
+      event.preventDefault();
+      event.stopPropagation();
+
+      let pendingWindow = null;
+      if (this.isIOSDevice()) {
+        pendingWindow = this.openPendingWindow();
+      }
+
+      this.downloadPdf(pendingWindow).catch((error) => {
+        if (pendingWindow && !pendingWindow.closed) pendingWindow.close();
+        console.error('PDF 下載失敗：', error);
+        alert('PDF 產生失敗，請重新整理後再試。');
       });
-    });
+    }, { passive: false });
   },
 
 
@@ -723,6 +728,43 @@ const Download = {
     this.openPdfBlob(blob, null, filename);
   },
 
+  canSharePdfFile(file) {
+    try {
+      return Boolean(navigator.share && navigator.canShare && navigator.canShare({ files: [file] }));
+    } catch (_) {
+      return false;
+    }
+  },
+
+  async deliverMobilePdf(blob, filename, pendingWindow = null) {
+    const file = new File([blob], filename, { type: 'application/pdf' });
+
+    // iPhone / iPad: native share sheet is the most reliable route to Save to Files.
+    if (this.isIOSDevice() && this.canSharePdfFile(file)) {
+      try {
+        if (pendingWindow && !pendingWindow.closed) pendingWindow.close();
+        await navigator.share({ files: [file], title: filename });
+        return;
+      } catch (error) {
+        if (error && error.name === 'AbortError') return;
+        console.warn('[Download] Web Share failed, falling back to Blob URL:', error);
+      }
+    }
+
+    if (this.isIOSDevice()) {
+      this.openPdfBlob(blob, pendingWindow, filename);
+      return;
+    }
+
+    // Android Chrome: trigger a real file download first.
+    try {
+      this.downloadBlobWithAnchor(blob, filename);
+    } catch (error) {
+      console.warn('[Download] Direct download failed, opening PDF:', error);
+      this.openPdfBlob(blob, pendingWindow, filename);
+    }
+  },
+
   async downloadPdf(pendingWindow = null) {
     if (typeof html2canvas === 'undefined') {
       alert('html2canvas 尚未載入');
@@ -789,14 +831,8 @@ const Download = {
         } else {
           this.downloadBlobWithAnchor(blob, filename);
         }
-      } else if (this.shouldUseDirectDownload()) {
-        this.downloadBlobWithAnchor(blob, filename);
-      } else if (this.isIOSDevice()) {
-        // iPhone/iPad Safari：使用者點擊時先建立視窗，PDF 完成後導向 Blob URL。
-        // 避免 data URI 過長造成白頁或無法開啟。
-        this.openPdfBlob(blob, pendingWindow, filename);
       } else {
-        this.openPdfBlob(blob, pendingWindow, filename);
+        await this.deliverMobilePdf(blob, filename, pendingWindow);
       }
     } catch (error) {
       if (pendingWindow && !pendingWindow.closed) pendingWindow.close();

@@ -651,3 +651,17 @@ a.sidebar__item {
 .site-footer__copy a:hover {
   text-decoration: underline;
 }
+
+
+/* SLawFree image logo */
+.sidebar__logo-image {
+  display: block;
+  width: 168px;
+  max-width: 100%;
+  height: auto;
+}
+.main__mobile-logo-image {
+  display: block;
+  width: 132px;
+  height: auto;
+}

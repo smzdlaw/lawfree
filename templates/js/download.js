@@ -5,25 +5,36 @@ const Download = {
   pdfFilenames: {
     'payment-order': '支付命令.pdf',
     'promissory-note': '本票裁定.pdf',
-    divorce: '離婚協議書.pdf'
+    divorce: '離婚協議書.pdf',
+    iou: '借據.pdf',
+    'promissory-bill': '本票.pdf'
   },
 
   /** A4 210mm − 15mm × 2 邊界 = 180mm 內容寬 */
   CONTENT_WIDTH_MM: 180,
 
   init() {
-    ['downloadPdfBtn', 'downloadPdfBtnMobile'].forEach((id) => {
-      const btn = document.getElementById(id);
-      if (!btn || btn.dataset.bound === '1') return;
-      btn.dataset.bound = '1';
-      btn.addEventListener('click', () => {
-        let pendingWindow = null;
-        if (this.isMobileDevice() && !this.shouldUseDirectDownload()) {
-          pendingWindow = this.openPendingWindow();
-        }
-        this.downloadPdf(pendingWindow);
+    if (document.documentElement.dataset.pdfDownloadBound === '1') return;
+    document.documentElement.dataset.pdfDownloadBound = '1';
+
+    document.addEventListener('click', (event) => {
+      const btn = event.target.closest('#downloadPdfBtn, #downloadPdfBtnMobile');
+      if (!btn || btn.disabled) return;
+
+      event.preventDefault();
+      event.stopPropagation();
+
+      let pendingWindow = null;
+      if (this.isIOSDevice()) {
+        pendingWindow = this.openPendingWindow();
+      }
+
+      this.downloadPdf(pendingWindow).catch((error) => {
+        if (pendingWindow && !pendingWindow.closed) pendingWindow.close();
+        console.error('PDF 下載失敗：', error);
+        alert('PDF 產生失敗，請重新整理後再試。');
       });
-    });
+    }, { passive: false });
   },
 
 
@@ -662,23 +673,24 @@ const Download = {
       anchor.click();
       document.body.removeChild(anchor);
     } finally {
-      this.scheduleRevokeBlobUrl(url, 2000);
+      this.scheduleRevokeBlobUrl(url, 60000);
     }
   },
 
-  openPdfBlob(blob, pendingWindow = null) {
+  openPdfBlob(blob, pendingWindow = null, filename = '法律文件.pdf') {
     const url = URL.createObjectURL(blob);
-    let opened = null;
+    let opened = false;
 
     try {
       if (pendingWindow && !pendingWindow.closed) {
-        pendingWindow.location.href = url;
-        opened = pendingWindow;
+        pendingWindow.location.replace(url);
+        opened = true;
       } else {
-        opened = window.open(url, '_blank');
+        const win = window.open(url, '_blank');
+        opened = Boolean(win);
       }
     } catch (_) {
-      opened = null;
+      opened = false;
     }
 
     if (!opened) {
@@ -686,13 +698,19 @@ const Download = {
       anchor.href = url;
       anchor.target = '_blank';
       anchor.rel = 'noopener noreferrer';
+      anchor.download = filename;
       anchor.style.display = 'none';
       document.body.appendChild(anchor);
-      anchor.click();
-      document.body.removeChild(anchor);
+      anchor.dispatchEvent(new MouseEvent('click', {
+        bubbles: true,
+        cancelable: true,
+        view: window
+      }));
+      anchor.remove();
     }
 
-    this.scheduleRevokeBlobUrl(url, 120000);
+    // iOS Safari 可能需要較長時間載入 Blob URL，不要太早釋放。
+    this.scheduleRevokeBlobUrl(url, 10 * 60 * 1000);
   },
 
   async savePdfDesktop(element, opt) {
@@ -707,13 +725,64 @@ const Download = {
       return;
     }
 
-    this.openPdfBlob(blob);
+    this.openPdfBlob(blob, null, filename);
+  },
+
+  canSharePdfFile(file) {
+    try {
+      return Boolean(navigator.share && navigator.canShare && navigator.canShare({ files: [file] }));
+    } catch (_) {
+      return false;
+    }
+  },
+
+  async deliverMobilePdf(blob, filename, pendingWindow = null) {
+    const file = new File([blob], filename, { type: 'application/pdf' });
+
+    // iPhone / iPad: native share sheet is the most reliable route to Save to Files.
+    if (this.isIOSDevice() && this.canSharePdfFile(file)) {
+      try {
+        if (pendingWindow && !pendingWindow.closed) pendingWindow.close();
+        await navigator.share({ files: [file], title: filename });
+        return;
+      } catch (error) {
+        if (error && error.name === 'AbortError') return;
+        console.warn('[Download] Web Share failed, falling back to Blob URL:', error);
+      }
+    }
+
+    if (this.isIOSDevice()) {
+      this.openPdfBlob(blob, pendingWindow, filename);
+      return;
+    }
+
+    // Android Chrome: trigger a real file download first.
+    try {
+      this.downloadBlobWithAnchor(blob, filename);
+    } catch (error) {
+      console.warn('[Download] Direct download failed, opening PDF:', error);
+      this.openPdfBlob(blob, pendingWindow, filename);
+    }
   },
 
   async downloadPdf(pendingWindow = null) {
     if (typeof html2canvas === 'undefined') {
       alert('html2canvas 尚未載入');
       return;
+    }
+
+    if (
+      typeof Forms !== 'undefined'
+      && typeof Forms.validateBeforeDownload === 'function'
+      && typeof Router !== 'undefined'
+      && Router.currentDoc === 'promissory-bill'
+    ) {
+      const validation = Forms.validateBeforeDownload();
+      if (!validation.valid) {
+        if (pendingWindow && !pendingWindow.closed) pendingWindow.close();
+        Forms.focusFirstError(validation.errors);
+        return;
+      }
     }
 
     const paper = this.getPreviewPaper();
@@ -762,19 +831,8 @@ const Download = {
         } else {
           this.downloadBlobWithAnchor(blob, filename);
         }
-      } else if (this.shouldUseDirectDownload()) {
-        this.downloadBlobWithAnchor(blob, filename);
-      } else if (this.isIOSDevice() && pdf) {
-        // iPhone/iPad Safari 對 Blob URL 的相容性不穩定；
-        // 使用者點擊時已先開啟 pendingWindow，完成後直接導向 PDF data URI。
-        const dataUri = pdf.output('datauristring');
-        if (pendingWindow && !pendingWindow.closed) {
-          pendingWindow.location.replace(dataUri);
-        } else {
-          window.location.href = dataUri;
-        }
       } else {
-        this.openPdfBlob(blob, pendingWindow);
+        await this.deliverMobilePdf(blob, filename, pendingWindow);
       }
     } catch (error) {
       if (pendingWindow && !pendingWindow.closed) pendingWindow.close();

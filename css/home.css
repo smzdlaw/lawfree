@@ -403,3 +403,11 @@
     max-width: 320px;
   }
 }
+
+
+.home-logo-image {
+  display: block;
+  width: min(360px, 72vw);
+  height: auto;
+  margin: 0 auto 24px;
+}
