@@ -8,26 +8,26 @@
     max-width: 100%;
   }
 
-  .sidebar-logo img,
-  .brand-logo img,
-  .sidebar__brand img,
+  .sidebar__brand .brand-logo-image,
   .sidebar__brand .brand-home-link img,
-  .sidebar__brand .brand-logo-image {
-    height: 48px;
+  .sidebar__brand img {
+    max-width: 220px;
     width: auto;
-    max-width: none;
-    max-height: none;
-    display: block;
+    height: auto;
     object-fit: contain;
+    display: block;
+    margin: 0 auto;
   }
 
   .sidebar__tagline {
-    font-size: 15px;
-    line-height: 1.45;
+    margin-top: 14px;
+    font-size: 16px;
+    font-weight: 700;
     color: #0F172A;
   }
 
   .sidebar__desc {
+    margin-top: 10px;
     font-size: 13px;
     line-height: 1.7;
     color: #64748B;
@@ -72,27 +72,27 @@
     display: block;
   }
 
-  .sidebar-logo img,
-  .brand-logo img,
-  .sidebar__brand img,
+  .sidebar__brand .brand-logo-image,
   .sidebar__brand .brand-home-link img,
-  .sidebar__brand .brand-logo-image {
-    height: 40px;
+  .sidebar__brand img {
+    max-width: 220px;
     width: auto;
-    max-width: none;
-    max-height: none;
-    display: block;
+    height: auto;
     object-fit: contain;
+    display: block;
+    margin: 0 auto;
   }
 
   .sidebar__tagline {
-    font-size: 15px;
-    line-height: 1.45;
+    margin-top: 14px;
+    font-size: 16px;
+    font-weight: 700;
     color: #0F172A;
   }
 
   .sidebar__desc {
-    font-size: 12px;
+    margin-top: 10px;
+    font-size: 13px;
     line-height: 1.7;
     color: #64748B;
   }
@@ -352,8 +352,9 @@
 }
 
 @media (max-width: 480px) {
-  .sidebar__brand {
-    padding: 20px 24px;
+  .sidebar__brand,
+  .brand {
+    padding: 24px 20px 18px;
   }
 
   .sidebar__logo {

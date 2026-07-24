@@ -54,7 +54,13 @@
 .home-logo {
   display: inline-flex;
   justify-content: center;
-  margin-bottom: 24px;
+  margin-bottom: 36px;
+}
+
+.home-logo-link picture,
+.brand-home-link picture {
+  display: inline-flex;
+  line-height: 0;
 }
 
 .hero-logo img,

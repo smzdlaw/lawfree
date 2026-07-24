@@ -81,31 +81,48 @@ button {
   border-right: 1px solid #E5E7EB;
 }
 
-.sidebar__brand {
-  padding: 20px 24px;
+.sidebar__brand,
+.brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 24px 20px 18px;
   border-bottom: 1px solid var(--color-border);
+  box-sizing: border-box;
+  width: 100%;
+  overflow: visible;
 }
 
 .sidebar__brand .brand-home-link,
-.sidebar-logo,
-.brand-logo {
+.sidebar__brand .sidebar-logo,
+.sidebar__brand .brand-logo {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
+  max-width: 220px;
+  margin: 0 auto;
 }
 
-.sidebar-logo img,
-.brand-logo img,
-.sidebar__brand img,
-.sidebar__brand .brand-home-link img,
-.sidebar__brand .brand-logo-image {
-  height: 56px;
-  width: auto;
-  max-width: none;
-  max-height: none;
+.sidebar__brand picture {
   display: block;
+  width: 100%;
+  max-width: 220px;
+  margin: 0 auto;
+  line-height: 0;
+}
+
+.sidebar__brand .brand-logo-image,
+.sidebar__brand .brand-home-link img,
+.sidebar__brand img {
+  max-width: 220px;
+  width: auto;
+  height: auto;
   object-fit: contain;
+  display: block;
+  margin: 0 auto;
 }
 
 .sidebar__logo {
@@ -121,28 +138,34 @@ a.sidebar__logo {
   color: #2563EB;
 }
 
-.brand-home-link {
+.brand-home-link,
+.brand-logo {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   color: inherit;
   text-decoration: none;
+  cursor: pointer;
   transition: opacity 0.2s ease;
 }
 
 .brand-home-link:hover,
 .brand-home-link:focus,
-.brand-home-link:visited {
+.brand-home-link:visited,
+.brand-logo:hover,
+.brand-logo:focus,
+.brand-logo:visited {
   color: inherit;
   text-decoration: none;
 }
 
-.brand-home-link:hover {
-  opacity: 0.88;
+.brand-home-link:hover,
+.brand-logo:hover {
+  opacity: 0.72;
 }
 
 .sidebar__tagline {
-  margin: 16px 0 0;
+  margin: 14px 0 0;
   font-size: 16px;
   font-weight: 700;
   color: #0F172A;
@@ -150,7 +173,7 @@ a.sidebar__logo {
 }
 
 .sidebar__desc {
-  margin: 4px 0 0;
+  margin: 10px 0 0;
   font-size: 13px;
   line-height: 1.7;
   color: #64748B;
