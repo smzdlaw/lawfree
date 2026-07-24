@@ -100,18 +100,20 @@ a.sidebar__logo {
 }
 
 .brand-home-link {
-  display: inline-flex;
-  align-items: center;
+  display: inline-block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.brand-home-link:hover,
+.brand-home-link:focus,
+.brand-home-link:visited {
   color: inherit;
   text-decoration: none;
 }
 
 .brand-home-link:hover {
   opacity: 0.85;
-}
-
-a.sidebar__brand.brand-home-link {
-  display: block;
 }
 
 .sidebar__tagline {
