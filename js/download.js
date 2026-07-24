@@ -14,18 +14,19 @@ const Download = {
   CONTENT_WIDTH_MM: 180,
 
   init() {
-    if (document.documentElement.dataset.pdfDownloadBound === '1') return;
-    document.documentElement.dataset.pdfDownloadBound = '1';
+    // 使用事件代理，避免行動版按鈕因 RWD／DOM 更新後失去 click 綁定。
+    if (document.documentElement.dataset.pdfDownloadDelegated === '1') return;
+    document.documentElement.dataset.pdfDownloadDelegated = '1';
 
-    ['downloadPdfBtn', 'downloadPdfBtnMobile'].forEach((id) => {
-      const button = document.getElementById(id);
-      if (!button || button.dataset.pdfDownloadClickBound === '1') return;
-
-      button.dataset.pdfDownloadClickBound = '1';
-      button.addEventListener('click', (event) => {
-        this.handlePdfDownload(event);
+    document.addEventListener('click', (event) => {
+      const button = event.target.closest('#downloadPdfBtn, #downloadPdfBtnMobile');
+      if (!button) return;
+      this.handlePdfDownload({
+        preventDefault: () => event.preventDefault(),
+        stopPropagation: () => event.stopPropagation(),
+        currentTarget: button
       });
-    });
+    }, { passive: false });
   },
 
   async handlePdfDownload(event) {
@@ -322,7 +323,7 @@ const Download = {
     wrapper.id = 'pdf-stable-export-root';
     Object.assign(wrapper.style, {
       position: 'fixed',
-      left: '0',
+      left: '-10000px',
       top: '0',
       width: `${this.CONTENT_WIDTH_MM}mm`,
       maxWidth: `${this.CONTENT_WIDTH_MM}mm`,
@@ -331,7 +332,7 @@ const Download = {
       background: '#fff',
       overflow: 'visible',
       pointerEvents: 'none',
-      zIndex: '-1',
+      zIndex: '0',
       opacity: '1'
     });
 
@@ -494,9 +495,6 @@ const Download = {
   },
 
   async generateMobilePdfBlob(element, filename) {
-    if (typeof html2pdf === 'undefined') {
-      throw new Error('html2pdf 尚未載入');
-    }
 
     this.injectPdfExportStyles();
     document.body.classList.add('pdf-export');
@@ -611,42 +609,58 @@ const Download = {
   },
 
   openPdfBlobUrl(blobUrl, pendingWindow = null) {
-    if (pendingWindow && !pendingWindow.closed) {
-      pendingWindow.location.replace(blobUrl);
-      return true;
-    }
+    // iOS Safari 對「非同步完成後再開新視窗」限制很嚴格。
+    // 優先沿用點擊當下已開啟的視窗；若遭封鎖，直接在目前分頁開啟 PDF，
+    // 使用者可透過 Safari 分享選單選擇「儲存到檔案」。
+    try {
+      if (pendingWindow && !pendingWindow.closed) {
+        pendingWindow.location.href = blobUrl;
+        return true;
+      }
 
-    const win = window.open(blobUrl, '_blank');
-    return Boolean(win);
+      window.location.href = blobUrl;
+      return true;
+    } catch (error) {
+      console.warn('[Download] 無法開啟 PDF Blob URL：', error);
+      return false;
+    }
   },
 
   async deliverIosPdf(blob, filename, pendingWindow = null) {
-    const file = new File([blob], filename, { type: 'application/pdf' });
-    const blobUrl = URL.createObjectURL(blob);
+    let file = null;
+    try {
+      file = new File([blob], filename, { type: 'application/pdf' });
+    } catch (error) {
+      console.warn('[Download] iOS File 建立失敗，改用 PDF 預覽：', error);
+    }
 
-    if (this.canSharePdfFile(file)) {
+    if (file && this.canSharePdfFile(file)) {
       try {
-        await navigator.share({ files: [file], title: filename });
-        this.scheduleRevokeBlobUrl(blobUrl, 60000);
+        await navigator.share({
+          files: [file],
+          title: filename,
+          text: 'SLawFree 產生的 PDF 文件'
+        });
         if (pendingWindow && !pendingWindow.closed) pendingWindow.close();
         return;
       } catch (error) {
         if (error && error.name === 'AbortError') {
-          this.revokeBlobUrl(blobUrl);
           if (pendingWindow && !pendingWindow.closed) pendingWindow.close();
           return;
         }
-        console.warn('[Download] iOS share failed, falling back to Blob URL:', error);
+        console.warn('[Download] iOS 分享失敗，改為開啟 PDF 預覽：', error);
       }
     }
 
+    const blobUrl = URL.createObjectURL(blob);
     const opened = this.openPdfBlobUrl(blobUrl, pendingWindow);
     if (!opened) {
       this.revokeBlobUrl(blobUrl);
-      throw new Error('Safari 無法開啟 PDF 預覽視窗');
+      throw new Error('Safari 無法開啟 PDF 預覽');
     }
 
-    this.scheduleRevokeBlobUrl(blobUrl, 10 * 60 * 1000);
+    // iOS 讀取 Blob URL 可能需要較久，延後 30 分鐘再釋放。
+    this.scheduleRevokeBlobUrl(blobUrl, 30 * 60 * 1000);
   },
 
   deliverAndroidPdf(blob, filename) {
@@ -686,9 +700,6 @@ const Download = {
       throw new Error('html2canvas 尚未載入');
     }
 
-    if (typeof html2pdf === 'undefined') {
-      throw new Error('html2pdf 尚未載入');
-    }
 
     if (
       typeof Forms !== 'undefined'
@@ -735,6 +746,7 @@ const Download = {
           blob = result.blob;
         } catch (stableError) {
           console.warn('[Download] Mobile stable PDF failed, using html2pdf fallback:', stableError);
+          if (typeof html2pdf === 'undefined') throw stableError;
           blob = await this.generateMobilePdfBlob(element, filename);
         }
       } else {
@@ -770,13 +782,3 @@ function handlePdfDownload(event) {
 }
 
 window.handlePdfDownload = handlePdfDownload;
-
-function bootPdfDownloadButtons() {
-  Download.init();
-}
-
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', bootPdfDownloadButtons);
-} else {
-  bootPdfDownloadButtons();
-}
