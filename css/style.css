@@ -83,13 +83,14 @@ button {
 
 .sidebar__brand,
 .sidebar-brand,
+.sidebar-header,
 .brand {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 12px 18px;
+  padding: 14px 18px;
   border-bottom: 1px solid #e5e7eb;
   box-sizing: border-box;
   width: 100%;
@@ -97,14 +98,14 @@ button {
   flex-shrink: 0;
 }
 
-.sidebar__brand .sidebar-logo,
-.sidebar__brand .brand-logo {
+.sidebar__brand > .brand-home-link,
+.sidebar__brand > .sidebar-logo {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
   max-width: 220px;
-  margin: 0 auto 8px;
+  margin: 0 auto 12px;
 }
 
 .sidebar__brand picture {
@@ -167,20 +168,24 @@ a.sidebar__logo {
 }
 
 .sidebar__tagline,
-.sidebar-title {
-  margin: 0 0 8px;
+.sidebar-title,
+.sidebar__title {
+  margin: 0 0 10px;
   font-size: 16px;
   font-weight: 700;
   color: #0F172A;
-  line-height: 1.35;
+  line-height: 1.45;
+  text-align: center;
 }
 
 .sidebar__desc,
-.sidebar-subtitle {
+.sidebar-subtitle,
+.sidebar__subtitle {
   margin: 0;
   font-size: 13px;
-  line-height: 1.6;
-  color: #6B7280;
+  line-height: 1.75;
+  color: #64748b;
+  text-align: center;
 }
 
 .sidebar__nav {
