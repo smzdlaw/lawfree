@@ -53,6 +53,7 @@
 .hero-logo,
 .home-logo {
   display: inline-flex;
+  align-items: center;
   justify-content: center;
   margin-bottom: 24px;
 }
@@ -532,7 +533,9 @@
 
 .site-header .home-logo-link,
 .site-header .hero-logo,
-.site-header .home-logo {
+.site-header .home-logo,
+.site-header .site-header__logo,
+.site-header .brand-logo {
   margin-bottom: 0;
 }
 
