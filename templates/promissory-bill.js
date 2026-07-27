@@ -134,11 +134,26 @@ const PromissoryBillTemplate = {
     return parts.join('');
   },
 
+  renderIssuerRow(label, value, options = {}) {
+    const { always = false, raw = false } = options;
+    if (!always && !this.hasValue(value)) return '';
+
+    const display = raw ? value : this.val(value);
+    if (!always && !display) return '';
+
+    return `
+      <div class="bill-issuer-row">
+        <span class="bill-issuer-label">${label}</span>
+        <span class="bill-issuer-value">${display}</span>
+      </div>
+    `;
+  },
+
   renderIssuer(drawer) {
     const rows = [
-      this.renderDetailRow('發票人：', drawer.name, { always: true }),
-      this.renderDetailRow('身分證字號：', drawer.idNumber),
-      this.renderDetailRow('地址：', drawer.address)
+      this.renderIssuerRow('發票人：', drawer.name),
+      this.renderIssuerRow('身分證字號：', drawer.idNumber),
+      this.renderIssuerRow('地址：', drawer.address)
     ].filter(Boolean);
 
     if (!rows.length) return '';
@@ -179,14 +194,18 @@ const PromissoryBillTemplate = {
     return `
       <div class="doc-preview doc-preview--promissory-bill promissory-bill-preview-wrapper">
         <div class="promissory-bill-paper">
-          <div class="bill-security-strip" aria-hidden="true">
+          <div class="bill-security-strip">
+            <h1 class="bill-vertical-title">
+              <span>本</span>
+              <span>票</span>
+            </h1>
+            <span class="bill-strip-ornament" aria-hidden="true"></span>
             <span class="bill-strip-mark">SLF</span>
+            <span class="bill-strip-ornament bill-strip-ornament--sm" aria-hidden="true"></span>
           </div>
 
           <div class="bill-content">
             <div class="bill-number">票據編號：SLF-PREVIEW</div>
-
-            <h1 class="bill-title">本　票</h1>
 
             ${this.renderMeta(note)}
 
