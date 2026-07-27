@@ -108,7 +108,6 @@
   max-width: 100%;
 }
 
-.promissory-bill-paper .bill-payment-heading,
 .promissory-bill-paper .bill-terms,
 .promissory-bill-paper .bill-details,
 .promissory-bill-paper .bill-detail-value,
@@ -120,61 +119,78 @@
 
 .promissory-bill-paper .bill-payment-heading {
   width: 100%;
-  min-width: 0;
-  margin: 0 0 10px;
-  display: flex;
-  align-items: flex-end;
-  flex-wrap: nowrap;
-  gap: 4px;
-  font-size: 16px;
-  line-height: 1.65;
-  font-weight: 500;
+  margin: 0 0 12px;
   color: #314d42;
   box-sizing: border-box;
 }
 
+.promissory-bill-paper .bill-payment-date-line {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: nowrap;
+  gap: 4px;
+  width: 100%;
+  font-size: 16px;
+  line-height: 1.6;
+  word-break: keep-all;
+}
+
 .promissory-bill-paper .bill-payment-heading strong {
   font-weight: 700;
-  white-space: nowrap;
 }
 
-.promissory-bill-paper .bill-payment-date-line {
+.promissory-bill-paper .bill-payment-recipient {
+  margin-top: 5px;
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.promissory-bill-paper .bill-inline-date-space {
   display: inline-block;
-  flex: 0 0 38px;
-  height: 20px;
-  border-bottom: 1px solid #8ba398;
+  flex: 0 0 48px;
+  height: 19px;
+  border-bottom: 1px solid #91aa9d;
 }
 
-.promissory-bill-paper .bill-payment-date-line--year {
-  flex-basis: 54px;
+.promissory-bill-paper .bill-inline-date-space--short {
+  flex-basis: 32px;
 }
 
 .promissory-bill-paper .bill-amount-box {
+  position: relative;
   width: 100%;
+  min-height: 72px;
   display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: 13px 15px;
+  align-items: center;
+  padding: 24px 150px 16px 14px;
   margin: 0 0 12px;
-  background: rgba(255, 255, 255, 0.66);
-  border: 1px solid #d0dfd6;
+  background: rgba(255, 255, 255, 0.62);
+  border: 1px solid #d2e0d8;
   box-sizing: border-box;
+  overflow: hidden;
 }
 
 .promissory-bill-paper .bill-amount-chinese {
+  min-width: 0;
   font-size: 19px;
   line-height: 1.5;
   font-weight: 700;
   letter-spacing: 0.03em;
   color: #29463b;
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 .promissory-bill-paper .bill-amount-number {
-  margin-top: 4px;
-  font-size: 14px;
-  line-height: 1.45;
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.3;
   font-weight: 600;
-  color: #456558;
+  color: #587367;
+  white-space: nowrap;
 }
 
 .promissory-bill-paper .bill-terms,
@@ -286,18 +302,22 @@
     padding: 12px 12px 14px;
   }
 
-  .promissory-bill-paper .bill-payment-heading {
-    font-size: 13px;
-    gap: 3px;
-  }
-
   .promissory-bill-paper .bill-payment-date-line {
-    flex-basis: 22px;
-    height: 16px;
+    font-size: 12px;
+    gap: 2px;
   }
 
-  .promissory-bill-paper .bill-payment-date-line--year {
-    flex-basis: 32px;
+  .promissory-bill-paper .bill-payment-recipient {
+    font-size: 12px;
+  }
+
+  .promissory-bill-paper .bill-inline-date-space {
+    flex-basis: 28px;
+    height: 15px;
+  }
+
+  .promissory-bill-paper .bill-inline-date-space--short {
+    flex-basis: 19px;
   }
 
   .promissory-bill-paper .bill-terms,
@@ -305,12 +325,19 @@
     font-size: 11.5px;
   }
 
+  .promissory-bill-paper .bill-amount-box {
+    min-height: 64px;
+    padding: 24px 100px 12px 10px;
+  }
+
   .promissory-bill-paper .bill-amount-chinese {
-    font-size: 16px;
+    font-size: 15px;
   }
 
   .promissory-bill-paper .bill-amount-number {
-    font-size: 12px;
+    top: 8px;
+    right: 9px;
+    font-size: 10px;
   }
 
   .promissory-bill-paper .bill-handwriting-row,

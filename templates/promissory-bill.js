@@ -52,15 +52,17 @@ const PromissoryBillTemplate = {
   renderPaymentHeading() {
     return `
       <div class="bill-payment-heading">
-        <span>憑票於中華民國</span>
-        <span class="bill-payment-date-line bill-payment-date-line--year"></span>
-        <span>年</span>
-        <span class="bill-payment-date-line"></span>
-        <span>月</span>
-        <span class="bill-payment-date-line"></span>
-        <span>日，</span>
-        <strong>無條件擔任支付</strong>
-        <span>。</span>
+        <div class="bill-payment-date-line">
+          <span>憑票於中華民國</span>
+          <span class="bill-inline-date-space"></span>
+          <span>年</span>
+          <span class="bill-inline-date-space bill-inline-date-space--short"></span>
+          <span>月</span>
+          <span class="bill-inline-date-space bill-inline-date-space--short"></span>
+          <span>日，</span>
+          <strong>無條件擔任支付</strong>
+        </div>
+        <div class="bill-payment-recipient">執票人或其指定人</div>
       </div>
     `;
   },
