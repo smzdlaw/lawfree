@@ -18,6 +18,15 @@ const PromissoryBillTemplate = {
     return this.hasValue(value) ? this.escapeHtml(String(value).trim()) : '';
   },
 
+  formatChineseDate(dateStr) {
+    if (!dateStr) return '';
+
+    const { year, month, day } = LegalDocumentLayout.getRocDateParts(dateStr);
+    if (!year) return '';
+
+    return `中華民國${this.escapeHtml(year)}年${this.escapeHtml(month)}月${this.escapeHtml(day)}日`;
+  },
+
   formatAmountDisplay(amount) {
     if (!this.hasValue(amount)) return null;
 
@@ -49,9 +58,27 @@ const PromissoryBillTemplate = {
     `;
   },
 
-  renderPaymentHeading() {
-    return `
-      <div class="bill-payment-heading">
+  renderPaymentHeading(note = {}) {
+    const dueType = note.dueType || '';
+    const dueDate = note.dueDate || '';
+
+    let dateLineHtml;
+
+    if (dueType === 'fixed' && this.hasValue(dueDate)) {
+      const formattedDate = this.formatChineseDate(dueDate);
+      dateLineHtml = `
+        <div class="bill-payment-date-line bill-payment-date-line--filled">
+          <span>憑票於${formattedDate}，</span><strong>無條件擔任支付</strong><span>。</span>
+        </div>
+      `;
+    } else if (dueType === 'on_demand') {
+      dateLineHtml = `
+        <div class="bill-payment-date-line bill-payment-date-line--filled">
+          <span>憑票見票即付，</span><strong>無條件擔任支付</strong><span>。</span>
+        </div>
+      `;
+    } else {
+      dateLineHtml = `
         <div class="bill-payment-date-line">
           <span>憑票於中華民國</span>
           <span class="bill-inline-date-space"></span>
@@ -62,6 +89,12 @@ const PromissoryBillTemplate = {
           <span>日，</span>
           <strong>無條件擔任支付</strong>
         </div>
+      `;
+    }
+
+    return `
+      <div class="bill-payment-heading">
+        ${dateLineHtml}
         <div class="bill-payment-recipient">執票人或其指定人</div>
       </div>
     `;
@@ -141,7 +174,7 @@ const PromissoryBillTemplate = {
           </div>
 
           <div class="bill-content">
-            ${this.renderPaymentHeading()}
+            ${this.renderPaymentHeading(note)}
 
             ${amountBox}
 

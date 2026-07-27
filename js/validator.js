@@ -138,7 +138,7 @@ const Validator = {
     },
 
     billDueDate(value) {
-      if (!value) return '請選擇到期日';
+      if (!value) return '請填寫到期日';
       const d = new Date(`${value}T00:00:00`);
       if (Number.isNaN(d.getTime())) return '日期格式不正確';
       return '';
