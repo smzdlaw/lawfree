@@ -2,7 +2,7 @@
 
 .preview-paper__inner:has(.promissory-bill-preview-wrapper) {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   padding: 18mm 14mm;
   text-align: left;
@@ -21,61 +21,68 @@
   font-family: "DFKai-SB", "標楷體", KaiTi, serif;
   font-size: 16px;
   line-height: 1.7;
-  color: #173b2c;
+  color: #334e43;
+}
+
+.promissory-bill-paper,
+.promissory-bill-paper * {
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
 }
 
 .promissory-bill-paper {
+  contain: layout paint;
   display: flex;
-  flex-direction: row;
   align-items: stretch;
   width: 100%;
-  max-width: 900px;
-  aspect-ratio: 1.9 / 1;
-  min-height: 470px;
+  max-width: 740px;
+  min-height: 390px;
+  height: auto;
   margin: 0 auto;
-  border: 1px solid #8fb5a0;
-  border-radius: 4px;
-  background-color: #f3faf5;
-  background-image:
-    radial-gradient(circle at 20% 30%, rgba(74, 130, 100, 0.07) 0 1px, transparent 1px),
-    radial-gradient(circle at 70% 60%, rgba(74, 130, 100, 0.05) 0 1px, transparent 1px);
-  background-size: 24px 24px, 32px 32px;
-  overflow: hidden;
   box-sizing: border-box;
-  print-color-adjust: exact;
-  -webkit-print-color-adjust: exact;
+  overflow: hidden;
+  background-color: #f9fcfa;
+  background-image:
+    radial-gradient(
+      circle,
+      rgba(75, 130, 100, 0.035) 0 1px,
+      transparent 1px
+    );
+  background-size: 24px 24px;
+  border: 1px solid #c7d9ce;
+  border-radius: 4px;
+  color: #334e43;
 }
 
 .promissory-bill-paper .bill-security-strip {
-  width: 110px;
-  flex: 0 0 110px;
+  width: 74px;
+  flex: 0 0 74px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px 12px;
+  padding: 14px 8px;
   box-sizing: border-box;
   background: linear-gradient(
     180deg,
-    #1f6b4f 0%,
-    #2d8a67 50%,
-    #1f6b4f 100%
+    #6da083 0%,
+    #78aa8e 100%
   );
 }
 
 .promissory-bill-paper .bill-title-panel {
-  width: 72px;
-  min-height: 250px;
+  width: 46px;
+  min-height: 160px;
   margin: 0;
   padding: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 30px;
-  border: 2px solid rgba(255, 255, 255, 0.75);
-  border-radius: 6px;
+  gap: 18px;
+  border: 1.5px solid rgba(255, 255, 255, 0.72);
+  border-radius: 5px;
   color: #ffffff;
-  font-size: 34px;
+  font-size: 20px;
   font-weight: 700;
   line-height: 1;
   writing-mode: horizontal-tb;
@@ -85,154 +92,181 @@
   display: block;
 }
 
-.bill-content {
+.promissory-bill-paper .bill-content {
   flex: 1;
   min-width: 0;
-  padding: 24px 28px;
-  box-sizing: border-box;
   display: flex;
   flex-direction: column;
+  padding: 16px 18px 18px;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
-.bill-payment-heading {
-  font-size: 18px;
-  font-weight: 500;
-  line-height: 1.8;
-  margin: 0 0 14px;
-  color: #173b2c;
+.promissory-bill-paper .bill-content,
+.promissory-bill-paper .bill-content * {
+  box-sizing: border-box;
+  max-width: 100%;
 }
 
-.bill-payment-heading strong {
+.promissory-bill-paper .bill-payment-heading,
+.promissory-bill-paper .bill-payment-text,
+.promissory-bill-paper .bill-terms,
+.promissory-bill-paper .bill-details,
+.promissory-bill-paper .bill-detail-value,
+.promissory-bill-paper .bill-handwriting-row,
+.promissory-bill-paper .bill-date-handwriting-row {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+.promissory-bill-paper .bill-payment-heading {
+  margin: 0 0 8px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #334e43;
+}
+
+.promissory-bill-paper .bill-payment-heading strong {
   font-weight: 700;
 }
 
-.bill-payment-text {
-  margin: 0 0 14px;
-  font-size: 17px;
-  line-height: 1.8;
-  color: #173b2c;
+.promissory-bill-paper .bill-payment-text {
+  margin: 0 0 9px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #3e594e;
 }
 
-.bill-payment-text strong {
+.promissory-bill-paper .bill-payment-text strong {
   font-weight: 700;
 }
 
-.bill-amount-box {
+.promissory-bill-paper .bill-amount-box {
+  width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  background: rgba(255, 255, 255, 0.72);
-  border: 1px solid rgba(62, 117, 86, 0.3);
-  padding: 14px 18px;
-  margin-bottom: 14px;
+  gap: 3px;
+  padding: 10px 13px;
+  margin: 0 0 10px;
+  background: rgba(255, 255, 255, 0.62);
+  border: 1px solid #d2e0d8;
   box-sizing: border-box;
 }
 
-.bill-amount-chinese {
-  font-size: 23px;
+.promissory-bill-paper .bill-amount-chinese {
+  font-size: 17px;
+  line-height: 1.45;
   font-weight: 700;
-  letter-spacing: 0.08em;
-  color: #173b2c;
-  line-height: 1.5;
+  letter-spacing: 0.02em;
+  color: #334e43;
 }
 
-.bill-amount-number {
-  font-size: 17px;
+.promissory-bill-paper .bill-amount-number {
+  margin-top: 3px;
+  font-size: 13px;
+  line-height: 1.4;
   font-weight: 600;
-  color: #2f5f49;
-  line-height: 1.5;
+  color: #425e52;
 }
 
-.bill-terms {
-  margin-bottom: 14px;
-  line-height: 1.75;
-  color: #173b2c;
+.promissory-bill-paper .bill-terms,
+.promissory-bill-paper .bill-details {
+  margin: 0 0 8px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #425e52;
 }
 
-.bill-terms p {
+.promissory-bill-paper .bill-terms p {
   margin: 0 0 4px;
 }
 
-.bill-terms p:last-child {
+.promissory-bill-paper .bill-terms p:last-child {
   margin-bottom: 0;
 }
 
-.bill-details {
-  margin-bottom: 12px;
-}
-
-.bill-detail-row {
+.promissory-bill-paper .bill-detail-row {
   display: flex;
   align-items: flex-start;
   gap: 6px;
   min-width: 0;
-  line-height: 1.75;
+  line-height: 1.6;
 }
 
-.bill-detail-label {
+.promissory-bill-paper .bill-detail-label {
   flex: 0 0 auto;
   font-weight: 600;
-  color: #173b2c;
+  white-space: nowrap;
+  color: #334e43;
 }
 
-.bill-detail-value {
+.promissory-bill-paper .bill-detail-value {
   flex: 1;
   min-width: 0;
-  word-break: break-word;
-  color: #1e4a38;
+  color: #425e52;
 }
 
-.bill-issuer {
+.promissory-bill-paper .bill-handwriting-section {
+  width: 100%;
+  margin-top: 10px;
+  padding-bottom: 6px;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  text-align: left;
-  margin-top: auto;
-  padding-top: 16px;
+  gap: 7px;
+  box-sizing: border-box;
+}
+
+.promissory-bill-paper .bill-handwriting-row {
   width: 100%;
-}
-
-.bill-issuer-row {
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
-  margin-bottom: 7px;
-  line-height: 1.6;
-  width: 100%;
-}
-
-.bill-issuer-label {
-  flex: 0 0 auto;
-  font-weight: 600;
-  color: #173b2c;
-}
-
-.bill-issuer-value {
-  flex: 1;
   min-width: 0;
-  word-break: break-word;
-  color: #1e4a38;
+  display: flex;
+  align-items: flex-end;
+  gap: 7px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #334e43;
+  box-sizing: border-box;
 }
 
-.bill-signature-space {
-  margin-top: 8px;
+.promissory-bill-paper .bill-handwriting-label {
+  flex: 0 0 auto;
+  white-space: nowrap;
+  font-weight: 700;
+}
+
+.promissory-bill-paper .bill-handwriting-line {
+  flex: 1 1 auto;
+  min-width: 80px;
+  height: 18px;
+  border-bottom: 1px solid #829d8d;
+}
+
+.promissory-bill-paper .bill-date-handwriting-row {
   width: 100%;
-  text-align: left;
+  min-width: 0;
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: nowrap;
+  gap: 5px;
+  margin-top: 4px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #334e43;
+  box-sizing: border-box;
 }
 
-.bill-signature-label {
-  display: block;
-  margin-bottom: 6px;
-  font-weight: 600;
-  color: #173b2c;
-  line-height: 1.7;
+.promissory-bill-paper .bill-date-line {
+  display: inline-block;
+  flex: 0 0 38px;
+  height: 18px;
+  border-bottom: 1px solid #829d8d;
 }
 
-.promissory-bill-paper .signature-space {
-  min-height: 60px;
+.promissory-bill-paper .bill-date-line--year {
+  flex-basis: 52px;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 768px) {
   .promissory-bill-preview-wrapper {
     overflow-x: auto;
     padding: 12px;
@@ -242,50 +276,47 @@
 
   .preview-paper__inner:has(.promissory-bill-preview-wrapper) {
     padding: 12mm 8mm;
-    align-items: flex-start;
   }
 
-  .promissory-bill-paper {
-    min-height: 380px;
-    min-width: 0;
+  .promissory-bill-paper .bill-content {
+    padding: 11px 11px 13px;
   }
 
-  .promissory-bill-paper .bill-security-strip {
-    width: 72px;
-    flex: 0 0 72px;
-    padding: 14px 8px;
+  .promissory-bill-paper .bill-payment-heading {
+    font-size: 12px;
   }
 
-  .promissory-bill-paper .bill-title-panel {
-    width: 52px;
-    min-height: 180px;
-    gap: 18px;
-    font-size: 24px;
+  .promissory-bill-paper .bill-payment-text,
+  .promissory-bill-paper .bill-terms,
+  .promissory-bill-paper .bill-details,
+  .promissory-bill-paper .bill-handwriting-row,
+  .promissory-bill-paper .bill-date-handwriting-row {
+    font-size: 11px;
   }
 
-  .bill-content {
-    padding: 16px 14px;
-  }
-
-  .bill-payment-heading {
-    font-size: 15px;
-    margin-bottom: 10px;
-  }
-
-  .bill-payment-text {
-    font-size: 14px;
-    margin-bottom: 10px;
-  }
-
-  .bill-amount-chinese {
-    font-size: 18px;
-  }
-
-  .bill-amount-number {
+  .promissory-bill-paper .bill-amount-chinese {
     font-size: 15px;
   }
 
-  .bill-terms {
-    font-size: 14px;
+  .promissory-bill-paper .bill-amount-number {
+    font-size: 11px;
+  }
+
+  .promissory-bill-paper .bill-date-handwriting-row {
+    gap: 3px;
+  }
+
+  .promissory-bill-paper .bill-handwriting-line {
+    min-width: 50px;
+    height: 15px;
+  }
+
+  .promissory-bill-paper .bill-date-line {
+    flex-basis: 24px;
+    height: 15px;
+  }
+
+  .promissory-bill-paper .bill-date-line--year {
+    flex-basis: 34px;
   }
 }

@@ -99,41 +99,40 @@ const PromissoryBillTemplate = {
     `;
   },
 
-  renderIssuerRow(label, value, options = {}) {
-    const { raw = false } = options;
-    if (!this.hasValue(value) && !raw) return '';
-
-    const display = raw ? value : this.val(value);
-    if (!display) return '';
-
+  renderHandwritingSection() {
     return `
-      <div class="bill-issuer-row">
-        <span class="bill-issuer-label">${label}</span>
-        <span class="bill-issuer-value">${display}</span>
+      <div class="bill-handwriting-section">
+        <div class="bill-handwriting-row">
+          <span class="bill-handwriting-label">發票人：</span>
+          <span class="bill-handwriting-line"></span>
+        </div>
+
+        <div class="bill-handwriting-row">
+          <span class="bill-handwriting-label">身分證字號：</span>
+          <span class="bill-handwriting-line"></span>
+        </div>
+
+        <div class="bill-handwriting-row">
+          <span class="bill-handwriting-label">地址：</span>
+          <span class="bill-handwriting-line"></span>
+        </div>
+
+        <div class="bill-date-handwriting-row">
+          <span class="bill-handwriting-label">發票日期：</span>
+          <span>中華民國</span>
+          <span class="bill-date-line bill-date-line--year"></span>
+          <span>年</span>
+          <span class="bill-date-line"></span>
+          <span>月</span>
+          <span class="bill-date-line"></span>
+          <span>日</span>
+        </div>
       </div>
     `;
   },
 
-  renderIssuer(drawer, note) {
-    const rows = [
-      this.renderIssuerRow('發票人：', drawer.name),
-      this.renderIssuerRow('身分證字號：', drawer.idNumber),
-      this.renderIssuerRow('地址：', drawer.address)
-    ].filter(Boolean);
-
-    const issueDate = this.formatChineseDate(note.issueDate);
-    if (issueDate) {
-      rows.push(this.renderIssuerRow('發票日期：', issueDate, { raw: true }));
-    }
-
-    if (!rows.length) return '';
-
-    return `<div class="bill-issuer">${rows.join('')}</div>`;
-  },
-
   render(data = {}) {
     const payee = data.payee || {};
-    const drawer = data.drawer || {};
     const note = data.note || {};
 
     const amount = this.formatAmountDisplay(note.amount);
@@ -150,8 +149,6 @@ const PromissoryBillTemplate = {
     const detailsBlock = paymentPlaceRow
       ? `<div class="bill-details">${paymentPlaceRow}</div>`
       : '';
-
-    const issuerBlock = this.renderIssuer(drawer, note);
 
     return `
       <div class="doc-preview doc-preview--promissory-bill promissory-bill-preview-wrapper">
@@ -174,12 +171,7 @@ const PromissoryBillTemplate = {
 
             ${detailsBlock}
 
-            ${issuerBlock}
-
-            <div class="bill-signature-space">
-              <span class="bill-signature-label">簽名或蓋章：</span>
-              <div class="signature-space" aria-hidden="true"></div>
-            </div>
+            ${this.renderHandwritingSection()}
           </div>
         </div>
       </div>
