@@ -47,99 +47,64 @@ const PromissoryBillTemplate = {
     return this.escapeHtml(String(rate).trim().replace(/[%％]/g, ''));
   },
 
-  renderDetailRow(label, value, options = {}) {
-    const { always = false, raw = false } = options;
-    if (!always && !this.hasValue(value)) return '';
-
-    const display = raw ? value : this.val(value);
-    if (!always && !display) return '';
+  renderDetailRow(label, value) {
+    if (!this.hasValue(value)) return '';
 
     return `
       <div class="bill-detail-row">
         <span class="bill-detail-label">${label}</span>
-        <span class="bill-detail-value">${display}</span>
+        <span class="bill-detail-value">${this.val(value)}</span>
       </div>
     `;
   },
 
-  renderPaymentText(note, payee) {
+  renderPaymentHeading(note) {
     const dueType = note.dueType || '';
-    let lead;
+    let text = '';
 
     if (dueType === 'fixed') {
-      lead = '本票發票人於本票所載到期日，';
-    } else if (dueType === 'on_demand') {
-      lead = '本票發票人於見票時，';
-    } else {
-      lead = '本票發票人';
-    }
-
-    const payeeName = payee?.name ? String(payee.name).trim() : '';
-    const tail = payeeName
-      ? `受款人「${this.escapeHtml(payeeName)}」或其指定人。`
-      : '執票人。';
-
-    return `<p class="bill-payment-text">${lead}<strong class="bill-pay-emphasis">無條件擔任支付</strong>${tail}</p>`;
-  },
-
-  renderMeta(note) {
-    const rows = [];
-    const issueDate = this.formatChineseDate(note.issueDate);
-
-    if (issueDate) {
-      rows.push(this.renderDetailRow('發票日期：', issueDate, { always: true, raw: true }));
-    }
-
-    const dueType = note.dueType || '';
-    if (dueType === 'fixed') {
-      rows.push(this.renderDetailRow('到期方式：', '指定到期日', { always: true, raw: true }));
-
       const dueDate = this.formatChineseDate(note.dueDate);
-      if (dueDate) {
-        rows.push(this.renderDetailRow('到期日：', dueDate, { always: true, raw: true }));
-      }
+      text = dueDate
+        ? `憑票於${dueDate}，<strong>無條件擔任支付</strong>。`
+        : `憑票於本票所載到期日，<strong>無條件擔任支付</strong>。`;
     } else if (dueType === 'on_demand') {
-      rows.push(this.renderDetailRow('到期方式：', '見票即付', { always: true, raw: true }));
+      text = '憑票見票即付，<strong>無條件擔任支付</strong>。';
     }
 
-    if (!rows.length) return '';
+    if (!text) return '';
 
-    return `<div class="bill-meta">${rows.join('')}</div>`;
+    return `<p class="bill-payment-heading">${text}</p>`;
   },
 
-  renderInterestRow(note) {
-    if (this.hasInterestRate(note.interestRate)) {
-      const rateText = `${this.formatInterestRate(note.interestRate)}%`;
-      return this.renderDetailRow('約定年利率：', rateText, { always: true, raw: true });
+  renderPayeeText(payee) {
+    const payeeName = payee?.name ? String(payee.name).trim() : '';
+
+    if (payeeName) {
+      return `<p class="bill-payment-text">本票發票人<strong>無條件擔任支付</strong>受款人「${this.escapeHtml(payeeName)}」或其指定人。</p>`;
     }
 
-    return this.renderDetailRow('利息：', '未約定（依法定利率計算）', { always: true, raw: true });
+    return '<p class="bill-payment-text">本票發票人<strong>無條件擔任支付</strong>執票人。</p>';
   },
 
-  renderOptionalTerms(terms = {}, other = {}) {
-    const parts = [];
+  renderTerms(note) {
+    const interestLine = this.hasInterestRate(note.interestRate)
+      ? `本票據利息按年利率 ${this.formatInterestRate(note.interestRate)}% 計算。`
+      : '利息未約定，依法定利率計算。';
 
-    if (terms.waiveProtest === true || terms.waiveProtest === 'true') {
-      parts.push(this.renderDetailRow('', '免除作成拒絕證書', { always: true, raw: true }));
-    }
-
-    if (terms.nonNegotiable === true || terms.nonNegotiable === 'true') {
-      parts.push(this.renderDetailRow('', '禁止背書轉讓', { always: true, raw: true }));
-    }
-
-    if (this.hasValue(other.remark)) {
-      parts.push(this.renderDetailRow('備註：', this.val(other.remark), { always: true, raw: true }));
-    }
-
-    return parts.join('');
+    return `
+      <div class="bill-terms">
+        <p>${interestLine}</p>
+        <p>本票據免除作成拒絕證書。</p>
+      </div>
+    `;
   },
 
   renderIssuerRow(label, value, options = {}) {
-    const { always = false, raw = false } = options;
-    if (!always && !this.hasValue(value)) return '';
+    const { raw = false } = options;
+    if (!this.hasValue(value) && !raw) return '';
 
     const display = raw ? value : this.val(value);
-    if (!always && !display) return '';
+    if (!display) return '';
 
     return `
       <div class="bill-issuer-row">
@@ -149,12 +114,17 @@ const PromissoryBillTemplate = {
     `;
   },
 
-  renderIssuer(drawer) {
+  renderIssuer(drawer, note) {
     const rows = [
       this.renderIssuerRow('發票人：', drawer.name),
       this.renderIssuerRow('身分證字號：', drawer.idNumber),
       this.renderIssuerRow('地址：', drawer.address)
     ].filter(Boolean);
+
+    const issueDate = this.formatChineseDate(note.issueDate);
+    if (issueDate) {
+      rows.push(this.renderIssuerRow('發票日期：', issueDate, { raw: true }));
+    }
 
     if (!rows.length) return '';
 
@@ -165,8 +135,6 @@ const PromissoryBillTemplate = {
     const payee = data.payee || {};
     const drawer = data.drawer || {};
     const note = data.note || {};
-    const terms = data.terms || {};
-    const other = data.other || {};
 
     const amount = this.formatAmountDisplay(note.amount);
     const amountBox = amount
@@ -178,40 +146,31 @@ const PromissoryBillTemplate = {
       `
       : '';
 
-    const detailsRows = [
-      this.renderDetailRow('付款地：', note.paymentPlace),
-      this.renderDetailRow('發票地：', note.issuePlace),
-      this.renderInterestRow(note),
-      this.renderOptionalTerms(terms, other)
-    ].filter(Boolean).join('');
-
-    const detailsBlock = detailsRows
-      ? `<div class="bill-details">${detailsRows}</div>`
+    const paymentPlaceRow = this.renderDetailRow('付款地：', note.paymentPlace);
+    const detailsBlock = paymentPlaceRow
+      ? `<div class="bill-details">${paymentPlaceRow}</div>`
       : '';
 
-    const issuerBlock = this.renderIssuer(drawer);
+    const issuerBlock = this.renderIssuer(drawer, note);
 
     return `
       <div class="doc-preview doc-preview--promissory-bill promissory-bill-preview-wrapper">
         <div class="promissory-bill-paper">
           <div class="bill-security-strip">
-            <h1 class="bill-vertical-title">
+            <h1 class="bill-title-panel">
               <span>本</span>
               <span>票</span>
             </h1>
-            <span class="bill-strip-ornament" aria-hidden="true"></span>
-            <span class="bill-strip-mark">SLF</span>
-            <span class="bill-strip-ornament bill-strip-ornament--sm" aria-hidden="true"></span>
           </div>
 
           <div class="bill-content">
-            <div class="bill-number">票據編號：SLF-PREVIEW</div>
+            ${this.renderPaymentHeading(note)}
 
-            ${this.renderMeta(note)}
-
-            ${this.renderPaymentText(note, payee)}
+            ${this.renderPayeeText(payee)}
 
             ${amountBox}
+
+            ${this.renderTerms(note)}
 
             ${detailsBlock}
 
