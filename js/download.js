@@ -42,29 +42,24 @@ const Download = {
 
   pdfModalState: null,
 
-  hidePdfReadyModal(revokeNow = false) {
+  hidePdfReadyModal() {
     const state = this.pdfModalState;
     if (!state) return;
-
-    if (revokeNow) {
-      if (state.revokeTimer) {
-        clearTimeout(state.revokeTimer);
-      }
-      if (state.blobUrl) {
-        this.revokeBlobUrl(state.blobUrl);
-      }
-    }
 
     state.overlay?.remove();
     this.pdfModalState = null;
   },
 
-  showPdfReadyModal(blob, filename, options = {}) {
-    const { showShare = false, shareFile = null } = options;
+  showPdfReadyModal(filename, options = {}) {
+    const {
+      shareFile = null,
+      canShare = false,
+      fallbackMessage = null,
+      downloadBlob = null
+    } = options;
 
-    this.hidePdfReadyModal(true);
+    this.hidePdfReadyModal();
 
-    const blobUrl = URL.createObjectURL(blob);
     const overlay = document.createElement('div');
     overlay.id = 'pdf-ready-modal';
     overlay.setAttribute('role', 'dialog');
@@ -109,7 +104,13 @@ const Download = {
     });
 
     const hint = document.createElement('p');
-    hint.textContent = '若「開啟 PDF」沒有反應，請使用「分享或儲存 PDF」並選擇「儲存到檔案」。';
+    if (fallbackMessage) {
+      hint.textContent = fallbackMessage;
+    } else if (downloadBlob) {
+      hint.textContent = '自動下載失敗，請點選下方按鈕再試一次。';
+    } else {
+      hint.textContent = '請點選下方按鈕，選擇「儲存到檔案」或分享至其他 App。';
+    }
     Object.assign(hint.style, {
       margin: '0 0 16px',
       fontSize: '14px',
@@ -125,48 +126,7 @@ const Download = {
       gap: '12px'
     });
 
-    const openButton = document.createElement('button');
-    openButton.type = 'button';
-    openButton.id = 'openGeneratedPdfBtn';
-    openButton.textContent = '開啟 PDF';
-    Object.assign(openButton.style, {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      minHeight: '48px',
-      padding: '12px 16px',
-      borderRadius: '12px',
-      border: '0',
-      background: '#2563eb',
-      color: '#ffffff',
-      fontSize: '16px',
-      fontWeight: '600',
-      cursor: 'pointer'
-    });
-
-    openButton.addEventListener('click', (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-
-      console.log('[PDF] open button clicked', blobUrl);
-
-      try {
-        window.location.assign(blobUrl);
-      } catch (error) {
-        console.error('[PDF] blob navigation failed', error);
-
-        try {
-          window.location.href = blobUrl;
-        } catch (fallbackError) {
-          console.error('[PDF] open fallback failed', fallbackError);
-          alert('無法直接開啟 PDF，請改用「分享或儲存 PDF」。');
-        }
-      }
-    });
-
-    actions.appendChild(openButton);
-
-    if (showShare && shareFile) {
+    if (canShare && shareFile) {
       const shareButton = document.createElement('button');
       shareButton.type = 'button';
       shareButton.textContent = '分享或儲存 PDF';
@@ -177,9 +137,9 @@ const Download = {
         minHeight: '48px',
         padding: '12px 16px',
         borderRadius: '12px',
-        border: '1px solid #cbd5e1',
-        background: '#ffffff',
-        color: '#0f172a',
+        border: '0',
+        background: '#2563eb',
+        color: '#ffffff',
         fontSize: '16px',
         fontWeight: '600',
         cursor: 'pointer'
@@ -205,6 +165,34 @@ const Download = {
       actions.appendChild(shareButton);
     }
 
+    if (downloadBlob) {
+      const downloadButton = document.createElement('button');
+      downloadButton.type = 'button';
+      downloadButton.textContent = '下載 PDF';
+      Object.assign(downloadButton.style, {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minHeight: '48px',
+        padding: '12px 16px',
+        borderRadius: '12px',
+        border: '0',
+        background: '#2563eb',
+        color: '#ffffff',
+        fontSize: '16px',
+        fontWeight: '600',
+        cursor: 'pointer'
+      });
+
+      downloadButton.addEventListener('click', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        this.downloadBlobWithAnchor(downloadBlob, filename);
+      });
+
+      actions.appendChild(downloadButton);
+    }
+
     const closeButton = document.createElement('button');
     closeButton.type = 'button';
     closeButton.textContent = '關閉';
@@ -225,12 +213,12 @@ const Download = {
     closeButton.addEventListener('click', (event) => {
       event.preventDefault();
       event.stopPropagation();
-      this.hidePdfReadyModal(false);
+      this.hidePdfReadyModal();
     });
 
     overlay.addEventListener('click', (event) => {
       if (event.target === overlay) {
-        this.hidePdfReadyModal(false);
+        this.hidePdfReadyModal();
       }
     });
 
@@ -241,13 +229,7 @@ const Download = {
     overlay.appendChild(panel);
     document.body.appendChild(overlay);
 
-    const revokeTimer = setTimeout(() => {
-      URL.revokeObjectURL(blobUrl);
-    }, 10 * 60 * 1000);
-
     this.pdfModalState = {
-      blobUrl,
-      revokeTimer,
       shareFile,
       overlay
     };
@@ -801,23 +783,6 @@ const Download = {
     }
   },
 
-  openPdfBlobUrl(blobUrl) {
-    try {
-      const anchor = document.createElement('a');
-      anchor.href = blobUrl;
-      anchor.target = '_blank';
-      anchor.rel = 'noopener';
-      anchor.style.display = 'none';
-      document.body.appendChild(anchor);
-      anchor.click();
-      document.body.removeChild(anchor);
-      return true;
-    } catch (error) {
-      console.warn('[Download] 無法開啟 PDF Blob URL：', error);
-      return false;
-    }
-  },
-
   createSharePdfFile(blob, filename) {
     try {
       return new File([blob], filename, { type: 'application/pdf' });
@@ -829,11 +794,14 @@ const Download = {
 
   deliverIosPdf(blob, filename) {
     const shareFile = this.createSharePdfFile(blob, filename);
-    const showShare = Boolean(shareFile && this.canSharePdfFile(shareFile));
+    const canShare = Boolean(shareFile && this.canSharePdfFile(shareFile));
 
-    this.showPdfReadyModal(blob, filename, {
-      showShare,
-      shareFile: showShare ? shareFile : null
+    this.showPdfReadyModal(filename, {
+      shareFile: canShare ? shareFile : null,
+      canShare,
+      fallbackMessage: canShare
+        ? null
+        : '目前瀏覽器不支援直接分享 PDF，請改用 Safari 開啟本網站後再試一次。'
     });
   },
 
@@ -841,8 +809,8 @@ const Download = {
     try {
       this.downloadBlobWithAnchor(blob, filename);
     } catch (error) {
-      console.warn('[Download] Android anchor download failed, showing open link modal:', error);
-      this.showPdfReadyModal(blob, filename, { showShare: false });
+      console.warn('[Download] Android anchor download failed, showing download modal:', error);
+      this.showPdfReadyModal(filename, { downloadBlob: blob });
     }
   },
 
