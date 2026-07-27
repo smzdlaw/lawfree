@@ -185,6 +185,13 @@ const PromissoryBillTemplate = {
             ${this.renderHandwritingSection()}
           </div>
         </div>
+
+        <div class="promissory-bill-screen-notice" role="note">
+          <span class="promissory-bill-screen-notice__icon" aria-hidden="true">⚠</span>
+          <span class="promissory-bill-screen-notice__text">
+            提醒您：列印後，請由發票人親自填寫並簽名或蓋章，並完整填載發票日期；資料未完整填寫，可能影響本票效力。
+          </span>
+        </div>
       </div>
     `;
   }

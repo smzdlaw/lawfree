@@ -381,3 +381,62 @@
     flex-basis: 32px;
   }
 }
+
+.promissory-bill-screen-notice {
+  width: 100%;
+  max-width: 740px;
+  margin: 14px auto 0;
+  padding: 11px 14px;
+
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+
+  background: #fff8e8;
+  border: 1px solid #efd494;
+  border-radius: 8px;
+
+  color: #765500;
+  font-size: 14px;
+  line-height: 1.65;
+
+  box-sizing: border-box;
+}
+
+.promissory-bill-screen-notice__icon {
+  flex: 0 0 auto;
+  font-size: 16px;
+  line-height: 1.45;
+}
+
+.promissory-bill-screen-notice__text {
+  flex: 1 1 auto;
+  min-width: 0;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 768px) {
+  .promissory-bill-screen-notice {
+    margin-top: 10px;
+    padding: 10px 12px;
+    gap: 7px;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .promissory-bill-screen-notice__icon {
+    font-size: 15px;
+  }
+}
+
+@media print {
+  .promissory-bill-screen-notice {
+    display: none !important;
+  }
+}
+
+body.pdf-export .promissory-bill-screen-notice,
+#pdf-stable-export-root .promissory-bill-screen-notice {
+  display: none !important;
+}
