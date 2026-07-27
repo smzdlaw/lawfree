@@ -177,11 +177,13 @@
   color: #425e52;
 }
 
-.promissory-bill-paper .bill-terms p {
+.promissory-bill-paper .bill-terms p,
+.promissory-bill-paper .bill-term-row {
   margin: 0 0 4px;
 }
 
-.promissory-bill-paper .bill-terms p:last-child {
+.promissory-bill-paper .bill-terms p:last-child,
+.promissory-bill-paper .bill-term-row:last-child {
   margin-bottom: 0;
 }
 

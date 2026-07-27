@@ -94,7 +94,7 @@ const PromissoryBillTemplate = {
     return `
       <div class="bill-terms">
         <p>${interestLine}</p>
-        <p>本票據免除作成拒絕證書。</p>
+        <div class="bill-term-row">本票據免除作成拒絕證書。</div>
       </div>
     `;
   },

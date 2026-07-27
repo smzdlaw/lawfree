@@ -103,9 +103,7 @@ const Forms = {
       if (!this.formData.terms) {
         this.formData.terms = { waiveProtest: true, nonNegotiable: false };
       }
-      if (this.formData.terms.waiveProtest === undefined) {
-        this.formData.terms.waiveProtest = true;
-      }
+      this.formData.terms.waiveProtest = true;
       if (this.formData.terms.nonNegotiable === undefined) {
         this.formData.terms.nonNegotiable = false;
       }
@@ -342,11 +340,18 @@ const Forms = {
     }
 
     if (field.type === 'checkbox') {
-      const checked = value === true || value === 'true' || (value !== false && value !== 'false' && field.defaultChecked);
+      const isLockedWaiveProtest = this.currentDoc === 'promissory-bill'
+        && prefix === 'terms'
+        && field.name === 'waiveProtest';
+      const checked = isLockedWaiveProtest
+        || value === true
+        || value === 'true'
+        || (value !== false && value !== 'false' && field.defaultChecked);
+      const disabledAttr = isLockedWaiveProtest ? ' disabled' : '';
       return `
         <div class="form-field" data-field="${key}">
           <label class="form-checkbox">
-            <input type="checkbox" class="form-checkbox__input" id="${id}" name="${key}" ${checked ? 'checked' : ''}>
+            <input type="checkbox" class="form-checkbox__input" id="${id}" name="${key}"${checked ? ' checked' : ''}${disabledAttr}>
             <span class="form-checkbox__label">${this.escapeHtml(field.checkboxLabel || field.label)}</span>
           </label>
           <p class="form-field__error" id="error-${key}"></p>
@@ -1289,6 +1294,11 @@ const Forms = {
         return;
       }
       if (target.type === 'checkbox' && target.name) {
+        if (this.currentDoc === 'promissory-bill' && target.name === 'terms.waiveProtest') {
+          target.checked = true;
+          Utils.setNestedValue(this.formData, 'terms', 'waiveProtest', true);
+          return;
+        }
         this.handleInput(target.name, target.checked, false);
         return;
       }
@@ -1447,6 +1457,10 @@ const Forms = {
 
     const { prefix, name } = Utils.parseFieldKey(key);
     Utils.setNestedValue(this.formData, prefix, name, value);
+
+    if (this.currentDoc === 'promissory-bill' && prefix === 'terms' && name === 'waiveProtest') {
+      Utils.setNestedValue(this.formData, 'terms', 'waiveProtest', true);
+    }
 
     if (this.currentDoc === 'divorce' && (prefix === 'husband' || prefix === 'wife')) {
       this.updateDivorceSignaturePreview();

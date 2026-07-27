@@ -399,3 +399,14 @@
   margin-top: 0;
   border-top: none;
 }
+
+/* 本票：免除作成拒絕證書固定勾選 */
+[data-field="terms.waiveProtest"] .form-checkbox__input[disabled] {
+  opacity: 1;
+  cursor: not-allowed;
+}
+
+[data-field="terms.waiveProtest"] .form-checkbox__input[disabled] + .form-checkbox__label {
+  opacity: 1;
+  color: inherit;
+}
