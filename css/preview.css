@@ -351,3 +351,71 @@ body.pdf-export .doc-preview__signer-tip {
   page-break-inside: avoid;
   break-inside: avoid;
 }
+
+/* ===== 本票預覽 ===== */
+.promissory-bill-preview {
+  text-align: left;
+}
+
+.promissory-bill-preview .bill-title {
+  text-align: center;
+}
+
+.promissory-bill-preview .bill-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 10px;
+  line-height: 1.8;
+}
+
+.promissory-bill-preview .bill-label {
+  flex: 0 0 auto;
+  font-weight: 600;
+}
+
+.promissory-bill-preview .bill-value {
+  flex: 1;
+  min-width: 0;
+  word-break: break-word;
+}
+
+.promissory-bill-preview .bill-text-emphasis .bill-label,
+.promissory-bill-preview .bill-text-emphasis .bill-value,
+.promissory-bill-preview .bill-main-text,
+.promissory-bill-preview .bill-on-demand {
+  font-weight: 700;
+}
+
+.promissory-bill-preview .bill-main-text {
+  margin: 0 0 14px;
+  line-height: 1.8;
+  text-align: left;
+}
+
+.promissory-bill-preview .bill-on-demand {
+  margin: 0 0 10px;
+  line-height: 1.8;
+}
+
+.promissory-bill-preview .bill-section {
+  margin-bottom: 14px;
+}
+
+.promissory-bill-preview .bill-drawer {
+  margin-top: 14px;
+}
+
+.promissory-bill-preview .bill-signature {
+  margin-top: 18px;
+}
+
+.promissory-bill-preview .bill-signature-label {
+  margin: 0 0 8px;
+  font-weight: 600;
+  line-height: 1.8;
+}
+
+.promissory-bill-preview .signature-space {
+  min-height: 70px;
+}
