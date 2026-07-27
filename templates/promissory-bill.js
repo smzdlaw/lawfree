@@ -68,13 +68,13 @@ const PromissoryBillTemplate = {
       const formattedDate = this.formatChineseDate(dueDate);
       dateLineHtml = `
         <div class="bill-payment-date-line bill-payment-date-line--filled">
-          <span>憑票於${formattedDate}，</span><strong>無條件擔任支付</strong><span>。</span>
+          <span>憑票於${formattedDate}，</span><strong>無條件擔任支付</strong>
         </div>
       `;
     } else if (dueType === 'on_demand') {
       dateLineHtml = `
         <div class="bill-payment-date-line bill-payment-date-line--filled">
-          <span>憑票見票即付，</span><strong>無條件擔任支付</strong><span>。</span>
+          <span>憑票見票即付，</span><strong>無條件擔任支付</strong>
         </div>
       `;
     } else {
