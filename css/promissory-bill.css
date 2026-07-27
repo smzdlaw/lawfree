@@ -36,7 +36,7 @@
   align-items: stretch;
   width: 100%;
   max-width: 740px;
-  min-height: 390px;
+  min-height: 410px;
   height: auto;
   margin: 0 auto;
   box-sizing: border-box;
@@ -97,7 +97,7 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
-  padding: 16px 18px 18px;
+  padding: 18px 20px 20px;
   box-sizing: border-box;
   overflow: hidden;
 }
@@ -109,7 +109,6 @@
 }
 
 .promissory-bill-paper .bill-payment-heading,
-.promissory-bill-paper .bill-payment-text,
 .promissory-bill-paper .bill-terms,
 .promissory-bill-paper .bill-details,
 .promissory-bill-paper .bill-detail-value,
@@ -120,61 +119,70 @@
 }
 
 .promissory-bill-paper .bill-payment-heading {
-  margin: 0 0 8px;
-  font-size: 14px;
-  line-height: 1.6;
-  color: #334e43;
+  width: 100%;
+  min-width: 0;
+  margin: 0 0 10px;
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: nowrap;
+  gap: 4px;
+  font-size: 16px;
+  line-height: 1.65;
+  font-weight: 500;
+  color: #314d42;
+  box-sizing: border-box;
 }
 
 .promissory-bill-paper .bill-payment-heading strong {
   font-weight: 700;
+  white-space: nowrap;
 }
 
-.promissory-bill-paper .bill-payment-text {
-  margin: 0 0 9px;
-  font-size: 13px;
-  line-height: 1.6;
-  color: #3e594e;
+.promissory-bill-paper .bill-payment-date-line {
+  display: inline-block;
+  flex: 0 0 38px;
+  height: 20px;
+  border-bottom: 1px solid #8ba398;
 }
 
-.promissory-bill-paper .bill-payment-text strong {
-  font-weight: 700;
+.promissory-bill-paper .bill-payment-date-line--year {
+  flex-basis: 54px;
 }
 
 .promissory-bill-paper .bill-amount-box {
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 3px;
-  padding: 10px 13px;
-  margin: 0 0 10px;
-  background: rgba(255, 255, 255, 0.62);
-  border: 1px solid #d2e0d8;
+  gap: 4px;
+  padding: 13px 15px;
+  margin: 0 0 12px;
+  background: rgba(255, 255, 255, 0.66);
+  border: 1px solid #d0dfd6;
   box-sizing: border-box;
 }
 
 .promissory-bill-paper .bill-amount-chinese {
-  font-size: 17px;
-  line-height: 1.45;
+  font-size: 19px;
+  line-height: 1.5;
   font-weight: 700;
-  letter-spacing: 0.02em;
-  color: #334e43;
+  letter-spacing: 0.03em;
+  color: #29463b;
 }
 
 .promissory-bill-paper .bill-amount-number {
-  margin-top: 3px;
-  font-size: 13px;
-  line-height: 1.4;
+  margin-top: 4px;
+  font-size: 14px;
+  line-height: 1.45;
   font-weight: 600;
-  color: #425e52;
+  color: #456558;
 }
 
 .promissory-bill-paper .bill-terms,
 .promissory-bill-paper .bill-details {
-  margin: 0 0 8px;
-  font-size: 13px;
-  line-height: 1.6;
-  color: #425e52;
+  margin: 0 0 10px;
+  font-size: 14px;
+  line-height: 1.7;
+  color: #405d52;
 }
 
 .promissory-bill-paper .bill-terms p,
@@ -210,62 +218,56 @@
 
 .promissory-bill-paper .bill-handwriting-section {
   width: 100%;
-  margin-top: 10px;
-  padding-bottom: 6px;
+  margin-top: 14px;
+  padding: 0 0 8px;
   display: flex;
   flex-direction: column;
-  gap: 7px;
+  gap: 10px;
   box-sizing: border-box;
 }
 
-.promissory-bill-paper .bill-handwriting-row {
-  width: 100%;
-  min-width: 0;
-  display: flex;
-  align-items: flex-end;
-  gap: 7px;
-  font-size: 13px;
-  line-height: 1.5;
-  color: #334e43;
-  box-sizing: border-box;
-}
-
-.promissory-bill-paper .bill-handwriting-label {
-  flex: 0 0 auto;
-  white-space: nowrap;
-  font-weight: 700;
-}
-
-.promissory-bill-paper .bill-handwriting-line {
-  flex: 1 1 auto;
-  min-width: 80px;
-  height: 18px;
-  border-bottom: 1px solid #829d8d;
-}
-
+.promissory-bill-paper .bill-handwriting-row,
 .promissory-bill-paper .bill-date-handwriting-row {
   width: 100%;
   min-width: 0;
   display: flex;
   align-items: flex-end;
-  flex-wrap: nowrap;
-  gap: 5px;
-  margin-top: 4px;
-  font-size: 13px;
-  line-height: 1.5;
-  color: #334e43;
+  gap: 8px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: #314d42;
   box-sizing: border-box;
+}
+
+.promissory-bill-paper .bill-handwriting-label {
+  flex: 0 0 92px;
+  width: 92px;
+  white-space: nowrap;
+  font-weight: 700;
+  text-align: left;
+}
+
+.promissory-bill-paper .bill-handwriting-line {
+  flex: 1 1 auto;
+  min-width: 100px;
+  height: 21px;
+  border-bottom: 1px solid #8ba398;
+}
+
+.promissory-bill-paper .bill-date-handwriting-row {
+  margin-top: 2px;
+  flex-wrap: nowrap;
 }
 
 .promissory-bill-paper .bill-date-line {
   display: inline-block;
   flex: 0 0 38px;
-  height: 18px;
-  border-bottom: 1px solid #829d8d;
+  height: 20px;
+  border-bottom: 1px solid #8ba398;
 }
 
 .promissory-bill-paper .bill-date-line--year {
-  flex-basis: 52px;
+  flex-basis: 54px;
 }
 
 @media (max-width: 768px) {
@@ -281,44 +283,58 @@
   }
 
   .promissory-bill-paper .bill-content {
-    padding: 11px 11px 13px;
+    padding: 12px 12px 14px;
   }
 
   .promissory-bill-paper .bill-payment-heading {
-    font-size: 12px;
+    font-size: 13px;
+    gap: 3px;
   }
 
-  .promissory-bill-paper .bill-payment-text,
+  .promissory-bill-paper .bill-payment-date-line {
+    flex-basis: 22px;
+    height: 16px;
+  }
+
+  .promissory-bill-paper .bill-payment-date-line--year {
+    flex-basis: 32px;
+  }
+
   .promissory-bill-paper .bill-terms,
-  .promissory-bill-paper .bill-details,
-  .promissory-bill-paper .bill-handwriting-row,
-  .promissory-bill-paper .bill-date-handwriting-row {
-    font-size: 11px;
+  .promissory-bill-paper .bill-details {
+    font-size: 11.5px;
   }
 
   .promissory-bill-paper .bill-amount-chinese {
-    font-size: 15px;
+    font-size: 16px;
   }
 
   .promissory-bill-paper .bill-amount-number {
-    font-size: 11px;
+    font-size: 12px;
   }
 
+  .promissory-bill-paper .bill-handwriting-row,
   .promissory-bill-paper .bill-date-handwriting-row {
-    gap: 3px;
+    font-size: 11.5px;
+    gap: 5px;
+  }
+
+  .promissory-bill-paper .bill-handwriting-label {
+    flex-basis: 74px;
+    width: 74px;
   }
 
   .promissory-bill-paper .bill-handwriting-line {
     min-width: 50px;
-    height: 15px;
+    height: 16px;
   }
 
   .promissory-bill-paper .bill-date-line {
-    flex-basis: 24px;
-    height: 15px;
+    flex-basis: 22px;
+    height: 16px;
   }
 
   .promissory-bill-paper .bill-date-line--year {
-    flex-basis: 34px;
+    flex-basis: 32px;
   }
 }

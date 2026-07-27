@@ -93,20 +93,15 @@ const Forms = {
       }
     } else if (docType === 'promissory-bill') {
       this.formData = saved?.formData || {
-        payee: {},
-        drawer: {},
         note: { dueType: '' },
-        terms: { waiveProtest: true, nonNegotiable: false },
-        other: {}
+        terms: { waiveProtest: true }
       };
+      this.formData = this.normalizePromissoryBillFormData(this.formData);
       if (!this.formData.note) this.formData.note = { dueType: '' };
       if (!this.formData.terms) {
-        this.formData.terms = { waiveProtest: true, nonNegotiable: false };
+        this.formData.terms = { waiveProtest: true };
       }
       this.formData.terms.waiveProtest = true;
-      if (this.formData.terms.nonNegotiable === undefined) {
-        this.formData.terms.nonNegotiable = false;
-      }
     } else {
       this.formData = saved?.formData || { creditor: {}, debtor: {}, claim: {}, attachments: { selectedOrder: [], otherText: '', otherMaterialsText: '' } };
       if (!this.formData.attachments) {
@@ -231,6 +226,9 @@ const Forms = {
     }
   },
   saveFormData() {
+    if (this.currentDoc === 'promissory-bill') {
+      this.formData = this.normalizePromissoryBillFormData(this.formData);
+    }
     Storage.save(this.currentDoc, {
       formData: this.formData,
       wizardStep: 1
@@ -379,14 +377,11 @@ const Forms = {
     const otherHtml = field.name === 'caseType' ? this.renderCaseTypeOther(prefix, value) : '';
     const hiddenClass = [
       field.name === 'methodOther' ? 'form-field--iou-method-other' : '',
-      field.name === 'dueDate' ? 'form-field--promissory-due-date' : '',
-      field.name === 'interestStartDate' ? 'form-field--promissory-interest-start' : ''
+      field.name === 'dueDate' ? 'form-field--promissory-due-date' : ''
     ].filter(Boolean).join(' ');
     const isDueDateHidden = field.name === 'dueDate'
       && Utils.getNestedValue(this.formData, prefix, 'dueType') !== 'fixed';
-    const isInterestStartHidden = field.name === 'interestStartDate'
-      && !this.hasPromissoryInterestRate();
-    const hiddenStyle = (isDueDateHidden || isInterestStartHidden) ? ' style="display:none"' : '';
+    const hiddenStyle = isDueDateHidden ? ' style="display:none"' : '';
 
     return `
       <div class="form-field${hiddenClass ? ` ${hiddenClass}` : ''}" data-field="${key}"${hiddenStyle}>
@@ -433,9 +428,21 @@ const Forms = {
     `;
   },
 
-  hasPromissoryInterestRate() {
-    const rate = this.formData.note?.interestRate;
-    return rate !== '' && rate !== null && rate !== undefined && String(rate).trim() !== '';
+  normalizePromissoryBillFormData(formData = {}) {
+    const note = formData.note || {};
+
+    return {
+      note: {
+        amount: note.amount ?? '',
+        dueType: note.dueType ?? '',
+        dueDate: note.dueDate ?? '',
+        paymentPlace: note.paymentPlace ?? '',
+        interestRate: note.interestRate ?? ''
+      },
+      terms: {
+        waiveProtest: true
+      }
+    };
   },
 
   renderDivorceAgreementSection(section) {
@@ -1420,20 +1427,6 @@ const Forms = {
         this.formData.note.dueDate = '';
       }
     }
-
-    const interestField = document.querySelector('.form-field--promissory-interest-start');
-    const interestInput = document.getElementById('field-note-interestStartDate');
-    const hasRate = this.hasPromissoryInterestRate();
-
-    if (interestField) {
-      interestField.style.display = hasRate ? '' : 'none';
-    }
-    if (!hasRate && interestInput) {
-      interestInput.value = '';
-      if (this.formData.note) {
-        this.formData.note.interestStartDate = '';
-      }
-    }
   },
 
   handleInput(key, value, applyPreset = false) {
@@ -1495,15 +1488,6 @@ const Forms = {
         Utils.setNestedValue(this.formData, 'note', 'dueDate', '');
         const dueDateEl = document.getElementById('field-note-dueDate');
         if (dueDateEl) dueDateEl.value = '';
-      }
-      this.updatePromissoryBillUI();
-    }
-
-    if (prefix === 'note' && name === 'interestRate') {
-      if (!this.hasPromissoryInterestRate()) {
-        Utils.setNestedValue(this.formData, 'note', 'interestStartDate', '');
-        const interestStartEl = document.getElementById('field-note-interestStartDate');
-        if (interestStartEl) interestStartEl.value = '';
       }
       this.updatePromissoryBillUI();
     }

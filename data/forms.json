@@ -617,60 +617,6 @@
         "label": "填寫資料",
         "sections": [
           {
-            "title": "受款人",
-            "prefix": "payee",
-            "fields": [
-              {
-                "name": "name",
-                "label": "受款人姓名",
-                "type": "text",
-                "required": false,
-                "placeholder": "例如：王小明"
-              },
-              {
-                "name": "idNumber",
-                "label": "受款人身分證字號",
-                "type": "text",
-                "required": false,
-                "placeholder": "例如：A123456789"
-              },
-              {
-                "name": "address",
-                "label": "受款人地址",
-                "type": "text",
-                "required": false,
-                "placeholder": "例如：臺中市西區○○路○○號"
-              }
-            ]
-          },
-          {
-            "title": "發票人",
-            "prefix": "drawer",
-            "fields": [
-              {
-                "name": "name",
-                "label": "發票人姓名",
-                "type": "text",
-                "required": true,
-                "placeholder": "例如：陳大明"
-              },
-              {
-                "name": "idNumber",
-                "label": "發票人身分證字號",
-                "type": "text",
-                "required": false,
-                "placeholder": "例如：B223456789"
-              },
-              {
-                "name": "address",
-                "label": "發票人地址",
-                "type": "text",
-                "required": false,
-                "placeholder": "例如：臺中市西區○○路○○號"
-              }
-            ]
-          },
-          {
             "title": "本票內容",
             "prefix": "note",
             "fields": [
@@ -680,12 +626,6 @@
                 "type": "number",
                 "required": true,
                 "placeholder": "例如：100000"
-              },
-              {
-                "name": "issueDate",
-                "label": "發票日期",
-                "type": "date",
-                "required": true
               },
               {
                 "name": "dueType",
@@ -710,18 +650,11 @@
                 "required": false
               },
               {
-                "name": "issuePlace",
-                "label": "發票地",
-                "type": "text",
-                "required": false,
-                "placeholder": "例如：臺中市"
-              },
-              {
                 "name": "paymentPlace",
                 "label": "付款地",
                 "type": "text",
                 "required": false,
-                "placeholder": "例如：臺中市"
+                "placeholder": "例如：臺中市西屯區"
               }
             ]
           },
@@ -736,12 +669,6 @@
                 "required": false,
                 "placeholder": "例如：6",
                 "hint": "僅輸入數字，系統會自動補上％；未填寫則顯示「未約定（依法定利率計算）」。"
-              },
-              {
-                "name": "interestStartDate",
-                "label": "利息起算日",
-                "type": "date",
-                "required": false
               }
             ]
           },
@@ -756,28 +683,6 @@
                 "required": false,
                 "defaultChecked": true,
                 "checkboxLabel": "免除作成拒絕證書"
-              },
-              {
-                "name": "nonNegotiable",
-                "label": "禁止背書轉讓",
-                "type": "checkbox",
-                "required": false,
-                "defaultChecked": false,
-                "checkboxLabel": "禁止背書轉讓"
-              }
-            ]
-          },
-          {
-            "title": "備註",
-            "prefix": "other",
-            "fields": [
-              {
-                "name": "remark",
-                "label": "備註",
-                "type": "textarea",
-                "required": false,
-                "placeholder": "請輸入備註事項",
-                "hint": "請勿填寫「符合特定條件才付款」等條件文字，以免影響票據效力。"
               }
             ]
           }

@@ -184,10 +184,6 @@ const Validator = {
           return;
         }
 
-        if (docType === 'promissory-bill' && section.prefix === 'note' && field.name === 'interestStartDate') {
-          if (!this.hasValue(formData.note?.interestRate)) return;
-        }
-
         const error = this.validateFieldConfig(field, value);
         if (error) {
           errors[fieldKey] = error;
@@ -214,12 +210,6 @@ const Validator = {
         const dueDateError = this.rules.billDueDate(note.dueDate);
         if (dueDateError) {
           errors['note.dueDate'] = dueDateError;
-        } else if (note.issueDate && note.dueDate) {
-          const issue = new Date(`${note.issueDate}T00:00:00`);
-          const due = new Date(`${note.dueDate}T00:00:00`);
-          if (!Number.isNaN(issue.getTime()) && !Number.isNaN(due.getTime()) && due < issue) {
-            errors['note.dueDate'] = '到期日不得早於發票日';
-          }
         }
       }
     }

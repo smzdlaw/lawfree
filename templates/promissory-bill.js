@@ -18,15 +18,6 @@ const PromissoryBillTemplate = {
     return this.hasValue(value) ? this.escapeHtml(String(value).trim()) : '';
   },
 
-  formatChineseDate(dateStr) {
-    if (!dateStr) return '';
-
-    const { year, month, day } = LegalDocumentLayout.getRocDateParts(dateStr);
-    if (!year) return '';
-
-    return `中華民國${this.escapeHtml(year)}年${this.escapeHtml(month)}月${this.escapeHtml(day)}日`;
-  },
-
   formatAmountDisplay(amount) {
     if (!this.hasValue(amount)) return null;
 
@@ -58,32 +49,20 @@ const PromissoryBillTemplate = {
     `;
   },
 
-  renderPaymentHeading(note) {
-    const dueType = note.dueType || '';
-    let text = '';
-
-    if (dueType === 'fixed') {
-      const dueDate = this.formatChineseDate(note.dueDate);
-      text = dueDate
-        ? `憑票於${dueDate}，<strong>無條件擔任支付</strong>。`
-        : `憑票於本票所載到期日，<strong>無條件擔任支付</strong>。`;
-    } else if (dueType === 'on_demand') {
-      text = '憑票見票即付，<strong>無條件擔任支付</strong>。';
-    }
-
-    if (!text) return '';
-
-    return `<p class="bill-payment-heading">${text}</p>`;
-  },
-
-  renderPayeeText(payee) {
-    const payeeName = payee?.name ? String(payee.name).trim() : '';
-
-    if (payeeName) {
-      return `<p class="bill-payment-text">本票發票人<strong>無條件擔任支付</strong>受款人「${this.escapeHtml(payeeName)}」或其指定人。</p>`;
-    }
-
-    return '<p class="bill-payment-text">本票發票人<strong>無條件擔任支付</strong>執票人。</p>';
+  renderPaymentHeading() {
+    return `
+      <div class="bill-payment-heading">
+        <span>憑票於中華民國</span>
+        <span class="bill-payment-date-line bill-payment-date-line--year"></span>
+        <span>年</span>
+        <span class="bill-payment-date-line"></span>
+        <span>月</span>
+        <span class="bill-payment-date-line"></span>
+        <span>日，</span>
+        <strong>無條件擔任支付</strong>
+        <span>。</span>
+      </div>
+    `;
   },
 
   renderTerms(note) {
@@ -132,7 +111,6 @@ const PromissoryBillTemplate = {
   },
 
   render(data = {}) {
-    const payee = data.payee || {};
     const note = data.note || {};
 
     const amount = this.formatAmountDisplay(note.amount);
@@ -161,9 +139,7 @@ const PromissoryBillTemplate = {
           </div>
 
           <div class="bill-content">
-            ${this.renderPaymentHeading(note)}
-
-            ${this.renderPayeeText(payee)}
+            ${this.renderPaymentHeading()}
 
             ${amountBox}
 
