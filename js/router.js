@@ -15,6 +15,34 @@ const Router = {
     description: 'slawfree 免費法律文件快速產生器，支援支付命令、本票裁定、離婚協議書等法律文件，免註冊、免登入、免安裝，一鍵下載 PDF。'
   },
 
+  docGuides: {
+    'payment-order': {
+      text: '第一次聲請支付命令，不確定適用條件或辦理流程？',
+      linkText: '查看支付命令完整指南 →',
+      url: '/guides/payment-order/'
+    },
+    'promissory-note': {
+      text: '準備聲請本票裁定前，建議先了解聲請條件、法院程序及注意事項。',
+      linkText: '查看本票裁定完整指南 →',
+      url: '/guides/promissory-note-ruling/'
+    },
+    iou: {
+      text: '第一次製作借據，不確定借款金額、還款期限或利息應怎麼寫？',
+      linkText: '查看借據完整指南 →',
+      url: '/guides/loan-agreement/'
+    },
+    'promissory-bill': {
+      text: '簽本票前，建議先確認必要記載事項、發票日、金額及簽名方式。',
+      linkText: '查看本票完整指南 →',
+      url: '/guides/promissory-note/'
+    },
+    divorce: {
+      text: '製作離婚協議書前，可先了解證人、未成年子女、扶養費及財產約定等注意事項。',
+      linkText: '查看離婚協議書完整指南 →',
+      url: '/guides/divorce-agreement/'
+    }
+  },
+
   docPageMeta: {
     iou: {
       title: '免費借據產生器｜線上製作借據與 PDF 下載｜SLawFree',
@@ -109,6 +137,7 @@ const Router = {
     });
 
     this.updatePageMeta(normalizedDoc);
+    this.updateGuideLink(normalizedDoc);
 
     try {
       if (
@@ -141,6 +170,26 @@ const Router = {
     }
 
     this.closeSidebar();
+  },
+
+  updateGuideLink(docType) {
+    const guideLink = document.getElementById('toolGuideLink');
+    if (!guideLink) return;
+
+    const guide = this.docGuides[docType];
+    if (!guide) {
+      guideLink.hidden = true;
+      guideLink.innerHTML = '';
+      return;
+    }
+
+    guideLink.hidden = false;
+    guideLink.innerHTML = `
+      <p class="tool-guide-link-text">
+        ${guide.text}
+        <a class="tool-guide-link-anchor" href="${guide.url}">${guide.linkText}</a>
+      </p>
+    `;
   },
 
   updatePageMeta(docType) {

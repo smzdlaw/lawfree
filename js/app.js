@@ -67,7 +67,7 @@ function initSidebarToggle() {
 
 function initViewTabs() {
   const tabs = document.querySelectorAll('.view-tab[data-view]');
-  const formArea = document.getElementById('formArea');
+  const formViewPanel = document.getElementById('formViewPanel');
   const previewArea = document.getElementById('previewArea');
   const wizard = document.getElementById('wizard');
 
@@ -80,7 +80,7 @@ function initViewTabs() {
       tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
     });
 
-    formArea?.classList.toggle('content-panel--hidden', view !== 'form');
+    formViewPanel?.classList.toggle('content-panel--hidden', view !== 'form');
     previewArea?.classList.toggle('content-panel--hidden', view !== 'preview');
     wizard?.classList.toggle('content-panel--hidden', view !== 'form');
 
