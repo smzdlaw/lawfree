@@ -353,24 +353,64 @@ const Download = {
   },
 
   getCanvasScale() {
-    return this.isMobileDevice() ? 1.25 : 2.5;
+    return this.isMobileDevice() ? 2 : 2.5;
+  },
+
+  getExportPixelWidth() {
+    return Math.round(this.CONTENT_WIDTH_MM * 96 / 25.4);
   },
 
   injectPdfExportStyles() {
-    if (document.getElementById('pdf-export-style-v24')) return;
+    if (document.getElementById('pdf-export-style-v25')) return;
 
     const style = document.createElement('style');
-    style.id = 'pdf-export-style-v24';
+    style.id = 'pdf-export-style-v25';
     style.textContent = `
       body.pdf-export .preview-paper,
       body.pdf-export .preview-paper__inner,
       body.pdf-export .doc-preview,
       body.pdf-export .doc-preview__block,
-      body.pdf-export .doc-preview__footer {
+      body.pdf-export .doc-preview__footer,
+      #pdf-stable-export-root,
+      #pdf-stable-export-root .preview-paper__inner,
+      #pdf-stable-export-root .doc-preview,
+      #pdf-stable-export-root .doc-preview__block,
+      #pdf-stable-export-root .doc-preview__footer,
+      .pdf-export-clone,
+      .pdf-export-clone.doc-preview,
+      .pdf-export-clone .doc-preview,
+      .pdf-export-clone .doc-preview__block,
+      .pdf-export-clone .doc-preview__footer {
         height: auto !important;
         min-height: 0 !important;
         max-height: none !important;
         overflow: visible !important;
+      }
+      #pdf-stable-export-root *,
+      .pdf-export-clone * {
+        max-height: none !important;
+        overflow: visible !important;
+        transform: none !important;
+        zoom: 1 !important;
+        contain: none !important;
+      }
+      #pdf-stable-export-root .doc-preview__line,
+      #pdf-stable-export-root .doc-preview__paragraph,
+      #pdf-stable-export-root .doc-preview__claim-item,
+      #pdf-stable-export-root .doc-preview__reason,
+      #pdf-stable-export-root .doc-preview__field-row,
+      #pdf-stable-export-root .doc-preview__signature-date,
+      #pdf-stable-export-root .doc-preview__date-line,
+      #pdf-stable-export-root .doc-preview__signer-row,
+      .pdf-export-clone .doc-preview__line,
+      .pdf-export-clone .doc-preview__paragraph,
+      .pdf-export-clone .doc-preview__claim-item,
+      .pdf-export-clone .doc-preview__reason,
+      .pdf-export-clone .doc-preview__field-row,
+      .pdf-export-clone .doc-preview__signature-date,
+      .pdf-export-clone .doc-preview__date-line,
+      .pdf-export-clone .doc-preview__signer-row {
+        line-height: 1.8 !important;
       }
       body.pdf-export .preview-paper {
         width: ${this.CONTENT_WIDTH_MM}mm !important;
@@ -534,13 +574,8 @@ const Download = {
       visibility: 'visible'
     });
 
-    clone.querySelectorAll('*').forEach((el) => {
-      el.style.maxHeight = 'none';
-      el.style.overflow = 'visible';
-      el.style.transform = 'none';
-      el.style.animation = 'none';
-      el.style.transition = 'none';
-    });
+    clone.classList.add('pdf-export-clone');
+    this.normalizeCloneForExport(clone);
 
     clone.querySelectorAll('.doc-preview__signer-tip').forEach((el) => el.remove());
 
@@ -549,10 +584,48 @@ const Download = {
     return { wrapper, clone };
   },
 
+  normalizeCloneForExport(root) {
+    const textTags = new Set(['P', 'DIV', 'SPAN', 'H1', 'H2', 'H3', 'LI', 'TD', 'TH']);
+
+    root.querySelectorAll('*').forEach((el) => {
+      el.style.maxHeight = 'none';
+      el.style.overflow = 'visible';
+      el.style.transform = 'none';
+      el.style.animation = 'none';
+      el.style.transition = 'none';
+      el.style.textOverflow = 'clip';
+
+      const computed = window.getComputedStyle(el);
+      if (computed.overflow === 'hidden' || computed.overflowY === 'hidden') {
+        el.style.overflow = 'visible';
+        el.style.overflowY = 'visible';
+      }
+
+      if (textTags.has(el.tagName)) {
+        const fontSize = parseFloat(computed.fontSize) || 20;
+        const lineHeight = parseFloat(computed.lineHeight);
+        const lineHeightRatio = Number.isFinite(lineHeight)
+          ? lineHeight / fontSize
+          : 0;
+
+        if (!lineHeightRatio || lineHeightRatio < 1.5) {
+          el.style.lineHeight = '1.8';
+        }
+      }
+    });
+  },
+
   async renderStableCanvas(element) {
     if (typeof html2canvas === 'undefined') {
       throw new Error('html2canvas 尚未載入');
     }
+
+    const exportWidth = this.getExportPixelWidth();
+    const exportHeight = Math.max(
+      element.scrollHeight || 0,
+      element.offsetHeight || 0,
+      1
+    );
 
     return html2canvas(element, {
       scale: this.getCanvasScale(),
@@ -562,10 +635,10 @@ const Download = {
       logging: false,
       scrollX: 0,
       scrollY: 0,
-      windowWidth: element.scrollWidth || element.offsetWidth,
-      windowHeight: element.scrollHeight || element.offsetHeight,
-      width: element.scrollWidth || element.offsetWidth,
-      height: element.scrollHeight || element.offsetHeight,
+      windowWidth: exportWidth,
+      windowHeight: exportHeight,
+      width: exportWidth,
+      height: exportHeight,
       letterRendering: true
     });
   },
@@ -628,7 +701,7 @@ const Download = {
     while (startY < canvas.height) {
       const idealEndY = Math.min(startY + pageHeightPx, canvas.height);
       const endY =
-        idealEndY < canvas.height && !this.isMobileDevice()
+        idealEndY < canvas.height
           ? this.findSafePageCut(canvas, startY, idealEndY)
           : idealEndY;
 
@@ -675,6 +748,12 @@ const Download = {
     document.body.classList.add('pdf-export');
 
     const { wrapper, clone } = this.createStableExportClone(element);
+    const exportWidth = this.getExportPixelWidth();
+    const exportHeight = Math.max(
+      clone.scrollHeight || 0,
+      clone.offsetHeight || 0,
+      1
+    );
 
     try {
       await this.waitForLayout();
@@ -683,17 +762,18 @@ const Download = {
         filename,
         image: { type: 'jpeg', quality: 0.98 },
         html2canvas: {
-          scale: 1.25,
+          scale: this.getCanvasScale(),
           useCORS: true,
           allowTaint: true,
           backgroundColor: '#FFFFFF',
           logging: false,
           scrollX: 0,
           scrollY: 0,
-          windowWidth: clone.scrollWidth || clone.offsetWidth,
-          windowHeight: clone.scrollHeight || clone.offsetHeight,
-          width: clone.scrollWidth || clone.offsetWidth,
-          height: clone.scrollHeight || clone.offsetHeight
+          windowWidth: exportWidth,
+          windowHeight: exportHeight,
+          width: exportWidth,
+          height: exportHeight,
+          letterRendering: true
         },
         jsPDF: {
           unit: 'mm',
@@ -716,6 +796,9 @@ const Download = {
 
   async generateStablePdf(element) {
     await this.waitForResources();
+    this.injectPdfExportStyles();
+    document.body.classList.add('pdf-export');
+
     const { wrapper, clone } = this.createStableExportClone(element);
 
     try {
@@ -726,6 +809,7 @@ const Download = {
       return { pdf, blob: pdf.output('blob') };
     } finally {
       wrapper.remove();
+      document.body.classList.remove('pdf-export');
     }
   },
 
