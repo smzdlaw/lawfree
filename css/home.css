@@ -1,9 +1,13 @@
 /* ===== Home Landing Page ===== */
+body:has(> .home-view) {
+  overflow-x: clip;
+  overflow-y: visible;
+}
+
 .home-view {
   flex: 1;
   width: 100%;
   min-width: 0;
-  overflow-x: hidden;
   background: var(--color-bg);
 }
 
@@ -185,6 +189,12 @@
 /* Legal Guides Section */
 .home-guides-section {
   background: var(--color-bg);
+}
+
+@media (min-width: 1024px) {
+  .home-guides-section .home-section__subtitle {
+    max-width: 900px;
+  }
 }
 
 .home-guides-grid {
