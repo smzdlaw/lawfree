@@ -267,8 +267,8 @@
 }
 
 .promissory-bill-paper .bill-handwriting-label {
-  flex: 0 0 104px;
-  width: 104px;
+  flex: 0 0 120px;
+  width: 120px;
   font-size: 16px;
   white-space: nowrap;
   font-weight: 700;
@@ -280,6 +280,14 @@
   min-width: 100px;
   height: 24px;
   border-bottom: 1px solid #8ba398;
+}
+
+.promissory-bill-paper .bill-handwriting-value {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: 16px;
+  line-height: 1.6;
+  word-break: break-word;
 }
 
 .promissory-bill-paper .bill-date-handwriting-row {

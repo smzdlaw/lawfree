@@ -11,11 +11,30 @@ const Validator = {
 
     idNumber(value) {
       if (!value || !String(value).trim()) return '';
-      const pattern = /^[A-Za-z][12]\d{8}$/;
-      if (!pattern.test(String(value).trim().toUpperCase())) {
+      const normalized = String(value).trim().toUpperCase();
+      if (!/^[A-Z][12]\d{8}$/.test(normalized)) {
         return '身分證格式不正確';
       }
       return '';
+    },
+
+    /** 本票：國民身分證字號或外來人口統一證號（新式／舊式） */
+    promissoryBillIdNumber(value) {
+      if (!value || !String(value).trim()) return '';
+      const normalized = String(value).trim().toUpperCase();
+      const nationalIdPattern = /^[A-Z][12]\d{8}$/;
+      const newResidentIdPattern = /^[A-Z][89]\d{8}$/;
+      const oldResidentIdPattern = /^[A-Z]{2}\d{8}$/;
+
+      if (
+        nationalIdPattern.test(normalized)
+        || newResidentIdPattern.test(normalized)
+        || oldResidentIdPattern.test(normalized)
+      ) {
+        return '';
+      }
+
+      return '請輸入正確的身分證字號或居留證號';
     },
 
     address(value) {
@@ -145,11 +164,25 @@ const Validator = {
     }
   },
 
-  validateField(name, value) {
+  validateField(name, value, options = {}) {
     if (name === 'birthDate') return '';
+    if (options.docType === 'promissory-bill' && name === 'idNumber') {
+      return this.rules.promissoryBillIdNumber(value);
+    }
     const rule = this.rules[name];
     if (!rule) return '';
     return rule(value);
+  },
+
+  validatePromissoryBillIdNumberField(field, value) {
+    const empty = value === '' || value === null || value === undefined
+      || (typeof value === 'string' && !value.trim());
+
+    if (empty) {
+      return field.required ? '請輸入身分證字號或居留證號' : '';
+    }
+
+    return this.rules.promissoryBillIdNumber(value);
   },
 
   validateFieldConfig(field, value) {
@@ -181,6 +214,12 @@ const Validator = {
         }
 
         if (docType === 'promissory-bill' && section.prefix === 'note' && field.name === 'dueDate') {
+          return;
+        }
+
+        if (docType === 'promissory-bill' && field.name === 'idNumber') {
+          const idError = this.validatePromissoryBillIdNumberField(field, value);
+          if (idError) errors[fieldKey] = idError;
           return;
         }
 

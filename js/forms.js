@@ -94,6 +94,7 @@ const Forms = {
     } else if (docType === 'promissory-bill') {
       this.formData = saved?.formData || {
         note: { dueType: '' },
+        drawer: {},
         terms: { waiveProtest: true }
       };
       this.formData = this.normalizePromissoryBillFormData(this.formData);
@@ -431,6 +432,8 @@ const Forms = {
   normalizePromissoryBillFormData(formData = {}) {
     const note = formData.note || {};
 
+    const drawer = formData.drawer || {};
+
     return {
       note: {
         amount: note.amount ?? '',
@@ -438,6 +441,11 @@ const Forms = {
         dueDate: note.dueDate ?? '',
         paymentPlace: note.paymentPlace ?? '',
         interestRate: note.interestRate ?? ''
+      },
+      drawer: {
+        name: drawer.name ?? '',
+        idNumber: drawer.idNumber ?? '',
+        address: drawer.address ?? ''
       },
       terms: {
         waiveProtest: true
@@ -1717,6 +1725,13 @@ const Forms = {
 
     const field = this.getFieldConfig(prefix, name);
     if (!field) return;
+
+    if (this.currentDoc === 'promissory-bill' && name === 'idNumber') {
+      const error = Validator.validatePromissoryBillIdNumberField(field, value);
+      if (error) this.showErrors({ [key]: error });
+      else this.clearFieldError(key);
+      return;
+    }
 
     const error = Validator.validateFieldConfig(field, value);
     if (error) {

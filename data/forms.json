@@ -685,6 +685,33 @@
                 "checkboxLabel": "免除作成拒絕證書"
               }
             ]
+          },
+          {
+            "title": "發票人資料（選填）",
+            "prefix": "drawer",
+            "fields": [
+              {
+                "name": "name",
+                "label": "發票人姓名",
+                "type": "text",
+                "required": false,
+                "placeholder": "例如：陳大明"
+              },
+              {
+                "name": "idNumber",
+                "label": "身分證字號／居留證號",
+                "type": "text",
+                "required": false,
+                "placeholder": "請輸入身分證字號或居留證號"
+              },
+              {
+                "name": "address",
+                "label": "地址",
+                "type": "text",
+                "required": false,
+                "placeholder": "例如：臺中市西屯區○○路○○號"
+              }
+            ]
           }
         ]
       }

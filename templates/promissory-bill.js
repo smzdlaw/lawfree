@@ -113,23 +113,31 @@ const PromissoryBillTemplate = {
     `;
   },
 
-  renderHandwritingSection() {
+  renderHandwritingRow(label, value, options = {}) {
+    const { alwaysShow = false } = options;
+    if (!alwaysShow && !this.hasValue(value)) return '';
+
+    const content = this.hasValue(value)
+      ? `<span class="bill-handwriting-value">${this.val(value)}</span>`
+      : '<span class="bill-handwriting-line"></span>';
+
+    return `
+        <div class="bill-handwriting-row">
+          <span class="bill-handwriting-label">${label}</span>
+          ${content}
+        </div>`;
+  },
+
+  renderHandwritingSection(drawer = {}) {
+    const rows = [
+      this.renderHandwritingRow('發票人：', drawer.name, { alwaysShow: true }),
+      this.renderHandwritingRow('身分證／居留證號：', drawer.idNumber),
+      this.renderHandwritingRow('地址：', drawer.address)
+    ].filter(Boolean);
+
     return `
       <div class="bill-handwriting-section">
-        <div class="bill-handwriting-row">
-          <span class="bill-handwriting-label">發票人：</span>
-          <span class="bill-handwriting-line"></span>
-        </div>
-
-        <div class="bill-handwriting-row">
-          <span class="bill-handwriting-label">身分證字號：</span>
-          <span class="bill-handwriting-line"></span>
-        </div>
-
-        <div class="bill-handwriting-row">
-          <span class="bill-handwriting-label">地址：</span>
-          <span class="bill-handwriting-line"></span>
-        </div>
+        ${rows.join('')}
 
         <div class="bill-date-handwriting-row">
           <span class="bill-handwriting-label">發票日期：</span>
@@ -147,6 +155,7 @@ const PromissoryBillTemplate = {
 
   render(data = {}) {
     const note = data.note || {};
+    const drawer = data.drawer || {};
 
     const amount = this.formatAmountDisplay(note.amount);
     const amountBox = amount
@@ -182,7 +191,7 @@ const PromissoryBillTemplate = {
 
             ${detailsBlock}
 
-            ${this.renderHandwritingSection()}
+            ${this.renderHandwritingSection(drawer)}
           </div>
         </div>
 
