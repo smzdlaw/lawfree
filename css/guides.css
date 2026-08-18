@@ -372,6 +372,7 @@
   font-weight: 700;
   color: var(--guides-text);
   line-height: 1.4;
+  text-align: center;
 }
 
 .guides-about__text {
