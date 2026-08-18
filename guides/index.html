@@ -48,8 +48,26 @@
           從常見債權追討、票據到家庭法律文件，快速找到需要的說明。
         </p>
 
+        <div class="guides-filter" role="group" aria-label="文章分類篩選">
+          <button type="button" class="guides-filter__btn active" data-filter="all" aria-pressed="true">
+            全部 <span class="guides-filter__count"></span>
+          </button>
+          <button type="button" class="guides-filter__btn" data-filter="debt" aria-pressed="false">
+            債權追討 <span class="guides-filter__count"></span>
+          </button>
+          <button type="button" class="guides-filter__btn" data-filter="note" aria-pressed="false">
+            票據法律 <span class="guides-filter__count"></span>
+          </button>
+          <button type="button" class="guides-filter__btn" data-filter="loan" aria-pressed="false">
+            借貸契約 <span class="guides-filter__count"></span>
+          </button>
+          <button type="button" class="guides-filter__btn" data-filter="family" aria-pressed="false">
+            離婚家事 <span class="guides-filter__count"></span>
+          </button>
+        </div>
+
         <div class="guides-grid">
-          <article class="guide-card">
+          <article class="guide-card" data-category="debt">
             <span class="guide-card__category">債權追討</span>
             <h3 class="guide-card__title">支付命令完整指南</h3>
             <p class="guide-card__desc">
@@ -58,7 +76,7 @@
             <a class="guide-card__link" href="/guides/payment-order/">閱讀完整指南 →</a>
           </article>
 
-          <article class="guide-card">
+          <article class="guide-card" data-category="debt">
             <span class="guide-card__category">債權追討</span>
             <h3 class="guide-card__title">支付命令被異議怎麼辦？</h3>
             <p class="guide-card__desc">
@@ -67,7 +85,7 @@
             <a class="guide-card__link" href="/guides/payment-order-objection/">閱讀完整指南 →</a>
           </article>
 
-          <article class="guide-card">
+          <article class="guide-card" data-category="debt">
             <span class="guide-card__category">債權追討</span>
             <h3 class="guide-card__title">支付命令確定後怎麼強制執行？</h3>
             <p class="guide-card__desc">
@@ -76,7 +94,7 @@
             <a class="guide-card__link" href="/guides/payment-order-enforcement/">閱讀完整指南 →</a>
           </article>
 
-          <article class="guide-card">
+          <article class="guide-card" data-category="note">
             <span class="guide-card__category">票據法律</span>
             <h3 class="guide-card__title">本票裁定聲請指南</h3>
             <p class="guide-card__desc">
@@ -85,7 +103,7 @@
             <a class="guide-card__link" href="/guides/promissory-note-ruling/">閱讀完整指南 →</a>
           </article>
 
-          <article class="guide-card">
+          <article class="guide-card" data-category="note">
             <span class="guide-card__category">票據法律</span>
             <h3 class="guide-card__title">本票到期不付款怎麼辦？</h3>
             <p class="guide-card__desc">
@@ -94,7 +112,7 @@
             <a class="guide-card__link" href="/guides/promissory-note-unpaid/">閱讀完整指南 →</a>
           </article>
 
-          <article class="guide-card">
+          <article class="guide-card" data-category="loan">
             <span class="guide-card__category">借貸契約</span>
             <h3 class="guide-card__title">借據怎麼寫才有效？</h3>
             <p class="guide-card__desc">
@@ -103,7 +121,7 @@
             <a class="guide-card__link" href="/guides/loan-agreement/">閱讀完整指南 →</a>
           </article>
 
-          <article class="guide-card">
+          <article class="guide-card" data-category="loan">
             <span class="guide-card__category">借貸契約</span>
             <h3 class="guide-card__title">借錢沒有借據，可以把錢要回來嗎？</h3>
             <p class="guide-card__desc">
@@ -112,7 +130,7 @@
             <a class="guide-card__link" href="/guides/loan-without-iou/">閱讀完整指南 →</a>
           </article>
 
-          <article class="guide-card">
+          <article class="guide-card" data-category="loan">
             <span class="guide-card__category">借貸契約</span>
             <h3 class="guide-card__title">借據跟本票有什麼不同？</h3>
             <p class="guide-card__desc">
@@ -121,7 +139,7 @@
             <a class="guide-card__link" href="/guides/iou-vs-promissory-note/">閱讀完整指南 →</a>
           </article>
 
-          <article class="guide-card">
+          <article class="guide-card" data-category="note">
             <span class="guide-card__category">票據法律</span>
             <h3 class="guide-card__title">本票怎麼寫才有效？</h3>
             <p class="guide-card__desc">
@@ -130,7 +148,7 @@
             <a class="guide-card__link" href="/guides/promissory-note/">閱讀完整指南 →</a>
           </article>
 
-          <article class="guide-card">
+          <article class="guide-card" data-category="family">
             <span class="guide-card__category">家庭法律</span>
             <h3 class="guide-card__title">離婚協議書怎麼寫？</h3>
             <p class="guide-card__desc">
@@ -139,7 +157,7 @@
             <a class="guide-card__link" href="/guides/divorce-agreement/">閱讀完整指南 →</a>
           </article>
 
-          <article class="guide-card">
+          <article class="guide-card" data-category="family">
             <span class="guide-card__category">家庭法律</span>
             <h3 class="guide-card__title">協議離婚需要什麼條件？一定要兩個證人嗎？</h3>
             <p class="guide-card__desc">
@@ -148,7 +166,7 @@
             <a class="guide-card__link" href="/guides/divorce-requirements-witnesses/">閱讀完整指南 →</a>
           </article>
 
-          <article class="guide-card">
+          <article class="guide-card" data-category="family">
             <span class="guide-card__category">家庭法律</span>
             <h3 class="guide-card__title">離婚證人要負什麼責任？誰可以當離婚證人？</h3>
             <p class="guide-card__desc">
@@ -157,7 +175,7 @@
             <a class="guide-card__link" href="/guides/divorce-witness/">閱讀完整指南 →</a>
           </article>
 
-          <article class="guide-card">
+          <article class="guide-card" data-category="family">
             <span class="guide-card__category">家庭法律</span>
             <h3 class="guide-card__title">離婚後小孩監護權怎麼約定？</h3>
             <p class="guide-card__desc">
@@ -166,7 +184,7 @@
             <a class="guide-card__link" href="/guides/divorce-child-custody/">閱讀完整指南 →</a>
           </article>
 
-          <article class="guide-card">
+          <article class="guide-card" data-category="family">
             <span class="guide-card__category">家庭法律</span>
             <h3 class="guide-card__title">離婚後小孩扶養費怎麼約定？要付到幾歲？</h3>
             <p class="guide-card__desc">
@@ -175,13 +193,22 @@
             <a class="guide-card__link" href="/guides/divorce-child-support/">閱讀完整指南 →</a>
           </article>
 
-          <article class="guide-card">
+          <article class="guide-card" data-category="family">
             <span class="guide-card__category">家庭法律</span>
             <h3 class="guide-card__title">離婚後探視小孩怎麼約定？</h3>
             <p class="guide-card__desc">
               離婚後如何安排與孩子見面？整理會面交往時間、過夜、接送方式、寒暑假及特殊節日等常見約定。
             </p>
             <a class="guide-card__link" href="/guides/divorce-child-visitation/">閱讀完整指南 →</a>
+          </article>
+
+          <article class="guide-card" data-category="family">
+            <span class="guide-card__category">家庭法律</span>
+            <h3 class="guide-card__title">對方不讓看小孩怎麼辦？</h3>
+            <p class="guide-card__desc">
+              離婚後對方阻止探視怎麼處理？整理會面交往約定、紀錄保留、法院處理及扶養費與探視的常見問題。
+            </p>
+            <a class="guide-card__link" href="/guides/child-visitation-denied/">閱讀完整指南 →</a>
           </article>
         </div>
       </div>
@@ -229,5 +256,6 @@
       <p class="guides-footer__copy">&copy; 2026 SLawFree All Rights Reserved.</p>
     </div>
   </footer>
+  <script src="/js/guides-filter.js"></script>
 </body>
 </html>
