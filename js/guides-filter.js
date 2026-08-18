@@ -41,8 +41,11 @@
         var category = card.getAttribute('data-category');
         var show = filter === 'all' || category === filter;
         card.hidden = !show;
+        card.style.display = show ? '' : 'none';
       });
     }
+
+    applyFilter('all');
 
     buttons.forEach(function (button) {
       button.addEventListener('click', function () {
